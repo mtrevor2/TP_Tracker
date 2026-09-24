@@ -1,5 +1,9 @@
 # TPTracker 0.4.24
 
+## 0.4.25 controller details scrolling
+
+Move the controller right stick up/down to scroll through Check Details requirements and reach the Skip/Undo button. Navigation stays in the details popup and resets when it closes.
+
 ## 0.4.24 readable check details
 
 The details popup now explicitly renders every text row as a block, with spacing between the title, status, requirements and helper definitions. It no longer lists every incoming world connection, which could bury a simple hint-sign requirement in unrelated door and boss routes. Requirements of Nothing read as "No additional items required." Area access is still evaluated separately; this is a presentation-only change.

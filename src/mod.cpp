@@ -46,6 +46,22 @@ UiElementHandle detailText = 0, detailButton = 0;
 std::string selectedCheck;
 std::string detailMarkup;
 uint64_t detailRevision=0;
+std::vector<UiElementHandle> detailSections, detailAnchors;
+size_t detailSectionCount=0;
+int detailScrollRow=0;
+tracker::StickNavigation detailNavigation;
+bool skipSelectedDisabled(ModContext*,void*);
+void navigateDetail() {
+    int x=0,y=0;
+    if (!tracker::readRightStick(x,y)) { detailNavigation={}; return; }
+    const auto now=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+    const int direction=detailNavigation.sample(x,y,now);
+    if (std::abs(detailNavigation.held)!=2 || detailSectionCount==0) return;
+    const int last=static_cast<int>(detailSectionCount)-1+(skipSelectedDisabled(nullptr,nullptr) ? 0 : 1);
+    if(direction) detailScrollRow=std::clamp(detailScrollRow+(direction==2 ? 1 : -1),0,last);
+    detailScrollRow=std::clamp(detailScrollRow,0,last);
+    svc_ui->elem_focus(mod_ctx,detailScrollRow==static_cast<int>(detailSectionCount) ? detailButton : detailAnchors[detailScrollRow]);
+}
 UiMenuTabHandle menuTab = 0;
 ConfigVarHandle keyboardBinding = 0, controllerBinding = 0;
 int areaSort = 1;
@@ -158,27 +174,56 @@ void skipSelectedCheck(ModContext*, void*) {
 bool skipSelectedDisabled(ModContext*,void*) { return model.obtained.contains(selectedCheck) || !model.aliases.contains(selectedCheck); }
 ModResult updateDetail(ModContext*,void*,ModError*) {
     if (!detailText) return MOD_OK;
+    navigateDetail();
     if(detailRevision==revision) return MOD_OK;
     detailRevision=revision;
     const auto markup=model.checkDetails(selectedCheck);
     if(markup==detailMarkup) return MOD_OK;
     detailMarkup=markup;
-    svc_ui->elem_set_rml(mod_ctx,detailText,markup.c_str());
+    // Each generated div gets a small focus anchor. The SDK scrolls focused
+    // controls into view; a single large RML element cannot scroll in sections.
+    detailSectionCount=0;
+    size_t start=0;
+    while(start<markup.size()) {
+        auto end=markup.find("</div>",start);
+        end=end==std::string::npos ? markup.size() : end+6;
+        const auto part=markup.substr(start,end-start);
+        if(detailSectionCount==detailSections.size()) {
+            UiElementHandle section=0,anchor=0;
+            UiControlDesc control=UI_CONTROL_DESC_INIT;
+            control.kind=UI_CONTROL_BUTTON; control.label="";
+            control.on_pressed=[](ModContext*,void*) {};
+            auto result=svc_ui->pane_add_control(mod_ctx,detailText,&control,&anchor);
+            if(result!=MOD_OK) return result;
+            svc_ui->elem_set_class(mod_ctx,anchor,"tp-scroll-anchor",true);
+            result=svc_ui->pane_add_rml(mod_ctx,detailText,"",&section);
+            if(result!=MOD_OK) return result;
+            detailAnchors.push_back(anchor); detailSections.push_back(section);
+        }
+        svc_ui->elem_set_rml(mod_ctx,detailSections[detailSectionCount],part.c_str());
+        ++detailSectionCount; start=end;
+    }
+    for(size_t i=0;i<detailSections.size();++i) {
+        svc_ui->elem_set_visible(mod_ctx,detailSections[i],i<detailSectionCount);
+        svc_ui->elem_set_visible(mod_ctx,detailAnchors[i],i<detailSectionCount);
+    }
     svc_ui->elem_set_text(mod_ctx,detailButton,model.skipped.contains(selectedCheck) ? "Undo skipping this check" : "Skip this check");
     return MOD_OK;
 }
 ModResult buildDetail(ModContext*,UiWindowHandle,UiElementHandle left,UiElementHandle right,void*,ModError*) {
-    auto result=svc_ui->pane_add_rml(mod_ctx,left,"",&detailText);
+    UiRowDesc row=UI_ROW_DESC_INIT;
+    auto result=svc_ui->pane_add_row(mod_ctx,left,&row,&detailText);
+    svc_ui->elem_set_class(mod_ctx,detailText,"tp-detail-sections",true);
     if(result!=MOD_OK) return result;
     UiControlDesc button=UI_CONTROL_DESC_INIT;
     button.kind=UI_CONTROL_BUTTON; button.label="Skip this check";
     button.on_pressed=skipSelectedCheck; button.is_disabled=skipSelectedDisabled;
     result=svc_ui->pane_add_control(mod_ctx,left,&button,&detailButton);
     if(result!=MOD_OK) return result;
-    svc_ui->pane_add_text(mod_ctx,right,"Requirements use this seed's settings and your current inventory. Area access and local requirements must both be met. Completed checks cannot be skipped.",nullptr);
+    svc_ui->pane_add_text(mod_ctx,right,"Right stick: up/down scrolls requirements. Requirements use this seed's settings and your current inventory. Area access and local requirements must both be met. Completed checks cannot be skipped.",nullptr);
     return updateDetail(nullptr,nullptr,nullptr);
 }
-void detailClosed(ModContext*,UiWindowHandle,void*) { detailWindow=0; detailText=detailButton=0; selectedCheck.clear(); detailMarkup.clear(); detailRevision=0; }
+void detailClosed(ModContext*,UiWindowHandle,void*) { detailWindow=0; detailText=detailButton=0; selectedCheck.clear(); detailMarkup.clear(); detailRevision=0; detailSections.clear(); detailAnchors.clear(); detailSectionCount=0; detailScrollRow=0; detailNavigation={}; stickNavigation={}; }
 void inspectCheck(ModContext*, void* data) {
     stickRow=static_cast<int>(reinterpret_cast<uintptr_t>(data));
     if (stickRow<0 || static_cast<size_t>(stickRow)>=visibleNames.size() || detailWindow) return;
@@ -190,6 +235,8 @@ window { max-width: 1000dp; max-height: 800dp; }
 window content pane:first-child { flex: 1; }
 window content pane:last-child { flex: 0 0 24%; }
 window content pane { font-size: 17dp; }
+.tp-detail-sections { display: block; }
+.tp-scroll-anchor { display: block; height: 1dp; min-height: 1dp; padding: 0dp; margin: 0dp; border-width: 0dp; opacity: 0; }
 window content pane div { display: block; margin-bottom: 8dp; }
 .tp-title { display: block; font-size: 24dp; font-weight: bold; color: #e4d196; margin-bottom: 14dp; }
 .tp-group { display: block; font-size: 20dp; color: #e4d196; margin-top: 18dp; margin-bottom: 10dp; padding-bottom: 6dp; border-bottom: 1dp #9b8955; }
