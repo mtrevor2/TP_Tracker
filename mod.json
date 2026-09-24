@@ -1,0 +1,73 @@
+{
+  "id": "com.mikey022.tp_randomizer_tracker",
+  "name": "TPTracker",
+  "version": "0.4.24",
+  "author": "mikey022",
+  "description": "Native Twilight Princess check and inventory tracker. No external tracker or web bridge.",
+  "icon": "res/Poster.png",
+  "banner": "res/Poster.png",
+  "abi": 1,
+  "imports": [
+    {
+      "service_id": "dev.twilitrealm.dusklight.config",
+      "major": 1,
+      "min_minor": 0,
+      "optional": false
+    },
+    {
+      "service_id": "dev.twilitrealm.dusklight.file",
+      "major": 1,
+      "min_minor": 0,
+      "optional": false
+    },
+    {
+      "service_id": "dev.twilitrealm.dusklight.game",
+      "major": 2,
+      "min_minor": 0,
+      "optional": false
+    },
+    {
+      "service_id": "dev.twilitrealm.dusklight.hook",
+      "major": 1,
+      "min_minor": 1,
+      "optional": false
+    },
+    {
+      "service_id": "dev.twilitrealm.dusklight.host",
+      "major": 2,
+      "min_minor": 2,
+      "optional": false
+    },
+    {
+      "service_id": "dev.twilitrealm.dusklight.item",
+      "major": 2,
+      "min_minor": 3,
+      "optional": false
+    },
+    {
+      "service_id": "dev.twilitrealm.dusklight.log",
+      "major": 1,
+      "min_minor": 0,
+      "optional": false
+    },
+    {
+      "service_id": "dev.twilitrealm.dusklight.resource",
+      "major": 1,
+      "min_minor": 1,
+      "optional": false
+    },
+    {
+      "service_id": "dev.twilitrealm.dusklight.save",
+      "major": 1,
+      "min_minor": 0,
+      "optional": false
+    },
+    {
+      "service_id": "dev.twilitrealm.dusklight.ui",
+      "major": 2,
+      "min_minor": 3,
+      "optional": false
+    }
+  ],
+  "exports": []
+}

@@ -1,0 +1,99 @@
+name: TPTracker platforms
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore: ['**.md']
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: windows-amd64
+            runner: windows-latest
+          - platform: linux-x86_64
+            runner: ubuntu-22.04
+          - platform: linux-aarch64
+            runner: ubuntu-24.04-arm
+          - platform: macos-arm64
+            runner: macos-latest
+          - platform: macos-x86_64
+            runner: macos-15-intel
+          - platform: android-aarch64
+            runner: ubuntu-22.04
+            mobile: true
+          - platform: ios-arm64
+            runner: macos-latest
+            mobile: true
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Fetch pinned SDK and packaging tool
+        run: python tools/bootstrap.py --with-randomizer
+      - uses: step-security/msvc-dev-cmd@v1
+        if: runner.os == 'Windows'
+      - name: Normalize packaged text across operating systems
+        shell: python
+        run: |
+          from pathlib import Path
+          root = Path('.')
+          for path in [root / 'mod.json', *root.glob('res/**/*.json'), *root.glob('res/**/*.txt')]:
+              path.write_bytes(path.read_text(encoding='utf-8-sig').encode('utf-8'))
+      - name: Configure
+        if: ${{ !matrix.mobile }}
+        run: cmake -S . -B tracker-build -G Ninja -DCMAKE_BUILD_TYPE=Release
+      - name: Configure Android ARM64
+        if: matrix.platform == 'android-aarch64'
+        shell: bash
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'ndk;29.0.14206865'
+          cmake -S . -B tracker-build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF \
+            -DCMAKE_TOOLCHAIN_FILE="$ANDROID_HOME/ndk/29.0.14206865/build/cmake/android.toolchain.cmake" \
+            -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-28 -DANDROID_STL=c++_shared
+      - name: Configure iOS ARM64
+        if: matrix.platform == 'ios-arm64'
+        run: >-
+          cmake -S . -B tracker-build -G Ninja
+          -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF
+          -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos
+          -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=16.0
+          -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+      - name: Build
+        run: cmake --build tracker-build --parallel 3
+      - name: Test
+        if: ${{ !matrix.mobile }}
+        run: ctest --test-dir tracker-build --output-on-failure
+      - name: Check assets
+        run: python tests/asset_tests.py
+      - uses: actions/upload-artifact@v7
+        with:
+          name: tptracker-${{ matrix.platform }}
+          path: tracker-build/mods/*.dusk
+          if-no-files-found: error
+  combine:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Fetch pinned SDK and packaging tool
+        run: python tools/bootstrap.py --with-randomizer
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: tptracker-*
+          path: packages
+      - name: Install pinned metadata tool
+        run: |
+          curl -fsSL -o symgen https://github.com/encounter/symgen/releases/download/v1.3.6/symgen-linux-x86_64
+          echo '236bc5cd4bda03a8dd53a4531efff1fec3bcd19b09890893b9b6f8f5ae77f041  symgen' | sha256sum -c -
+          chmod +x symgen
+      - name: Combine and validate native metadata
+        run: python3 .deps/dusklight/mods/randomizer/tools/merge_mod.py --symgen ./symgen -o dist/TPTracker-multiplatform.dusk packages/*/*.dusk
+      - uses: actions/upload-artifact@v7
+        with:
+          name: TPTracker-multiplatform
+          path: dist/*.dusk
+          if-no-files-found: error
+

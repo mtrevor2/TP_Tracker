@@ -1,0 +1,574 @@
+{
+  "Ordon Shield": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_48x48_57f376e38370a98b_02786be7029ec4f5_9.dds",
+    "file": "tex1_48x48_57f376e38370a98b_02786be7029ec4f5_9.dds",
+    "icon": "inventory/tex1_48x48_57f376e38370a98b_02786be7029ec4f5_9.png",
+    "fallback": false
+  },
+  "Hylian Shield": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_48x48_491bbcafc0504c49_40727139d6311207_9.dds",
+    "file": "tex1_48x48_491bbcafc0504c49_40727139d6311207_9.dds",
+    "icon": "inventory/tex1_48x48_491bbcafc0504c49_40727139d6311207_9.png",
+    "fallback": false
+  },
+  "Magic Armor": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_48x48_5c2fb3ad1a42ff8c_3586e2e3945e4a4b_9.dds",
+    "file": "tex1_48x48_5c2fb3ad1a42ff8c_3586e2e3945e4a4b_9.dds",
+    "icon": "inventory/tex1_48x48_5c2fb3ad1a42ff8c_3586e2e3945e4a4b_9.png",
+    "fallback": false
+  },
+  "Zora Armor": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_48x48_a7c5adae9b417a3e_9a1c0e037dfcdddc_9.dds",
+    "file": "tex1_48x48_a7c5adae9b417a3e_9a1c0e037dfcdddc_9.dds",
+    "icon": "inventory/tex1_48x48_a7c5adae9b417a3e_9a1c0e037dfcdddc_9.png",
+    "fallback": false
+  },
+  "Shadow Crystal": {
+    "section": "Progression",
+    "source": "mods/randomizer/res/shadow_crystal.bti",
+    "file": "shadow_crystal.bti",
+    "icon": "inventory/shadow_crystal.png",
+    "fallback": false,
+    "provider": "randomizer",
+    "resource": "shadow_crystal.bti"
+  },
+  "Progressive Wallet": {
+    "section": "Progression",
+    "source": "res/Layout/itemicon.arc/ni_saifu2_48.bti",
+    "file": "ni_saifu2_48.bti",
+    "icon": "inventory/ni_saifu2_48.png",
+    "fallback": false,
+    "provider": "game",
+    "resource": "ni_saifu2_48.bti"
+  },
+  "Progressive Sword": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_48x48_7a16cbeebf26f7d6_3b746898124fa62c_9.dds",
+    "file": "tex1_48x48_7a16cbeebf26f7d6_3b746898124fa62c_9.dds",
+    "icon": "inventory/tex1_48x48_7a16cbeebf26f7d6_3b746898124fa62c_9.png",
+    "fallback": false
+  },
+  "Gale Boomerang": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_32x64_893db3836e0e0c6a_3407f87240c3fb7d_9.dds",
+    "file": "tex1_32x64_893db3836e0e0c6a_3407f87240c3fb7d_9.dds",
+    "icon": "inventory/tex1_32x64_893db3836e0e0c6a_3407f87240c3fb7d_9.png",
+    "fallback": false,
+    "resource": "tt_boomerang_05.bti",
+    "provider": "henriko"
+  },
+  "Spinner": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_56x40_198cb54f1cdd25d0_ff30ea484af85c56_9.dds",
+    "file": "tex1_56x40_198cb54f1cdd25d0_ff30ea484af85c56_9.dds",
+    "icon": "inventory/tex1_56x40_198cb54f1cdd25d0_ff30ea484af85c56_9.png",
+    "fallback": false
+  },
+  "Ball and Chain": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/Items that need lots of textures/tex1_56x47_f5d5a5148193e7a1_$_9.dds",
+    "file": "tex1_56x47_f5d5a5148193e7a1_$_9.dds",
+    "icon": "inventory/tex1_56x47_f5d5a5148193e7a1_$_9.png",
+    "fallback": false
+  },
+  "Progressive Bow": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_48x48_39a931f5233fdaab_9ab7b9bb43ebe7ac_9.dds",
+    "file": "tex1_48x48_39a931f5233fdaab_9ab7b9bb43ebe7ac_9.dds",
+    "icon": "inventory/tex1_48x48_39a931f5233fdaab_9ab7b9bb43ebe7ac_9.png",
+    "fallback": false
+  },
+  "Progressive Clawshot": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_40x56_8626c8efda5c187b_c2df3925afba6f07_9.dds",
+    "file": "tex1_40x56_8626c8efda5c187b_c2df3925afba6f07_9.dds",
+    "icon": "inventory/tex1_40x56_8626c8efda5c187b_c2df3925afba6f07_9.png",
+    "fallback": false
+  },
+  "Iron Boots": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_48x48_0ad67030d5cc0ed6_da8a52dedf4219c4_9.dds",
+    "file": "tex1_48x48_0ad67030d5cc0ed6_da8a52dedf4219c4_9.dds",
+    "icon": "inventory/tex1_48x48_0ad67030d5cc0ed6_da8a52dedf4219c4_9.png",
+    "fallback": false
+  },
+  "Progressive Dominion Rod": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_40x64_b73085b9ccaf6d34_b6f8e57ac3277d71_9.dds",
+    "file": "tex1_40x64_b73085b9ccaf6d34_b6f8e57ac3277d71_9.dds",
+    "icon": "inventory/tex1_40x64_b73085b9ccaf6d34_b6f8e57ac3277d71_9.png",
+    "fallback": false
+  },
+  "Lantern": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_32x64_a86ef3d1bff33238_20ed93786c8d0e7b_9.dds",
+    "file": "tex1_32x64_a86ef3d1bff33238_20ed93786c8d0e7b_9.dds",
+    "icon": "inventory/tex1_32x64_a86ef3d1bff33238_20ed93786c8d0e7b_9.png",
+    "fallback": false
+  },
+  "Progressive Fishing Rod": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_32x72_d9adbfe866783f39_664ae1018cd60959_9.dds",
+    "file": "tex1_32x72_d9adbfe866783f39_664ae1018cd60959_9.dds",
+    "icon": "inventory/tex1_32x72_d9adbfe866783f39_664ae1018cd60959_9.png",
+    "fallback": false
+  },
+  "Slingshot": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/Items that need lots of textures/tex1_40x62_845fe9fec72c4909_$_9.dds",
+    "file": "tex1_40x62_845fe9fec72c4909_$_9.dds",
+    "icon": "inventory/tex1_40x62_845fe9fec72c4909_$_9.png",
+    "fallback": false
+  },
+  "Bomb Bag": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/Items that need lots of textures/tex1_40x54_c1f2a9ec0168f50a_$_9.dds",
+    "file": "tex1_40x54_c1f2a9ec0168f50a_$_9.dds",
+    "icon": "inventory/tex1_40x54_c1f2a9ec0168f50a_$_9.png",
+    "fallback": false,
+    "resource": "st_bompoach_lv1.bti",
+    "provider": "henriko"
+  },
+  "Empty Bottle": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_40x64_3c98a8d6152f646d_291096c965a82972_9.dds",
+    "file": "tex1_40x64_3c98a8d6152f646d_291096c965a82972_9.dds",
+    "icon": "inventory/tex1_40x64_3c98a8d6152f646d_291096c965a82972_9.png",
+    "fallback": false
+  },
+  "Renados Letter": {
+    "section": "Quest items",
+    "source": "res/Layout/itemicon.arc/st_len_letter.bti",
+    "file": "st_len_letter.bti",
+    "icon": "inventory/st_len_letter.png",
+    "fallback": false,
+    "provider": "game",
+    "resource": "st_len_letter.bti"
+  },
+  "Invoice": {
+    "section": "Quest items",
+    "source": "res/Layout/itemicon.arc/st_bill.bti",
+    "file": "st_bill.bti",
+    "icon": "inventory/st_bill.png",
+    "fallback": false,
+    "provider": "game",
+    "resource": "st_bill.bti"
+  },
+  "Wooden Statue": {
+    "section": "Quest items",
+    "source": "UI/Menus/Items/tex1_32x64_1ea9971e39b5ea81_20735a8f2e5f3683_9.dds",
+    "file": "tex1_32x64_1ea9971e39b5ea81_20735a8f2e5f3683_9.dds",
+    "icon": "inventory/tex1_32x64_1ea9971e39b5ea81_20735a8f2e5f3683_9.png",
+    "fallback": false
+  },
+  "Ilias Charm": {
+    "section": "Quest items",
+    "source": "UI/Menus/Items/tex1_32x64_0d35a889457d4223_dc6e999f97e2c83a_9.dds",
+    "file": "tex1_32x64_0d35a889457d4223_dc6e999f97e2c83a_9.dds",
+    "icon": "inventory/tex1_32x64_0d35a889457d4223_dc6e999f97e2c83a_9.png",
+    "fallback": false
+  },
+  "Forest Temple Small Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Goron Mines Small Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Lakebed Temple Small Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Arbiters Grounds Small Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Snowpeak Ruins Small Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Temple of Time Small Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "City in the Sky Small Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Palace of Twilight Small Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Hyrule Castle Small Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Gerudo Desert Bulblin Camp Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Aurus Memo": {
+    "section": "Quest items",
+    "source": "UI/Menus/Items/Items that need lots of textures/tex1_40x53_6a495308e8393d44_3b8122375c8f689d_$_9.dds",
+    "file": "tex1_40x53_6a495308e8393d44_3b8122375c8f689d_$_9.dds",
+    "icon": "inventory/tex1_40x53_6a495308e8393d44_3b8122375c8f689d_$_9.png",
+    "fallback": false,
+    "resource": "im_kakioki_48.bti",
+    "provider": "henriko"
+  },
+  "Asheis Sketch": {
+    "section": "Quest items",
+    "source": "UI/Menus/Items/Items that need lots of textures/tex1_40x53_6a495308e8393d44_3b8122375c8f689d_$_9.dds",
+    "file": "tex1_40x53_6a495308e8393d44_3b8122375c8f689d_$_9.dds",
+    "icon": "inventory/tex1_40x53_6a495308e8393d44_3b8122375c8f689d_$_9.png",
+    "fallback": false
+  },
+  "Forest Temple Big Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "file": "tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "icon": "inventory/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.png",
+    "fallback": false
+  },
+  "Lakebed Temple Big Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "file": "tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "icon": "inventory/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.png",
+    "fallback": false
+  },
+  "Arbiters Grounds Big Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "file": "tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "icon": "inventory/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.png",
+    "fallback": false
+  },
+  "Temple of Time Big Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "file": "tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "icon": "inventory/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.png",
+    "fallback": false
+  },
+  "City in the Sky Big Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "file": "tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "icon": "inventory/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.png",
+    "fallback": false
+  },
+  "Palace of Twilight Big Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "file": "tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "icon": "inventory/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.png",
+    "fallback": false
+  },
+  "Hyrule Castle Big Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "file": "tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "icon": "inventory/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.png",
+    "fallback": false
+  },
+  "Progressive Mirror Shard": {
+    "section": "Collectibles",
+    "source": "mods/randomizer/res/mirror_shard_4.bti",
+    "file": "mirror_shard_4.bti",
+    "icon": "inventory/mirror_shard_4.png",
+    "fallback": false,
+    "provider": "randomizer",
+    "resource": "mirror_shard_4.bti"
+  },
+  "Male Beetle": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Beetle": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Butterfly": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Butterfly": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Stag Beetle": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Stag Beetle": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Grasshopper": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Grasshopper": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Phasmid": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Phasmid": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Pill Bug": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Pill Bug": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Mantis": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Mantis": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Ladybug": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Ladybug": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Snail": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Snail": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Dragonfly": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Dragonfly": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Ant": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Ant": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Male Dayfly": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Female Dayfly": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "file": "tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.dds",
+    "icon": "inventory/tex1_48x48_0d5820092a14f178_0e42e3d73639a338_9.png",
+    "fallback": true
+  },
+  "Progressive Fused Shadow": {
+    "section": "Collectibles",
+    "source": "mods/randomizer/res/fused_shadow_3.bti",
+    "file": "fused_shadow_3.bti",
+    "icon": "inventory/fused_shadow_3.png",
+    "fallback": false,
+    "provider": "randomizer",
+    "resource": "fused_shadow_3.bti"
+  },
+  "Poe Soul": {
+    "section": "Collectibles",
+    "source": "UI/Menus/Items/tex1_48x48_b98fa10d7e0fdf48_60716ecf72a8ba8d_9.dds",
+    "file": "tex1_48x48_b98fa10d7e0fdf48_60716ecf72a8ba8d_9.dds",
+    "icon": "inventory/tex1_48x48_b98fa10d7e0fdf48_60716ecf72a8ba8d_9.png",
+    "fallback": false
+  },
+  "Progressive Hidden Skill": {
+    "section": "Progression",
+    "source": "res/Layout/itemicon.arc/ni_item_icon_makimono.bti",
+    "file": "ni_item_icon_makimono.bti",
+    "icon": "inventory/ni_item_icon_makimono.png",
+    "fallback": false,
+    "provider": "game",
+    "resource": "ni_item_icon_makimono.bti"
+  },
+  "Progressive Sky Book": {
+    "section": "Progression",
+    "source": "UI/Menus/Items/tex1_48x48_df50d973f90c0b63_889a4deddee3bad1_9.dds",
+    "file": "tex1_48x48_df50d973f90c0b63_889a4deddee3bad1_9.dds",
+    "icon": "inventory/tex1_48x48_df50d973f90c0b63_889a4deddee3bad1_9.png",
+    "fallback": false,
+    "resource": "o_gd_komonsho.bti",
+    "provider": "henriko"
+  },
+  "North Faron Woods Gate Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Gate Keys": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  },
+  "Ordon Pumpkin": {
+    "section": "Quest items",
+    "source": "res/Layout/itemicon.arc/im_pumpkin_48.bti",
+    "file": "im_pumpkin_48.bti",
+    "icon": "inventory/im_pumpkin_48.png",
+    "fallback": false,
+    "provider": "game",
+    "resource": "im_pumpkin_48.bti"
+  },
+  "Ordon Cheese": {
+    "section": "Quest items",
+    "source": "res/Layout/itemicon.arc/im_cheese_48.bti",
+    "file": "im_cheese_48.bti",
+    "icon": "inventory/im_cheese_48.png",
+    "fallback": false,
+    "provider": "game",
+    "resource": "im_cheese_48.bti"
+  },
+  "Snowpeak Ruins Bedroom Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "file": "tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "icon": "inventory/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.png",
+    "fallback": true
+  },
+  "Goron Mines Key Shard": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "file": "tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.dds",
+    "icon": "inventory/tex1_48x48_2354c0d3962fb940_730aa05e6109cb76_9.png",
+    "fallback": true
+  },
+  "Faron Woods Coro Key": {
+    "section": "Keys",
+    "source": "UI/Menus/Items/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "file": "tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.dds",
+    "icon": "inventory/tex1_48x48_80da00a3fca54d1b_3a6b9fa9f73d998f_9.png",
+    "fallback": false
+  }
+}

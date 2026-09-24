@@ -1,0 +1,8141 @@
+{
+  "Wooden Sword Chest": [
+    {
+      "stage": "R_SP01",
+      "room": 4,
+      "pos": [
+        -1.6259740591049194,
+        0.0,
+        -207.48812866210938
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP103",
+        "room": 1,
+        "pos": [
+          959.9996337890625,
+          1250.0,
+          -6619.448974609375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Ordon Links House",
+        "grotto": false
+      }
+    }
+  ],
+  "Links Basement Chest": [
+    {
+      "stage": "R_SP01",
+      "room": 7,
+      "pos": [
+        128.70437622070312,
+        -1077.0,
+        -607.5
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP103",
+        "room": 1,
+        "pos": [
+          959.9996337890625,
+          1250.0,
+          -6619.448974609375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Ordon Links House",
+        "grotto": false
+      }
+    },
+    {
+      "stage": "R_SP01",
+      "room": 7,
+      "pos": [
+        105.0,
+        -1077.0,
+        -490.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP103",
+        "room": 1,
+        "pos": [
+          959.9996337890625,
+          1250.0,
+          -6619.448974609375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Ordon Links House",
+        "grotto": false
+      }
+    }
+  ],
+  "Uli Cradle Delivery": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -3566.302978515625,
+        574.8580932617188,
+        2977.238525390625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -3566.302978515625,
+        574.8580932617188,
+        2977.238525390625
+      ]
+    },
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -3773.905517578125,
+        640.8900146484375,
+        2707.673095703125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -3773.905517578125,
+        640.8900146484375,
+        2707.673095703125
+      ]
+    },
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -339.6161804199219,
+        148.64938354492188,
+        1923.6597900390625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -339.6161804199219,
+        148.64938354492188,
+        1923.6597900390625
+      ]
+    }
+  ],
+  "Ordon Cat Rescue": [
+    {
+      "stage": "R_SP01",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP103",
+        "room": 0,
+        "pos": [
+          517.719482421875,
+          87.5,
+          -860.360107421875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Ordon Seras Shop",
+        "grotto": false
+      }
+    }
+  ],
+  "Sera Shop Slingshot": [
+    {
+      "stage": "R_SP01",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP103",
+        "room": 0,
+        "pos": [
+          517.719482421875,
+          87.5,
+          -860.360107421875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Ordon Seras Shop",
+        "grotto": false
+      }
+    }
+  ],
+  "Ordon Shield": [
+    {
+      "stage": "R_SP01",
+      "room": 2,
+      "pos": [
+        -1320.0,
+        779.544921875,
+        10.500425338745117
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP103",
+        "room": 0,
+        "pos": [
+          3161.376953125,
+          186.86294555664062,
+          1505.212646484375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Ordon Shield House",
+        "grotto": false
+      }
+    }
+  ],
+  "Ordon Sword": [
+    {
+      "stage": "R_SP01",
+      "room": 5,
+      "pos": [
+        131.0633087158203,
+        74.40945434570312,
+        -200.2929229736328
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP103",
+        "room": 0,
+        "pos": [
+          -3849.760009765625,
+          644.1799926757812,
+          2665.1181640625
+        ],
+        "anchor": "exterior entrance",
+        "label": "Ordon Sword House",
+        "grotto": false
+      }
+    }
+  ],
+  "Wrestling With Bo": [
+    {
+      "stage": "R_SP01",
+      "room": 0,
+      "pos": [
+        320.8111877441406,
+        9.710000038146973,
+        1017.9390869140625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP103",
+        "room": 0,
+        "pos": [
+          500.7190856933594,
+          500.19000244140625,
+          5172.80126953125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Ordon Bos House",
+        "grotto": false
+      }
+    }
+  ],
+  "Herding Goats Reward": [
+    {
+      "stage": "F_SP00",
+      "room": 0,
+      "pos": [
+        -4358.33056640625,
+        15306.83203125,
+        -19476.291015625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4358.33056640625,
+        15306.83203125,
+        -19476.291015625
+      ]
+    },
+    {
+      "stage": "F_SP00",
+      "room": 0,
+      "pos": [
+        -8814.796875,
+        15170.966796875,
+        -17186.86328125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -8814.796875,
+        15170.966796875,
+        -17186.86328125
+      ]
+    },
+    {
+      "stage": "F_SP00",
+      "room": 0,
+      "pos": [
+        -9488.8798828125,
+        15000.0,
+        -23188.162109375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -9488.8798828125,
+        15000.0,
+        -23188.162109375
+      ]
+    },
+    {
+      "stage": "F_SP00",
+      "room": 0,
+      "pos": [
+        -9064.56640625,
+        15000.0,
+        -20945.78515625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -9064.56640625,
+        15000.0,
+        -20945.78515625
+      ]
+    },
+    {
+      "stage": "F_SP00",
+      "room": 0,
+      "pos": [
+        -8467.4111328125,
+        15100.0,
+        -21162.56640625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -8467.4111328125,
+        15100.0,
+        -21162.56640625
+      ]
+    }
+  ],
+  "Ordon Ranch Grotto Lantern Chest": [
+    {
+      "stage": "D_SB05",
+      "room": 0,
+      "pos": [
+        -277.2709655761719,
+        150.0,
+        -1096.2886962890625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP00",
+        "room": 0,
+        "pos": [
+          -12044.1083984375,
+          15160.90234375,
+          -20264.625
+        ],
+        "anchor": "exterior entrance",
+        "label": "Ordon Ranch Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Ordon Spring Golden Wolf": [
+    {
+      "stage": "F_SP104",
+      "room": 1,
+      "pos": [
+        -1855.6954345703125,
+        311.16046142578125,
+        -8084.61572265625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1855.6954345703125,
+        311.16046142578125,
+        -8084.61572265625
+      ]
+    }
+  ],
+  "Faron Woods Coros House Interior Twilit Insect 1": [
+    {
+      "stage": "R_SP108",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP108",
+        "room": 4,
+        "pos": [
+          -13173.4951171875,
+          30.0,
+          -13800.203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Faron Woods Coros House Lower",
+        "grotto": false
+      }
+    }
+  ],
+  "Faron Woods Coros House Interior Twilit Insect 2": [
+    {
+      "stage": "R_SP108",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP108",
+        "room": 4,
+        "pos": [
+          -13173.4951171875,
+          30.0,
+          -13800.203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Faron Woods Coros House Lower",
+        "grotto": false
+      }
+    }
+  ],
+  "Coro Lantern": [
+    {
+      "stage": "F_SP108",
+      "room": 4,
+      "pos": [
+        -13659.43359375,
+        -0.45428401231765747,
+        -14367.0830078125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -13659.43359375,
+        -0.45428401231765747,
+        -14367.0830078125
+      ]
+    }
+  ],
+  "Coro Gate Key": [
+    {
+      "stage": "F_SP108",
+      "room": 4,
+      "pos": [
+        -13659.43359375,
+        -0.45428401231765747,
+        -14367.0830078125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -13659.43359375,
+        -0.45428401231765747,
+        -14367.0830078125
+      ]
+    }
+  ],
+  "Coro Bottle": [
+    {
+      "stage": "F_SP108",
+      "room": 4,
+      "pos": [
+        -13659.43359375,
+        -0.45428401231765747,
+        -14367.0830078125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -13659.43359375,
+        -0.45428401231765747,
+        -14367.0830078125
+      ]
+    }
+  ],
+  "South Faron Cave Chest": [
+    {
+      "stage": "D_SB10",
+      "room": 0,
+      "pos": [
+        -3550.869140625,
+        4450.0,
+        -694.899658203125
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP108",
+        "room": 3,
+        "pos": [
+          -18759.025390625,
+          504.5589599609375,
+          -12193.5283203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Faron Woods Cave South",
+        "grotto": true
+      }
+    }
+  ],
+  "Faron Mist South Chest": [
+    {
+      "stage": "F_SP108",
+      "room": 5,
+      "pos": [
+        -25966.78515625,
+        -83.13052368164062,
+        -16071.9599609375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -25966.78515625,
+        -83.13052368164062,
+        -16071.9599609375
+      ]
+    }
+  ],
+  "Faron Mist Stump Chest": [
+    {
+      "stage": "F_SP108",
+      "room": 5,
+      "pos": [
+        -25790.109375,
+        330.0,
+        -19842.935546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -25790.109375,
+        330.0,
+        -19842.935546875
+      ]
+    }
+  ],
+  "Faron Mist North Chest": [
+    {
+      "stage": "F_SP108",
+      "room": 5,
+      "pos": [
+        -24845.130859375,
+        -100.0,
+        -26998.72265625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -24845.130859375,
+        -100.0,
+        -26998.72265625
+      ]
+    }
+  ],
+  "Faron Mist Poe": [
+    {
+      "stage": "F_SP108",
+      "room": 5,
+      "pos": [
+        -26206.091796875,
+        400.0,
+        -20734.064453125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -26206.091796875,
+        400.0,
+        -20734.064453125
+      ]
+    }
+  ],
+  "Faron Mist Cave Open Chest": [
+    {
+      "stage": "F_SP108",
+      "room": 14,
+      "pos": [
+        1221.9044189453125,
+        50.0,
+        -7.942317008972168
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -16008.095581054688,
+        50.0,
+        -26307.942317008972
+      ]
+    }
+  ],
+  "Faron Mist Cave Lantern Chest": [
+    {
+      "stage": "F_SP108",
+      "room": 14,
+      "pos": [
+        1528.0,
+        250.0,
+        -22.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -15702.0,
+        250.0,
+        -26322.0
+      ]
+    }
+  ],
+  "Faron Woods Golden Wolf": [
+    {
+      "stage": "F_SP108",
+      "room": 6,
+      "pos": [
+        -36699.4375,
+        428.6003112792969,
+        -23663.64453125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -36699.4375,
+        428.6003112792969,
+        -23663.64453125
+      ]
+    }
+  ],
+  "North Faron Woods Deku Baba Chest": [
+    {
+      "stage": "F_SP108",
+      "room": 6,
+      "pos": [
+        -38292.53125,
+        400.0,
+        -23129.955078125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -38292.53125,
+        400.0,
+        -23129.955078125
+      ]
+    }
+  ],
+  "Faron Woods Owl Statue Sky Character": [
+    {
+      "stage": "F_SP108",
+      "room": 8,
+      "pos": [
+        -17500.0,
+        -310.0,
+        -20950.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -17500.0,
+        -310.0,
+        -20950.0
+      ]
+    }
+  ],
+  "Faron Woods Owl Statue Chest": [
+    {
+      "stage": "F_SP108",
+      "room": 5,
+      "pos": [
+        -21012.154296875,
+        1350.0,
+        -20630.322265625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -21012.154296875,
+        1350.0,
+        -20630.322265625
+      ]
+    }
+  ],
+  "Faron Field Bridge Chest": [
+    {
+      "stage": "F_SP121",
+      "room": 6,
+      "pos": [
+        -46040.0,
+        -9100.0,
+        80025.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -46040.0,
+        -9100.0,
+        80025.0
+      ]
+    }
+  ],
+  "Faron Field Corner Grotto Left Chest": [
+    {
+      "stage": "D_SB06",
+      "room": 1,
+      "pos": [
+        -754.0296020507812,
+        -256.7704772949219,
+        -3001.781494140625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 6,
+        "pos": [
+          -36806.7734375,
+          -6783.04248046875,
+          97464.4296875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Faron Field Corner Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Faron Field Corner Grotto Rear Chest": [
+    {
+      "stage": "D_SB06",
+      "room": 1,
+      "pos": [
+        -281.6463623046875,
+        -300.0,
+        910.2941284179688
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 6,
+        "pos": [
+          -36806.7734375,
+          -6783.04248046875,
+          97464.4296875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Faron Field Corner Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Faron Field Corner Grotto Right Chest": [
+    {
+      "stage": "D_SB06",
+      "room": 1,
+      "pos": [
+        578.9967041015625,
+        -266.32373046875,
+        -2138.4619140625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 6,
+        "pos": [
+          -36806.7734375,
+          -6783.04248046875,
+          97464.4296875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Faron Field Corner Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Faron Field Female Beetle": [
+    {
+      "stage": "F_SP121",
+      "room": 6,
+      "pos": [
+        -36490.0,
+        -8100.0,
+        74330.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -36490.0,
+        -8100.0,
+        74330.0
+      ]
+    }
+  ],
+  "Faron Field Male Beetle": [
+    {
+      "stage": "F_SP121",
+      "room": 6,
+      "pos": [
+        -50200.0,
+        -8810.0,
+        86400.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -50200.0,
+        -8810.0,
+        86400.0
+      ]
+    }
+  ],
+  "Faron Field Poe": [
+    {
+      "stage": "F_SP121",
+      "room": 6,
+      "pos": [
+        -45117.05078125,
+        -8639.7919921875,
+        73828.015625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -45117.05078125,
+        -8639.7919921875,
+        73828.015625
+      ]
+    }
+  ],
+  "Lost Woods Boulder Poe": [
+    {
+      "stage": "F_SP117",
+      "room": 3,
+      "pos": [
+        -5600.0,
+        500.0,
+        4700.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -5600.0,
+        500.0,
+        4700.0
+      ]
+    }
+  ],
+  "Lost Woods Lantern Chest": [
+    {
+      "stage": "F_SP117",
+      "room": 3,
+      "pos": [
+        -15394.423828125,
+        2300.0,
+        2483.923095703125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -15394.423828125,
+        2300.0,
+        2483.923095703125
+      ]
+    }
+  ],
+  "Lost Woods Waterfall Poe": [
+    {
+      "stage": "F_SP117",
+      "room": 3,
+      "pos": [
+        -21645.232421875,
+        2200.0,
+        10017.0947265625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -21645.232421875,
+        2200.0,
+        10017.0947265625
+      ]
+    }
+  ],
+  "Sacred Grove Baba Serpent Grotto Chest": [
+    {
+      "stage": "D_SB06",
+      "room": 1,
+      "pos": [
+        -211.86814880371094,
+        -61.3470458984375,
+        -2693.111083984375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP117",
+        "room": 3,
+        "pos": [
+          -5669.1123046875,
+          588.7700805664062,
+          4976.35693359375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lost Woods Baba Serpent Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Sacred Grove Spinner Chest": [
+    {
+      "stage": "F_SP117",
+      "room": 3,
+      "pos": [
+        -6840.3515625,
+        2000.0,
+        6329.060546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -6840.3515625,
+        2000.0,
+        6329.060546875
+      ]
+    }
+  ],
+  "Sacred Grove Pedestal Master Sword": [
+    {
+      "stage": "F_SP117",
+      "room": 1,
+      "pos": [
+        0.0,
+        1700.0,
+        -5435.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        0.0,
+        1700.0,
+        -5435.0
+      ]
+    }
+  ],
+  "Sacred Grove Pedestal Shadow Crystal": [
+    {
+      "stage": "F_SP117",
+      "room": 1,
+      "pos": [
+        0.0,
+        1700.0,
+        -5435.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        0.0,
+        1700.0,
+        -5435.0
+      ]
+    }
+  ],
+  "Sacred Grove Master Sword Poe": [
+    {
+      "stage": "F_SP117",
+      "room": 1,
+      "pos": [
+        936.6834106445312,
+        1625.0,
+        -3471.040283203125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        936.6834106445312,
+        1625.0,
+        -3471.040283203125
+      ]
+    }
+  ],
+  "Sacred Grove Female Snail": [
+    {
+      "stage": "F_SP117",
+      "room": 2,
+      "pos": [
+        405.6648254394531,
+        1382.1466064453125,
+        6069.1953125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        405.6648254394531,
+        1382.1466064453125,
+        6069.1953125
+      ]
+    }
+  ],
+  "Sacred Grove Male Snail": [
+    {
+      "stage": "F_SP117",
+      "room": 1,
+      "pos": [
+        1447.4080810546875,
+        1533.7315673828125,
+        7053.470703125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1447.4080810546875,
+        1533.7315673828125,
+        7053.470703125
+      ]
+    }
+  ],
+  "Sacred Grove Past Owl Statue Chest": [
+    {
+      "stage": "F_SP117",
+      "room": 2,
+      "pos": [
+        606.795654296875,
+        1005.0,
+        8005.39013671875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        606.795654296875,
+        1005.0,
+        8005.39013671875
+      ]
+    }
+  ],
+  "Sacred Grove Temple of Time Owl Statue Poe": [
+    {
+      "stage": "F_SP117",
+      "room": 2,
+      "pos": [
+        -1300.0,
+        1005.0,
+        6885.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1300.0,
+        1005.0,
+        6885.0
+      ]
+    }
+  ],
+  "Kakariko Malo Mart Twilit Insect": [
+    {
+      "stage": "R_SP109",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -2550.0,
+          200.0,
+          1920.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Malo Mart",
+        "grotto": false
+      }
+    }
+  ],
+  "Kakariko Bug House Twilit Insect": [
+    {
+      "stage": "R_SP109",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -225.0,
+          100.0,
+          -1575.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Bug House",
+        "grotto": false
+      }
+    }
+  ],
+  "Barnes Bomb Shop Twilit Insect": [
+    {
+      "stage": "R_SP109",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          61.813507080078125,
+          1500.0,
+          -4821.71630859375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Barnes Bomb Shop Upper",
+        "grotto": false
+      }
+    }
+  ],
+  "Kakariko Watchtower Twilit Insect": [
+    {
+      "stage": "R_SP109",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -1700.0,
+          3800.0,
+          -6820.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Watchtower Lower Interior",
+        "grotto": false
+      }
+    }
+  ],
+  "Kakariko Gorge Female Pill Bug": [
+    {
+      "stage": "F_SP121",
+      "room": 3,
+      "pos": [
+        500.0,
+        -6117.943359375,
+        61700.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        500.0,
+        -6117.943359375,
+        61700.0
+      ]
+    }
+  ],
+  "Kakariko Gorge Male Pill Bug": [
+    {
+      "stage": "F_SP121",
+      "room": 3,
+      "pos": [
+        -10000.0,
+        -7200.0,
+        57450.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -10000.0,
+        -7200.0,
+        57450.0
+      ]
+    }
+  ],
+  "Kakariko Gorge Owl Statue Chest": [
+    {
+      "stage": "F_SP121",
+      "room": 3,
+      "pos": [
+        -10245.4765625,
+        -4400.0,
+        42817.046875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -10245.4765625,
+        -4400.0,
+        42817.046875
+      ]
+    }
+  ],
+  "Kakariko Gorge Owl Statue Sky Character": [
+    {
+      "stage": "F_SP121",
+      "room": 3,
+      "pos": [
+        -10195.0,
+        -4760.0,
+        39363.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -10195.0,
+        -4760.0,
+        39363.0
+      ]
+    }
+  ],
+  "Kakariko Gorge Poe": [
+    {
+      "stage": "F_SP121",
+      "room": 3,
+      "pos": [
+        -10663.66015625,
+        -5400.0,
+        55333.71875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -10663.66015625,
+        -5400.0,
+        55333.71875
+      ]
+    }
+  ],
+  "Kakariko Gorge Double Clawshot Chest": [
+    {
+      "stage": "F_SP121",
+      "room": 3,
+      "pos": [
+        -22100.0,
+        -7176.02978515625,
+        52140.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -22100.0,
+        -7176.02978515625,
+        52140.0
+      ]
+    }
+  ],
+  "Eldin Lantern Cave First Chest": [
+    {
+      "stage": "D_SB02",
+      "room": 0,
+      "pos": [
+        -1056.463623046875,
+        3145.543212890625,
+        -4376.85009765625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 3,
+        "pos": [
+          -8474.4833984375,
+          -6700.0,
+          67249.46875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Lantern Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Lantern Cave Second Chest": [
+    {
+      "stage": "D_SB02",
+      "room": 0,
+      "pos": [
+        7333.76025390625,
+        4152.13916015625,
+        1235.8031005859375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 3,
+        "pos": [
+          -8474.4833984375,
+          -6700.0,
+          67249.46875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Lantern Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Lantern Cave Lantern Chest": [
+    {
+      "stage": "D_SB02",
+      "room": 0,
+      "pos": [
+        6452.6201171875,
+        4447.90185546875,
+        -6947.8505859375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 3,
+        "pos": [
+          -8474.4833984375,
+          -6700.0,
+          67249.46875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Lantern Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Lantern Cave Poe": [
+    {
+      "stage": "D_SB02",
+      "room": 0,
+      "pos": [
+        4642.8056640625,
+        5114.16357421875,
+        -5400.37744140625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 3,
+        "pos": [
+          -8474.4833984375,
+          -6700.0,
+          67249.46875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Lantern Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Spring Underwater Chest": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        1300.0,
+        -1600.0,
+        16700.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1300.0,
+        -1600.0,
+        16700.0
+      ]
+    }
+  ],
+  "Kakariko Village Malo Mart Hawkeye": [
+    {
+      "stage": "R_SP109",
+      "room": 3,
+      "pos": [
+        -550.0,
+        450.0,
+        -500.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -2550.0,
+          200.0,
+          1920.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Malo Mart",
+        "grotto": false
+      }
+    }
+  ],
+  "Kakariko Village Malo Mart Hylian Shield": [
+    {
+      "stage": "R_SP109",
+      "room": 3,
+      "pos": [
+        -750.0,
+        450.0,
+        -500.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -2550.0,
+          200.0,
+          1920.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Malo Mart",
+        "grotto": false
+      }
+    }
+  ],
+  "Kakariko Village Malo Mart Red Potion": [
+    {
+      "stage": "R_SP109",
+      "room": 3,
+      "pos": [
+        -550.0,
+        450.0,
+        -500.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -2550.0,
+          200.0,
+          1920.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Malo Mart",
+        "grotto": false
+      }
+    },
+    {
+      "stage": "R_SP109",
+      "room": 3,
+      "pos": [
+        -750.0,
+        450.0,
+        -500.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -2550.0,
+          200.0,
+          1920.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Malo Mart",
+        "grotto": false
+      }
+    }
+  ],
+  "Kakariko Village Malo Mart Wooden Shield": [
+    {
+      "stage": "R_SP109",
+      "room": 3,
+      "pos": [
+        -650.0,
+        450.0,
+        -500.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -2550.0,
+          200.0,
+          1920.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Malo Mart",
+        "grotto": false
+      }
+    },
+    {
+      "stage": "R_SP109",
+      "room": 3,
+      "pos": [
+        -531.6126708984375,
+        410.00146484375,
+        -875.98583984375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -2550.0,
+          200.0,
+          1920.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Malo Mart",
+        "grotto": false
+      }
+    }
+  ],
+  "Kakariko Inn Chest": [
+    {
+      "stage": "R_SP109",
+      "room": 2,
+      "pos": [
+        -70.0,
+        -6.044000148773193,
+        -670.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -2170.0,
+          200.0,
+          -1205.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Elde Inn",
+        "grotto": false
+      }
+    }
+  ],
+  "Kakariko Village Female Ant": [
+    {
+      "stage": "R_SP109",
+      "room": 6,
+      "pos": [
+        225.09280395507812,
+        16.196392059326172,
+        -17.444435119628906
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -225.0,
+          100.0,
+          -1575.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Bug House",
+        "grotto": false
+      }
+    }
+  ],
+  "Barnes Bomb Bag": [
+    {
+      "stage": "R_SP109",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -130.0,
+          211.47999572753906,
+          -4820.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Barnes Bomb Shop Lower",
+        "grotto": false
+      }
+    }
+  ],
+  "Kakariko Village Bomb Shop Poe": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        3418.0205078125,
+        2700.0,
+        -3054.03662109375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        3418.0205078125,
+        2700.0,
+        -3054.03662109375
+      ]
+    }
+  ],
+  "Kakariko Village Watchtower Poe": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        -1750.0,
+        4100.0,
+        -6250.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1750.0,
+        4100.0,
+        -6250.0
+      ]
+    }
+  ],
+  "Kakariko Watchtower Alcove Chest": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        -4027.733642578125,
+        3200.0,
+        -8970.9990234375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4027.733642578125,
+        3200.0,
+        -8970.9990234375
+      ]
+    }
+  ],
+  "Kakariko Watchtower Chest": [
+    {
+      "stage": "R_SP109",
+      "room": 4,
+      "pos": [
+        -887.43505859375,
+        1000.0,
+        -173.290771484375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -1880.0,
+          4800.0,
+          -6780.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Kakariko Watchtower Upper Interior",
+        "grotto": false
+      }
+    }
+  ],
+  "Talo Sharpshooting": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        -176.8952178955078,
+        1.290297031402588,
+        7101.97998046875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -176.8952178955078,
+        1.290297031402588,
+        7101.97998046875
+      ]
+    },
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        -800.0,
+        0.0,
+        3450.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -800.0,
+        0.0,
+        3450.0
+      ]
+    },
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        -900.0,
+        0.0,
+        6600.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -900.0,
+        0.0,
+        6600.0
+      ]
+    }
+  ],
+  "Renados Letter": [
+    {
+      "stage": "R_SP109",
+      "room": 0,
+      "pos": [
+        -300.0,
+        0.0,
+        250.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          900.0,
+          86.29000091552734,
+          6665.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Renado's Sanctuary: Renado's Letter",
+        "grotto": false
+      }
+    },
+    {
+      "stage": "R_SP109",
+      "room": 0,
+      "pos": [
+        -344.17120361328125,
+        0.0,
+        233.762939453125
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          900.0,
+          86.29000091552734,
+          6665.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Renado's Sanctuary: Renado's Letter",
+        "grotto": false
+      }
+    },
+    {
+      "stage": "R_SP109",
+      "room": 0,
+      "pos": [
+        -100.0,
+        0.0,
+        400.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          900.0,
+          86.29000091552734,
+          6665.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Renado's Sanctuary: Renado's Letter",
+        "grotto": false
+      }
+    },
+    {
+      "stage": "R_SP109",
+      "room": 0,
+      "pos": [
+        591.5368041992188,
+        0.0,
+        240.6336669921875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          900.0,
+          86.29000091552734,
+          6665.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Renado's Sanctuary: Renado's Letter",
+        "grotto": false
+      }
+    },
+    {
+      "stage": "R_SP109",
+      "room": 2,
+      "pos": [
+        -950.0,
+        675.0,
+        -2400.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          -2170.0,
+          200.0,
+          -1205.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Renado's Sanctuary: Renado's Letter",
+        "grotto": false
+      }
+    }
+  ],
+  "Rutelas Blessing": [
+    {
+      "stage": "F_SP111",
+      "room": 0,
+      "pos": [
+        12329.8095703125,
+        100.0,
+        -6.000000212225132e-06
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        12329.8095703125,
+        100.0,
+        -6.000000212225132e-06
+      ]
+    }
+  ],
+  "Gift From Ralis": [
+    {
+      "stage": "F_SP111",
+      "room": 0,
+      "pos": [
+        21100.0,
+        500.0,
+        -50.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        21100.0,
+        500.0,
+        -50.0
+      ]
+    }
+  ],
+  "Kakariko Graveyard Lantern Chest": [
+    {
+      "stage": "F_SP111",
+      "room": 0,
+      "pos": [
+        16050.0,
+        200.0,
+        725.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        16050.0,
+        200.0,
+        725.0
+      ]
+    }
+  ],
+  "Kakariko Graveyard Male Ant": [
+    {
+      "stage": "F_SP111",
+      "room": 0,
+      "pos": [
+        16933.3046875,
+        500.0,
+        -769.167724609375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        16933.3046875,
+        500.0,
+        -769.167724609375
+      ]
+    }
+  ],
+  "Kakariko Graveyard Golden Wolf": [
+    {
+      "stage": "F_SP111",
+      "room": 0,
+      "pos": [
+        17575.34375,
+        500.0,
+        -51.376190185546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        17575.34375,
+        500.0,
+        -51.376190185546875
+      ]
+    }
+  ],
+  "Kakariko Graveyard Open Poe": [
+    {
+      "stage": "F_SP111",
+      "room": 0,
+      "pos": [
+        14771.705078125,
+        400.0,
+        -470.7663269042969
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        14771.705078125,
+        400.0,
+        -470.7663269042969
+      ]
+    }
+  ],
+  "Kakariko Graveyard Grave Poe": [
+    {
+      "stage": "F_SP111",
+      "room": 0,
+      "pos": [
+        12652.14453125,
+        300.0,
+        646.4810180664062
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        12652.14453125,
+        300.0,
+        646.4810180664062
+      ]
+    }
+  ],
+  "Death Mountain Alcove Chest": [
+    {
+      "stage": "F_SP110",
+      "room": 0,
+      "pos": [
+        -1646.010986328125,
+        379.29998779296875,
+        8487.9677734375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1646.010986328125,
+        379.29998779296875,
+        8487.9677734375
+      ]
+    }
+  ],
+  "Death Mountain Trail Poe": [
+    {
+      "stage": "F_SP110",
+      "room": 0,
+      "pos": [
+        -2950.483154296875,
+        -1000.0,
+        18064.759765625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -2950.483154296875,
+        -1000.0,
+        18064.759765625
+      ]
+    }
+  ],
+  "Eldin Field Bomb Rock Chest": [
+    {
+      "stage": "F_SP121",
+      "room": 0,
+      "pos": [
+        11550.0,
+        2700.0,
+        24090.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        11550.0,
+        2700.0,
+        24090.0
+      ]
+    }
+  ],
+  "Eldin Field Bomskit Grotto Lantern Chest": [
+    {
+      "stage": "D_SB05",
+      "room": 0,
+      "pos": [
+        -193.28929138183594,
+        150.0,
+        -1135.5745849609375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 0,
+        "pos": [
+          -200.0,
+          1000.0,
+          4250.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Field Bomskit Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Field Bomskit Grotto Left Chest": [
+    {
+      "stage": "D_SB05",
+      "room": 0,
+      "pos": [
+        -1037.5682373046875,
+        1.051524043083191,
+        -536.65576171875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 0,
+        "pos": [
+          -200.0,
+          1000.0,
+          4250.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Field Bomskit Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Field Female Grasshopper": [
+    {
+      "stage": "F_SP121",
+      "room": 0,
+      "pos": [
+        -9950.0,
+        35.176517486572266,
+        -8950.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -9950.0,
+        35.176517486572266,
+        -8950.0
+      ]
+    }
+  ],
+  "Eldin Field Male Grasshopper": [
+    {
+      "stage": "F_SP121",
+      "room": 0,
+      "pos": [
+        19600.0,
+        648.3595581054688,
+        13400.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        19600.0,
+        648.3595581054688,
+        13400.0
+      ]
+    }
+  ],
+  "Eldin Field Water Bomb Fish Grotto Chest": [
+    {
+      "stage": "D_SB09",
+      "room": 4,
+      "pos": [
+        -251.5004425048828,
+        -27.170000076293945,
+        -1691.912109375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 0,
+        "pos": [
+          29700.0,
+          -100.0,
+          -12650.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Field Water Bomb Fish Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Bridge of Eldin Female Phasmid": [
+    {
+      "stage": "F_SP121",
+      "room": 0,
+      "pos": [
+        39919.859375,
+        1415.41796875,
+        -40367.38671875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        39919.859375,
+        1415.41796875,
+        -40367.38671875
+      ]
+    },
+    {
+      "stage": "F_SP121",
+      "room": 0,
+      "pos": [
+        34686.921875,
+        960.0,
+        -37549.08984375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        34686.921875,
+        960.0,
+        -37549.08984375
+      ]
+    }
+  ],
+  "Bridge of Eldin Male Phasmid": [
+    {
+      "stage": "F_SP121",
+      "room": 0,
+      "pos": [
+        35135.0,
+        254.385009765625,
+        -15115.2587890625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        35135.0,
+        254.385009765625,
+        -15115.2587890625
+      ]
+    }
+  ],
+  "Bridge of Eldin Owl Statue Chest": [
+    {
+      "stage": "F_SP121",
+      "room": 0,
+      "pos": [
+        31257.595703125,
+        900.0,
+        -16115.4990234375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        31257.595703125,
+        900.0,
+        -16115.4990234375
+      ]
+    }
+  ],
+  "Bridge of Eldin Owl Statue Sky Character": [
+    {
+      "stage": "F_SP121",
+      "room": 0,
+      "pos": [
+        33650.0,
+        -80.0,
+        -35970.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        33650.0,
+        -80.0,
+        -35970.0
+      ]
+    }
+  ],
+  "Eldin Stockcave Upper Chest": [
+    {
+      "stage": "D_SB04",
+      "room": 10,
+      "pos": [
+        13825.0,
+        137.5,
+        -34250.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 0,
+        "pos": [
+          41424.3359375,
+          995.63671875,
+          -39600.3046875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Field Lava Cave Upper",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Stockcave Lantern Chest": [
+    {
+      "stage": "D_SB04",
+      "room": 10,
+      "pos": [
+        9577.0,
+        -2833.889892578125,
+        -33492.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 0,
+        "pos": [
+          41424.3359375,
+          995.63671875,
+          -39600.3046875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Field Lava Cave Upper",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Stockcave Lowest Chest": [
+    {
+      "stage": "D_SB04",
+      "room": 10,
+      "pos": [
+        9515.7099609375,
+        -2850.0,
+        -31912.380859375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 0,
+        "pos": [
+          41424.3359375,
+          995.63671875,
+          -39600.3046875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Field Lava Cave Upper",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Field Stalfos Grotto Left Small Chest": [
+    {
+      "stage": "D_SB06",
+      "room": 1,
+      "pos": [
+        -1153.7760009765625,
+        -255.8396453857422,
+        -980.666015625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 7,
+        "pos": [
+          22970.0,
+          152.3079071044922,
+          -66890.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Field Stalfos Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Field Stalfos Grotto Right Small Chest": [
+    {
+      "stage": "D_SB06",
+      "room": 1,
+      "pos": [
+        464.9176025390625,
+        -262.3106384277344,
+        -709.6952514648438
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 7,
+        "pos": [
+          22970.0,
+          152.3079071044922,
+          -66890.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Field Stalfos Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Eldin Field Stalfos Grotto Stalfos Chest": [
+    {
+      "stage": "D_SB06",
+      "room": 1,
+      "pos": [
+        -211.84994506835938,
+        -60.93873977661133,
+        -2691.09912109375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 7,
+        "pos": [
+          22970.0,
+          152.3079071044922,
+          -66890.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Eldin Field Stalfos Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Skybook From Impaz": [
+    {
+      "stage": "R_SP128",
+      "room": 0,
+      "pos": [
+        -607.2000732421875,
+        1.5,
+        -473.7529296875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP128",
+        "room": 0,
+        "pos": [
+          2360.0,
+          104.0437240600586,
+          -1050.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Hidden Village Impaz House",
+        "grotto": false
+      }
+    }
+  ],
+  "Hidden Village Poe": [
+    {
+      "stage": "F_SP128",
+      "room": 0,
+      "pos": [
+        1230.6220703125,
+        600.0,
+        -6753.51416015625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1230.6220703125,
+        600.0,
+        -6753.51416015625
+      ]
+    }
+  ],
+  "Ilia Charm": [
+    {
+      "stage": "F_SP128",
+      "room": 0,
+      "pos": [
+        2360.0,
+        103.98445129394531,
+        -1015.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        2360.0,
+        103.98445129394531,
+        -1015.0
+      ]
+    }
+  ],
+  "Lanayru Field Behind Gate Underwater Chest": [
+    {
+      "stage": "F_SP121",
+      "room": 10,
+      "pos": [
+        -46800.0,
+        -4800.0,
+        -22650.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -46800.0,
+        -4800.0,
+        -22650.0
+      ]
+    }
+  ],
+  "Lanayru Field Bridge Poe": [
+    {
+      "stage": "F_SP121",
+      "room": 10,
+      "pos": [
+        -44589.2890625,
+        -2100.0,
+        -32932.21875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -44589.2890625,
+        -2100.0,
+        -32932.21875
+      ]
+    }
+  ],
+  "Lanayru Field Female Stag Beetle": [
+    {
+      "stage": "F_SP121",
+      "room": 10,
+      "pos": [
+        -48850.0,
+        59.14459228515625,
+        -51350.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -48850.0,
+        59.14459228515625,
+        -51350.0
+      ]
+    }
+  ],
+  "Lanayru Field Male Stag Beetle": [
+    {
+      "stage": "F_SP121",
+      "room": 10,
+      "pos": [
+        -62724.33203125,
+        -882.9010009765625,
+        -33130.4140625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -62724.33203125,
+        -882.9010009765625,
+        -33130.4140625
+      ]
+    }
+  ],
+  "Lanayru Field Poe Grotto Left Poe": [
+    {
+      "stage": "D_SB05",
+      "room": 0,
+      "pos": [
+        96.0568618774414,
+        -2.2629640102386475,
+        -647.7312622070312
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 10,
+        "pos": [
+          -68100.0,
+          -847.8196411132812,
+          -32950.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lanayru Field Poe Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Lanayru Field Poe Grotto Right Poe": [
+    {
+      "stage": "D_SB05",
+      "room": 0,
+      "pos": [
+        -210.0335693359375,
+        272.4866943359375,
+        -1100.2156982421875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 10,
+        "pos": [
+          -68100.0,
+          -847.8196411132812,
+          -32950.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lanayru Field Poe Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Lanayru Field Skulltula Grotto Chest": [
+    {
+      "stage": "D_SB08",
+      "room": 3,
+      "pos": [
+        -1125.7841796875,
+        -133.9226531982422,
+        -3012.35302734375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 10,
+        "pos": [
+          -47300.0,
+          -2700.0,
+          -48100.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lanayru Field Skulltula Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Lanayru Ice Block Puzzle Cave Chest": [
+    {
+      "stage": "D_SB00",
+      "room": 0,
+      "pos": [
+        0.0,
+        0.0,
+        -7900.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 10,
+        "pos": [
+          -49731.81640625,
+          -773.4814453125,
+          -51808.6328125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lanayru Ice Puzzle Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lanayru Field Spinner Track Chest": [
+    {
+      "stage": "F_SP121",
+      "room": 11,
+      "pos": [
+        -88260.0,
+        2950.0,
+        -8150.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -88260.0,
+        2950.0,
+        -8150.0
+      ]
+    }
+  ],
+  "West Hyrule Field Female Butterfly": [
+    {
+      "stage": "F_SP122",
+      "room": 8,
+      "pos": [
+        -79687.9609375,
+        -656.6099853515625,
+        1544.7589111328125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -79687.9609375,
+        -656.6099853515625,
+        1544.7589111328125
+      ]
+    }
+  ],
+  "West Hyrule Field Male Butterfly": [
+    {
+      "stage": "F_SP122",
+      "room": 8,
+      "pos": [
+        -75063.46875,
+        -421.14093017578125,
+        16017.3466796875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -75063.46875,
+        -421.14093017578125,
+        16017.3466796875
+      ]
+    },
+    {
+      "stage": "F_SP122",
+      "room": 8,
+      "pos": [
+        -75063.0546875,
+        -421.14093017578125,
+        16017.3466796875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -75063.0546875,
+        -421.14093017578125,
+        16017.3466796875
+      ]
+    }
+  ],
+  "West Hyrule Field Helmasaur Grotto Chest": [
+    {
+      "stage": "D_SB05",
+      "room": 0,
+      "pos": [
+        28.76149559020996,
+        2.9684250354766846,
+        -455.455810546875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP122",
+        "room": 8,
+        "pos": [
+          -80931.15625,
+          -644.6241455078125,
+          2917.30859375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Outside Castle Town West Helmasaur Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "West Hyrule Field Golden Wolf": [
+    {
+      "stage": "F_SP122",
+      "room": 8,
+      "pos": [
+        -68310.15625,
+        -1050.0,
+        5925.4560546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -68310.15625,
+        -1050.0,
+        5925.4560546875
+      ]
+    }
+  ],
+  "Hyrule Field Amphitheater Owl Statue Chest": [
+    {
+      "stage": "F_SP122",
+      "room": 8,
+      "pos": [
+        -79819.4140625,
+        -1301.239990234375,
+        22400.671875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -79819.4140625,
+        -1301.239990234375,
+        22400.671875
+      ]
+    }
+  ],
+  "Hyrule Field Amphitheater Owl Statue Sky Character": [
+    {
+      "stage": "F_SP122",
+      "room": 8,
+      "pos": [
+        -81950.0,
+        -1300.0,
+        20650.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -81950.0,
+        -1300.0,
+        20650.0
+      ]
+    }
+  ],
+  "Hyrule Field Amphitheater Poe": [
+    {
+      "stage": "F_SP122",
+      "room": 8,
+      "pos": [
+        -81193.0546875,
+        -1650.010009765625,
+        21669.857421875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -81193.0546875,
+        -1650.010009765625,
+        21669.857421875
+      ]
+    }
+  ],
+  "STAR Prize 1": [
+    {
+      "stage": "R_SP161",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 2,
+        "pos": [
+          -4650.0,
+          0.0,
+          2300.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town STAR Game",
+        "grotto": false
+      }
+    }
+  ],
+  "STAR Prize 2": [
+    {
+      "stage": "R_SP161",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 2,
+        "pos": [
+          -4650.0,
+          0.0,
+          2300.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town STAR Game",
+        "grotto": false
+      }
+    }
+  ],
+  "Castle Town Goron Shop Red Potion": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 0,
+        "pos": [
+          -1655.0,
+          0.0,
+          3520.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Goron House",
+        "grotto": false
+      }
+    }
+  ],
+  "Castle Town Goron Shop Lantern Oil": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 0,
+        "pos": [
+          -1655.0,
+          0.0,
+          3520.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Goron House",
+        "grotto": false
+      }
+    }
+  ],
+  "Castle Town Goron Shop Hylian Shield": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 0,
+        "pos": [
+          -1655.0,
+          0.0,
+          3520.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Goron House",
+        "grotto": false
+      }
+    }
+  ],
+  "Castle Town Malo Mart Magic Armor": [
+    {
+      "stage": "R_SP160",
+      "room": 0,
+      "pos": [
+        1261.231201171875,
+        -100.27253723144531,
+        3680.111328125
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 0,
+        "pos": [
+          1588.760009765625,
+          -100.0,
+          2817.929931640625
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Malo Mart",
+        "grotto": false
+      }
+    }
+  ],
+  "Doctors Office Balcony Chest": [
+    {
+      "stage": "F_SP116",
+      "room": 4,
+      "pos": [
+        6500.0,
+        426.0,
+        -977.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        6500.0,
+        426.0,
+        -977.0
+      ]
+    }
+  ],
+  "East Castle Town Bridge Poe": [
+    {
+      "stage": "F_SP122",
+      "room": 17,
+      "pos": [
+        -42132.04296875,
+        -1300.0,
+        10786.634765625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -42132.04296875,
+        -1300.0,
+        10786.634765625
+      ]
+    }
+  ],
+  "Jovani 20 Poe Soul Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          3828.656005859375,
+          -75.0,
+          2991.777587890625
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Jovanis House",
+        "grotto": false
+      }
+    }
+  ],
+  "Jovani 60 Poe Soul Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          3828.656005859375,
+          -75.0,
+          2991.777587890625
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Jovanis House",
+        "grotto": false
+      }
+    }
+  ],
+  "Jovani House Poe": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          3828.656005859375,
+          -75.0,
+          2991.777587890625
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Jovanis House",
+        "grotto": false
+      }
+    }
+  ],
+  "Telma Invoice": [
+    {
+      "stage": "R_SP116",
+      "room": 5,
+      "pos": [
+        3504.672607421875,
+        -1150.0,
+        3388.397216796875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          2725.0,
+          -1150.0,
+          4300.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Telmas Bar",
+        "grotto": false
+      }
+    },
+    {
+      "stage": "R_SP116",
+      "room": 5,
+      "pos": [
+        2551.618408203125,
+        -1150.0,
+        3121.7529296875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          2725.0,
+          -1150.0,
+          4300.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Telmas Bar",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Beetle Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Beetle Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Butterfly Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Butterfly Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Stag Beetle Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Stag Beetle Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Grasshopper Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Grasshopper Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Phasmid Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Phasmid Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Pill Bug Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Pill Bug Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Mantis Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Mantis Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Ladybug Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Ladybug Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Snail Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Snail Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Dragonfly Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Dragonfly Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Ant Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Ant Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Male Dayfly Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Agitha Female Dayfly Reward": [
+    {
+      "stage": "R_SP160",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP116",
+        "room": 3,
+        "pos": [
+          -3880.0,
+          -170.0,
+          5895.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Castle Town Agithas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Outside South Castle Town Tightrope Chest": [
+    {
+      "stage": "F_SP122",
+      "room": 16,
+      "pos": [
+        -53600.0,
+        -3592.969970703125,
+        23830.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -53600.0,
+        -3592.969970703125,
+        23830.0
+      ]
+    }
+  ],
+  "Outside South Castle Town Fountain Chest": [
+    {
+      "stage": "F_SP122",
+      "room": 16,
+      "pos": [
+        -51500.0,
+        -5180.0,
+        25970.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -51500.0,
+        -5180.0,
+        25970.0
+      ]
+    }
+  ],
+  "Outside South Castle Town Male Ladybug": [
+    {
+      "stage": "F_SP122",
+      "room": 16,
+      "pos": [
+        -45085.2734375,
+        -5971.20849609375,
+        29910.453125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -45085.2734375,
+        -5971.20849609375,
+        29910.453125
+      ]
+    }
+  ],
+  "Outside South Castle Town Female Ladybug": [
+    {
+      "stage": "F_SP122",
+      "room": 16,
+      "pos": [
+        -54382.18359375,
+        -5481.6298828125,
+        27425.111328125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -54382.18359375,
+        -5481.6298828125,
+        27425.111328125
+      ]
+    }
+  ],
+  "Outside South Castle Town Poe": [
+    {
+      "stage": "F_SP122",
+      "room": 16,
+      "pos": [
+        -53628.44140625,
+        -5000.0,
+        25698.9921875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -53628.44140625,
+        -5000.0,
+        25698.9921875
+      ]
+    }
+  ],
+  "Outside South Castle Town Tektite Grotto Chest": [
+    {
+      "stage": "D_SB09",
+      "room": 4,
+      "pos": [
+        -240.33743286132812,
+        -27.170000076293945,
+        -1660.108154296875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP122",
+        "room": 16,
+        "pos": [
+          -44684.65625,
+          -4825.9248046875,
+          29917.64453125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Outside Castle Town South Tektite Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Outside South Castle Town Golden Wolf": [
+    {
+      "stage": "F_SP122",
+      "room": 16,
+      "pos": [
+        -55927.09375,
+        -6100.0,
+        25315.892578125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -55927.09375,
+        -6100.0,
+        25315.892578125
+      ]
+    }
+  ],
+  "Outside South Castle Town Double Clawshot Chasm Chest": [
+    {
+      "stage": "F_SP122",
+      "room": 16,
+      "pos": [
+        -57374.08203125,
+        -9100.0,
+        29327.90625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -57374.08203125,
+        -9100.0,
+        29327.90625
+      ]
+    }
+  ],
+  "Wooden Statue": [
+    {
+      "stage": "F_SP122",
+      "room": 16,
+      "pos": [
+        -51479.80078125,
+        -6425.48583984375,
+        34034.29296875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -51479.80078125,
+        -6425.48583984375,
+        34034.29296875
+      ]
+    }
+  ],
+  "Lake Hylia Bridge Owl Statue Chest": [
+    {
+      "stage": "F_SP121",
+      "room": 13,
+      "pos": [
+        -93284.5703125,
+        -5000.0,
+        18235.724609375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -93284.5703125,
+        -5000.0,
+        18235.724609375
+      ]
+    }
+  ],
+  "Lake Hylia Bridge Owl Statue Sky Character": [
+    {
+      "stage": "F_SP121",
+      "room": 13,
+      "pos": [
+        -94664.0,
+        -5040.0,
+        18311.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -94664.0,
+        -5040.0,
+        18311.0
+      ]
+    }
+  ],
+  "Lake Hylia Bridge Vines Chest": [
+    {
+      "stage": "F_SP121",
+      "room": 13,
+      "pos": [
+        -94100.0,
+        -4420.0,
+        30009.919921875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -94100.0,
+        -4420.0,
+        30009.919921875
+      ]
+    }
+  ],
+  "Lake Hylia Bridge Female Mantis": [
+    {
+      "stage": "F_SP121",
+      "room": 13,
+      "pos": [
+        -88800.0,
+        -6091.95068359375,
+        59050.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -88800.0,
+        -6091.95068359375,
+        59050.0
+      ]
+    }
+  ],
+  "Lake Hylia Bridge Male Mantis": [
+    {
+      "stage": "F_SP121",
+      "room": 13,
+      "pos": [
+        -92900.0,
+        -5441.38720703125,
+        30350.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -92900.0,
+        -5441.38720703125,
+        30350.0
+      ]
+    }
+  ],
+  "Lake Hylia Bridge Cliff Chest": [
+    {
+      "stage": "F_SP121",
+      "room": 13,
+      "pos": [
+        -80910.0,
+        -6000.0,
+        64780.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -80910.0,
+        -6000.0,
+        64780.0
+      ]
+    }
+  ],
+  "Lake Hylia Bridge Cliff Poe": [
+    {
+      "stage": "F_SP121",
+      "room": 13,
+      "pos": [
+        -81387.234375,
+        -5670.166015625,
+        65575.8125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -81387.234375,
+        -5670.166015625,
+        65575.8125
+      ]
+    }
+  ],
+  "Lake Hylia Bridge Bubble Grotto Chest": [
+    {
+      "stage": "D_SB08",
+      "room": 3,
+      "pos": [
+        -1061.2969970703125,
+        -132.2552490234375,
+        -3053.607177734375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP121",
+        "room": 13,
+        "pos": [
+          -82708.921875,
+          -6023.416015625,
+          65241.9453125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Bridge Bubble Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Auru Gift To Fyer": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -116486.9453125,
+        -13860.0,
+        58533.0078125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -116486.9453125,
+        -13860.0,
+        58533.0078125
+      ]
+    }
+  ],
+  "Lake Hylia Tower Poe": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -115803.8203125,
+        -15500.0,
+        59619.828125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -115803.8203125,
+        -15500.0,
+        59619.828125
+      ]
+    }
+  ],
+  "Lake Hylia Water Toadpoli Grotto Chest": [
+    {
+      "stage": "D_SB09",
+      "room": 4,
+      "pos": [
+        -312.18829345703125,
+        -27.170000076293945,
+        -1501.0155029296875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -104417.9296875,
+          -16908.955078125,
+          60109.3828125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Water Toadpoli Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave First Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        -655.6493530273438,
+        1069.5,
+        -4819.0908203125
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Second Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        682.1680297851562,
+        1069.5,
+        -6179.2060546875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Third Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        2067.483154296875,
+        966.9400024414062,
+        -7130.3203125
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Fourth Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        9980.4072265625,
+        353.3800048828125,
+        -7188.22412109375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Fifth Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        8154.4853515625,
+        -721.9500122070312,
+        -16215.0576171875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Sixth Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        1678.4635009765625,
+        -1586.68994140625,
+        -16192.173828125
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Seventh Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        1585.214599609375,
+        -1584.68994140625,
+        -14877.4931640625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Eighth Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        -642.0394287109375,
+        -1703.199951171875,
+        -18994.861328125
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Ninth Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        -7978.35888671875,
+        -2572.7099609375,
+        -16192.173828125
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Tenth Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        -9292.611328125,
+        -2572.7099609375,
+        -17523.38671875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Eleventh Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        1675.3985595703125,
+        -4197.580078125,
+        -21755.734375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Twelfth Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        2974.328369140625,
+        -4197.580078125,
+        -20501.681640625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Thirteenth Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        3981.531982421875,
+        -4081.080078125,
+        -19125.396484375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Fourteenth Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        8324.2236328125,
+        -4070.18994140625,
+        -17814.015625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave End Lantern Chest": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        6582.57470703125,
+        -5144.52001953125,
+        -10032.9658203125
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave First Poe": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        8904.5234375,
+        353.3800048828125,
+        -7080.19384765625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Second Poe": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        1296.5360107421875,
+        -4195.580078125,
+        -20443.44140625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Final Poe": [
+    {
+      "stage": "D_SB03",
+      "room": 0,
+      "pos": [
+        6580.9150390625,
+        -5144.52001953125,
+        -10699.6748046875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Hylia Underwater Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -97123.546875,
+        -19490.0,
+        58585.69921875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -97123.546875,
+        -19490.0,
+        58585.69921875
+      ]
+    }
+  ],
+  "Lake Hylia Alcove Poe": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -96343.6875,
+        -17100.0,
+        61561.0625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -96343.6875,
+        -17100.0,
+        61561.0625
+      ]
+    }
+  ],
+  "Flight By Fowl Second Platform Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -102658.125,
+        -17260.294921875,
+        43169.55859375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -102658.125,
+        -17260.294921875,
+        43169.55859375
+      ]
+    },
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -102523.015625,
+        -16646.677734375,
+        43291.4296875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -102523.015625,
+        -16646.677734375,
+        43291.4296875
+      ]
+    }
+  ],
+  "Flight By Fowl Third Platform Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -102968.8046875,
+        -17759.71875,
+        42857.5859375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -102968.8046875,
+        -17759.71875,
+        42857.5859375
+      ]
+    }
+  ],
+  "Flight By Fowl Fourth Platform Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -103534.9609375,
+        -18159.71875,
+        42292.66796875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -103534.9609375,
+        -18159.71875,
+        42292.66796875
+      ]
+    }
+  ],
+  "Flight By Fowl Fifth Platform Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -104342.4140625,
+        -18459.71875,
+        41486.07421875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -104342.4140625,
+        -18459.71875,
+        41486.07421875
+      ]
+    }
+  ],
+  "Isle of Riches Poe": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -103754.9609375,
+        -18200.0,
+        42057.796875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -103754.9609375,
+        -18200.0,
+        42057.796875
+      ]
+    }
+  ],
+  "Flight By Fowl Ledge Poe": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -115194.4453125,
+        -13800.0,
+        25304.5078125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -115194.4453125,
+        -13800.0,
+        25304.5078125
+      ]
+    }
+  ],
+  "Lake Hylia Shell Blade Grotto Chest": [
+    {
+      "stage": "D_SB09",
+      "room": 4,
+      "pos": [
+        -371.4389953613281,
+        -27.170000076293945,
+        -1627.256591796875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -115192.7578125,
+          -13585.9150390625,
+          25315.712890625
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Shell Blade Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Hylia Dock Poe": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -74466.15625,
+        -18000.0,
+        47239.2109375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -74466.15625,
+        -18000.0,
+        47239.2109375
+      ]
+    }
+  ],
+  "Outside Lanayru Spring Left Statue Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -91673.9453125,
+        -16547.169921875,
+        49208.8203125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -91673.9453125,
+        -16547.169921875,
+        49208.8203125
+      ]
+    }
+  ],
+  "Outside Lanayru Spring Right Statue Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -88887.453125,
+        -16927.609375,
+        49306.90625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -88887.453125,
+        -16927.609375,
+        49306.90625
+      ]
+    }
+  ],
+  "Lanayru Spring Back Room Lantern Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 1,
+      "pos": [
+        224.64427185058594,
+        1406.5999755859375,
+        4862.46826171875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -89775.35572814941,
+        1406.5999755859375,
+        62862.46826171875
+      ]
+    }
+  ],
+  "Lanayru Spring Back Room Left Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 1,
+      "pos": [
+        486.2900085449219,
+        1406.5479736328125,
+        4875.73388671875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -89513.70999145508,
+        1406.5479736328125,
+        62875.73388671875
+      ]
+    }
+  ],
+  "Lanayru Spring Back Room Right Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 1,
+      "pos": [
+        -33.71002960205078,
+        1406.55712890625,
+        4875.73388671875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -90033.71002960205,
+        1406.55712890625,
+        62875.73388671875
+      ]
+    }
+  ],
+  "Lanayru Spring East Double Clawshot Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 1,
+      "pos": [
+        2798.90576171875,
+        1322.1917724609375,
+        -987.1356811523438
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -87201.09423828125,
+        1322.1917724609375,
+        57012.864318847656
+      ]
+    }
+  ],
+  "Lanayru Spring West Double Clawshot Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 1,
+      "pos": [
+        -2816.413818359375,
+        1305.0787353515625,
+        -1395.78759765625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -92816.41381835938,
+        1305.0787353515625,
+        56604.21240234375
+      ]
+    }
+  ],
+  "Lanayru Spring Underwater Left Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 1,
+      "pos": [
+        593.577392578125,
+        -1276.779296875,
+        128.13600158691406
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -89406.42260742188,
+        -1276.779296875,
+        58128.136001586914
+      ]
+    }
+  ],
+  "Lanayru Spring Underwater Right Chest": [
+    {
+      "stage": "F_SP115",
+      "room": 1,
+      "pos": [
+        -1262.24365234375,
+        -1380.8292236328125,
+        68.69947814941406
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -91262.24365234375,
+        -1380.8292236328125,
+        58068.699478149414
+      ]
+    }
+  ],
+  "Lanayru Spring Lower Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP115",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -90300.0,
+          -18710.078125,
+          52280.23046875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Lanayru Spring",
+        "grotto": true
+      }
+    }
+  ],
+  "Lanayru Spring Upper Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP115",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -90300.0,
+          -18710.078125,
+          52280.23046875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Lanayru Spring",
+        "grotto": true
+      }
+    }
+  ],
+  "Upper Zoras River Female Dragonfly": [
+    {
+      "stage": "F_SP126",
+      "room": 0,
+      "pos": [
+        5849.5498046875,
+        80.77571105957031,
+        -1121.2275390625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1650.4501953125,
+        80.77571105957031,
+        -102121.2275390625
+      ]
+    }
+  ],
+  "Upper Zoras River Poe": [
+    {
+      "stage": "F_SP126",
+      "room": 0,
+      "pos": [
+        1050.5458984375,
+        844.0507202148438,
+        3386.849853515625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -6449.4541015625,
+        844.0507202148438,
+        -97613.15014648438
+      ]
+    }
+  ],
+  "Iza Helping Hand": [
+    {
+      "stage": "F_SP112",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP126",
+        "room": 0,
+        "pos": [
+          -1116.0,
+          400.0,
+          -102956.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Upper Zoras River Izas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Iza Raging Rapids Minigame": [
+    {
+      "stage": "F_SP112",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP126",
+        "room": 0,
+        "pos": [
+          -1116.0,
+          400.0,
+          -102956.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Upper Zoras River Izas House",
+        "grotto": false
+      }
+    }
+  ],
+  "Fishing Hole Heart Piece": [
+    {
+      "stage": "F_SP127",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP127",
+        "room": 0,
+        "pos": [
+          -1713.0,
+          85.0,
+          8113.0
+        ],
+        "anchor": "exterior entrance",
+        "label": "Fishing Hole House",
+        "grotto": false
+      }
+    }
+  ],
+  "Zoras Domain Male Dragonfly": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        3653.449951171875,
+        -5167.66455078125,
+        15500.0009765625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        3653.449951171875,
+        -5167.66455078125,
+        15500.0009765625
+      ]
+    }
+  ],
+  "Zoras Domain Mother and Child Isle Poe": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        3507.92578125,
+        -4339.8642578125,
+        11856.9208984375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        3507.92578125,
+        -4339.8642578125,
+        11856.9208984375
+      ]
+    }
+  ],
+  "Zoras Domain Chest Behind Waterfall": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        3810.843505859375,
+        -3535.530029296875,
+        11344.8876953125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        3810.843505859375,
+        -3535.530029296875,
+        11344.8876953125
+      ]
+    }
+  ],
+  "Zoras Domain Chest By Mother and Child Isles": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        2784.31787109375,
+        -4587.89013671875,
+        10773.4140625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        2784.31787109375,
+        -4587.89013671875,
+        10773.4140625
+      ]
+    }
+  ],
+  "Zoras Domain Waterfall Poe": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        58.77870178222656,
+        -4207.28076171875,
+        7148.7646484375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        58.77870178222656,
+        -4207.28076171875,
+        7148.7646484375
+      ]
+    }
+  ],
+  "Zoras Domain Extinguish All Torches Chest": [
+    {
+      "stage": "F_SP113",
+      "room": 0,
+      "pos": [
+        -200.0,
+        -349.4964294433594,
+        -1900.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -200.0,
+        -349.4964294433594,
+        -1900.0
+      ]
+    }
+  ],
+  "Zoras Domain Light All Torches Chest": [
+    {
+      "stage": "F_SP113",
+      "room": 0,
+      "pos": [
+        200.0,
+        -349.6226806640625,
+        -1900.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        200.0,
+        -349.6226806640625,
+        -1900.0
+      ]
+    }
+  ],
+  "Ashei Sketch": [
+    {
+      "stage": "F_SP114",
+      "room": 0,
+      "pos": [
+        31537.5390625,
+        -13330.0,
+        -12021.306640625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        31537.5390625,
+        -13330.0,
+        -12021.306640625
+      ]
+    }
+  ],
+  "Snowpeak Blizzard Poe": [
+    {
+      "stage": "F_SP114",
+      "room": 0,
+      "pos": [
+        1147.52294921875,
+        -9400.0,
+        -21553.646484375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1147.52294921875,
+        -9400.0,
+        -21553.646484375
+      ]
+    }
+  ],
+  "Snowpeak Above Freezard Grotto Poe": [
+    {
+      "stage": "F_SP114",
+      "room": 0,
+      "pos": [
+        7861.45947265625,
+        -8200.0,
+        -18072.611328125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        7861.45947265625,
+        -8200.0,
+        -18072.611328125
+      ]
+    }
+  ],
+  "Snowpeak Poe Among Trees": [
+    {
+      "stage": "F_SP114",
+      "room": 0,
+      "pos": [
+        -4700.2607421875,
+        -4444.0,
+        -18470.060546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4700.2607421875,
+        -4444.0,
+        -18470.060546875
+      ]
+    }
+  ],
+  "Snowpeak Freezard Grotto Chest": [
+    {
+      "stage": "D_SB08",
+      "room": 3,
+      "pos": [
+        -810.7105712890625,
+        -300.0,
+        -2101.05029296875
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP114",
+        "room": 0,
+        "pos": [
+          7168.05712890625,
+          -8250.0,
+          -18064.1640625
+        ],
+        "anchor": "exterior entrance",
+        "label": "Snowpeak Freezard Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Snowpeak Cave Ice Lantern Chest": [
+    {
+      "stage": "F_SP114",
+      "room": 2,
+      "pos": [
+        -6233.25830078125,
+        -1800.0,
+        -9865.0205078125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -6233.25830078125,
+        -1800.0,
+        -9865.0205078125
+      ]
+    }
+  ],
+  "Snowpeak Cave Ice Poe": [
+    {
+      "stage": "F_SP114",
+      "room": 2,
+      "pos": [
+        -6038.37158203125,
+        -1800.0,
+        -10368.5751953125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -6038.37158203125,
+        -1800.0,
+        -10368.5751953125
+      ]
+    }
+  ],
+  "Snowpeak Icy Summit Poe": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -69691.9140625,
+        -52200.0,
+        62523.69140625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -69691.9140625,
+        -52200.0,
+        62523.69140625
+      ]
+    }
+  ],
+  "Snowboard Racing Prize": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -71795.5390625,
+        -54450.0,
+        56396.73828125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -71795.5390625,
+        -54450.0,
+        56396.73828125
+      ]
+    },
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -15525.740234375,
+        1600.0,
+        -10061.0224609375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -15525.740234375,
+        1600.0,
+        -10061.0224609375
+      ]
+    },
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -15339.2548828125,
+        1600.0,
+        -9847.228515625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -15339.2548828125,
+        1600.0,
+        -9847.228515625
+      ]
+    }
+  ],
+  "Gerudo Desert East Poe": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        66222.03125,
+        416.24017333984375,
+        56984.453125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        66222.03125,
+        416.24017333984375,
+        56984.453125
+      ]
+    }
+  ],
+  "Gerudo Desert Skulltula Grotto Chest": [
+    {
+      "stage": "D_SB08",
+      "room": 3,
+      "pos": [
+        -1066.0302734375,
+        -132.13778686523438,
+        -3046.880859375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          66117.0078125,
+          249.0179901123047,
+          56674.37109375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Gerudo Desert Skulltula Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Gerudo Desert Peahat Ledge Chest": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        51585.62109375,
+        1536.1500244140625,
+        58741.25
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        51585.62109375,
+        1536.1500244140625,
+        58741.25
+      ]
+    }
+  ],
+  "Gerudo Desert East Canyon Chest": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        51813.6796875,
+        171.051025390625,
+        46656.27734375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        51813.6796875,
+        171.051025390625,
+        46656.27734375
+      ]
+    }
+  ],
+  "Gerudo Desert South Chest Behind Wooden Gates": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        32741.26171875,
+        158.30999755859375,
+        68606.546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        32741.26171875,
+        158.30999755859375,
+        68606.546875
+      ]
+    }
+  ],
+  "Gerudo Desert Lone Small Chest": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        30472.564453125,
+        778.0640258789062,
+        50140.5703125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        30472.564453125,
+        778.0640258789062,
+        50140.5703125
+      ]
+    }
+  ],
+  "Gerudo Desert Male Dayfly": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        29089.78125,
+        412.1550598144531,
+        58985.57421875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        29089.78125,
+        412.1550598144531,
+        58985.57421875
+      ]
+    }
+  ],
+  "Gerudo Desert Female Dayfly": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        11656.46484375,
+        141.1799774169922,
+        55374.140625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        11656.46484375,
+        141.1799774169922,
+        55374.140625
+      ]
+    }
+  ],
+  "Gerudo Desert Owl Statue Chest": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        16263.970703125,
+        989.6500244140625,
+        60708.46484375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        16263.970703125,
+        989.6500244140625,
+        60708.46484375
+      ]
+    }
+  ],
+  "Gerudo Desert Owl Statue Sky Character": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        15120.0,
+        952.1699829101562,
+        59670.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        15120.0,
+        952.1699829101562,
+        59670.0
+      ]
+    }
+  ],
+  "Gerudo Desert Poe Above Cave of Ordeals": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        -1344.480712890625,
+        3000.0,
+        58137.6171875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1344.480712890625,
+        3000.0,
+        58137.6171875
+      ]
+    }
+  ],
+  "Gerudo Desert West Canyon Chest": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        -6940.81103515625,
+        441.21124267578125,
+        48305.40234375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -6940.81103515625,
+        441.21124267578125,
+        48305.40234375
+      ]
+    }
+  ],
+  "Gerudo Desert North Peahat Poe": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        27051.595703125,
+        400.0,
+        26272.66796875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        27051.595703125,
+        400.0,
+        26272.66796875
+      ]
+    }
+  ],
+  "Gerudo Desert Rock Grotto First Poe": [
+    {
+      "stage": "D_SB07",
+      "room": 2,
+      "pos": [
+        -854.166259765625,
+        0.0,
+        -86.22988891601562
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          26932.83984375,
+          45.31964111328125,
+          26343.08984375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Gerudo Desert Rock Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Gerudo Desert Rock Grotto Second Poe": [
+    {
+      "stage": "D_SB07",
+      "room": 2,
+      "pos": [
+        -326.30718994140625,
+        -17.889989852905273,
+        -901.0818481445312
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          26932.83984375,
+          45.31964111328125,
+          26343.08984375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Gerudo Desert Rock Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Gerudo Desert Rock Grotto Lantern Chest": [
+    {
+      "stage": "D_SB07",
+      "room": 2,
+      "pos": [
+        -128.84011840820312,
+        150.0,
+        -1330.335693359375
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          26932.83984375,
+          45.31964111328125,
+          26343.08984375
+        ],
+        "anchor": "exterior entrance",
+        "label": "Gerudo Desert Rock Grotto",
+        "grotto": true
+      }
+    }
+  ],
+  "Gerudo Desert Campfire East Chest": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        4945.0,
+        -732.8599853515625,
+        25572.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        4945.0,
+        -732.8599853515625,
+        25572.0
+      ]
+    }
+  ],
+  "Gerudo Desert Campfire North Chest": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        3104.97119140625,
+        -732.8599853515625,
+        24575.03515625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        3104.97119140625,
+        -732.8599853515625,
+        24575.03515625
+      ]
+    }
+  ],
+  "Gerudo Desert Campfire West Chest": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        1845.0,
+        -732.8599853515625,
+        26130.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1845.0,
+        -732.8599853515625,
+        26130.0
+      ]
+    }
+  ],
+  "Gerudo Desert Northeast Chest Behind Gates": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        9889.4482421875,
+        -732.8599853515625,
+        17813.83984375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        9889.4482421875,
+        -732.8599853515625,
+        17813.83984375
+      ]
+    }
+  ],
+  "Gerudo Desert Northwest Chest Behind Gates": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        -6532.40625,
+        -732.8599853515625,
+        20852.412109375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -6532.40625,
+        -732.8599853515625,
+        20852.412109375
+      ]
+    }
+  ],
+  "Gerudo Desert North Small Chest Before Bulblin Camp": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        4681.0947265625,
+        -162.94000244140625,
+        12575.7626953125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        4681.0947265625,
+        -162.94000244140625,
+        12575.7626953125
+      ]
+    }
+  ],
+  "Gerudo Desert Golden Wolf": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        1112.0821533203125,
+        -162.94000244140625,
+        12659.6689453125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1112.0821533203125,
+        -162.94000244140625,
+        12659.6689453125
+      ]
+    }
+  ],
+  "Outside Bulblin Camp Poe": [
+    {
+      "stage": "F_SP124",
+      "room": 0,
+      "pos": [
+        -3243.0224609375,
+        424.51995849609375,
+        11309.7763671875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -3243.0224609375,
+        424.51995849609375,
+        11309.7763671875
+      ]
+    }
+  ],
+  "Bulblin Camp Poe": [
+    {
+      "stage": "F_SP118",
+      "room": 1,
+      "pos": [
+        1708.347412109375,
+        300.0,
+        1279.1737060546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1708.347412109375,
+        300.0,
+        1279.1737060546875
+      ]
+    },
+    {
+      "stage": "F_SP118",
+      "room": 1,
+      "pos": [
+        1737.5211181640625,
+        300.0,
+        1308.347412109375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1737.5211181640625,
+        300.0,
+        1308.347412109375
+      ]
+    },
+    {
+      "stage": "F_SP118",
+      "room": 1,
+      "pos": [
+        1795.868408203125,
+        300.0,
+        1337.5211181640625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1795.868408203125,
+        300.0,
+        1337.5211181640625
+      ]
+    }
+  ],
+  "Outside Arbiters Grounds Lantern Chest": [
+    {
+      "stage": "F_SP118",
+      "room": 3,
+      "pos": [
+        3633.6201171875,
+        840.0,
+        -12457.7001953125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        3633.6201171875,
+        840.0,
+        -12457.7001953125
+      ]
+    }
+  ],
+  "Outside Arbiters Grounds Poe": [
+    {
+      "stage": "F_SP118",
+      "room": 3,
+      "pos": [
+        161.94415283203125,
+        1000.0,
+        -12530.404296875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        161.94415283203125,
+        1000.0,
+        -12530.404296875
+      ]
+    }
+  ],
+  "Cave of Ordeals Floor 17 Poe": [
+    {
+      "stage": "D_SB01",
+      "room": 16,
+      "pos": [
+        0.0,
+        -20000.0,
+        0.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          -460.6126403808594,
+          2291.161376953125,
+          58809.66796875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Cave of Ordeals",
+        "grotto": true
+      }
+    }
+  ],
+  "Cave of Ordeals Floor 33 Poe": [
+    {
+      "stage": "D_SB01",
+      "room": 32,
+      "pos": [
+        100.0,
+        -40000.0,
+        0.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          -460.6126403808594,
+          2291.161376953125,
+          58809.66796875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Cave of Ordeals",
+        "grotto": true
+      }
+    }
+  ],
+  "Cave of Ordeals Floor 44 Poe": [
+    {
+      "stage": "D_SB01",
+      "room": 43,
+      "pos": [
+        -4100.0,
+        -53750.0,
+        100.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          -460.6126403808594,
+          2291.161376953125,
+          58809.66796875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Cave of Ordeals",
+        "grotto": true
+      }
+    }
+  ],
+  "Cave of Ordeals Great Fairy Reward": [
+    {
+      "stage": "D_SB01",
+      "room": 9,
+      "pos": [
+        0.0,
+        -11150.0,
+        -4100.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          -460.6126403808594,
+          2291.161376953125,
+          58809.66796875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Cave of Ordeals",
+        "grotto": true
+      }
+    },
+    {
+      "stage": "D_SB01",
+      "room": 19,
+      "pos": [
+        -4100.0,
+        -23650.0,
+        0.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          -460.6126403808594,
+          2291.161376953125,
+          58809.66796875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Cave of Ordeals",
+        "grotto": true
+      }
+    },
+    {
+      "stage": "D_SB01",
+      "room": 29,
+      "pos": [
+        0.0,
+        -36150.0,
+        -4100.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          -460.6126403808594,
+          2291.161376953125,
+          58809.66796875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Cave of Ordeals",
+        "grotto": true
+      }
+    },
+    {
+      "stage": "D_SB01",
+      "room": 39,
+      "pos": [
+        -4100.0,
+        -48650.0,
+        0.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          -460.6126403808594,
+          2291.161376953125,
+          58809.66796875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Cave of Ordeals",
+        "grotto": true
+      }
+    },
+    {
+      "stage": "D_SB01",
+      "room": 49,
+      "pos": [
+        0.0,
+        -61150.0,
+        -4100.0
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          -460.6126403808594,
+          2291.161376953125,
+          58809.66796875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Cave of Ordeals",
+        "grotto": true
+      }
+    }
+  ],
+  "Forest Temple Entrance Vines Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 22,
+      "pos": [
+        900.0,
+        3110.0,
+        15825.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple Central Chest Hanging From Web": [
+    {
+      "stage": "D_MN05",
+      "room": 0,
+      "pos": [
+        0.0,
+        3600.0,
+        7125.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple Central Chest Behind Stairs": [
+    {
+      "stage": "D_MN05",
+      "room": 0,
+      "pos": [
+        0.0,
+        2700.0,
+        5550.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple Central North Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 0,
+      "pos": [
+        550.0,
+        3301.009521484375,
+        5325.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple West Deku Like Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 3,
+      "pos": [
+        -4000.0,
+        2955.590087890625,
+        9075.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple Totem Pole Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 5,
+      "pos": [
+        -9100.0,
+        3825.0,
+        5550.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple West Tile Worm Chest Behind Stairs": [
+    {
+      "stage": "D_MN05",
+      "room": 5,
+      "pos": [
+        -14275.0,
+        3402.783203125,
+        6150.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple West Tile Worm Room Vines Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 5,
+      "pos": [
+        -11721.1455078125,
+        3750.0,
+        4717.8212890625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple Big Key Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 1,
+      "pos": [
+        9225.0009765625,
+        3471.9599609375,
+        8465.134765625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple East Water Cave Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 1,
+      "pos": [
+        10261.0,
+        3175.0,
+        8295.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple Second Monkey Under Bridge Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 2,
+      "pos": [
+        11559.7548828125,
+        3152.0,
+        3761.21875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple Windless Bridge Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 9,
+      "pos": [
+        6908.0,
+        3580.27197265625,
+        -3305.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple East Tile Worm Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 11,
+      "pos": [
+        11183.0,
+        3806.550048828125,
+        -6305.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Forest Temple North Deku Like Chest": [
+    {
+      "stage": "D_MN05",
+      "room": 10,
+      "pos": [
+        1174.2510986328125,
+        5002.39013671875,
+        -9219.09375
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Entrance Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 1,
+      "pos": [
+        1050.0,
+        -258.18408203125,
+        13750.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Main Magnet Room Bottom Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 3,
+      "pos": [
+        2700.0,
+        -1378.3521728515625,
+        5175.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Gor Amato Key Shard": [
+    {
+      "stage": "D_MN04",
+      "room": 14,
+      "pos": [
+        -15375.5576171875,
+        -623.7567749023438,
+        1595.6734619140625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Gor Amato Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 14,
+      "pos": [
+        -15984.15625,
+        -710.5994262695312,
+        1504.414306640625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Gor Amato Small Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 14,
+      "pos": [
+        -16176.0,
+        -561.3822021484375,
+        895.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Magnet Maze Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 4,
+      "pos": [
+        -5625.0,
+        448.78411865234375,
+        75.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Crystal Switch Room Underwater Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 6,
+      "pos": [
+        1125.0,
+        600.0,
+        -4725.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Crystal Switch Room Small Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 6,
+      "pos": [
+        1000.0,
+        1650.0,
+        -5650.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines After Crystal Switch Room Magnet Wall Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 6,
+      "pos": [
+        -1350.0,
+        2350.0,
+        -6200.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Outside Beamos Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 7,
+      "pos": [
+        -1050.0,
+        2425.0,
+        -14825.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Outside Underwater Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 7,
+      "pos": [
+        2325.0,
+        1100.0,
+        -17400.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Outside Clawshot Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 7,
+      "pos": [
+        2700.0,
+        4275.0,
+        -19550.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Gor Ebizo Key Shard": [
+    {
+      "stage": "D_MN04",
+      "room": 17,
+      "pos": [
+        13007.017578125,
+        2924.530029296875,
+        -17705.732421875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Gor Ebizo Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 17,
+      "pos": [
+        13900.0,
+        2997.090087890625,
+        -17175.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Chest Before Dangoro": [
+    {
+      "stage": "D_MN04",
+      "room": 9,
+      "pos": [
+        9950.0,
+        2475.0,
+        -15375.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Dangoro Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 11,
+      "pos": [
+        7997.99951171875,
+        2640.0,
+        -5355.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Beamos Room Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 11,
+      "pos": [
+        6488.36767578125,
+        2640.0,
+        -1673.534912109375
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Gor Liggs Key Shard": [
+    {
+      "stage": "D_MN04",
+      "room": 16,
+      "pos": [
+        13055.6474609375,
+        2400.5,
+        -1660.31689453125
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Gor Liggs Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 16,
+      "pos": [
+        13975.0,
+        2476.489990234375,
+        -1675.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Goron Mines Main Magnet Room Top Chest": [
+    {
+      "stage": "D_MN04",
+      "room": 3,
+      "pos": [
+        3625.0,
+        2637.89990234375,
+        4050.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Lobby Left Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 0,
+      "pos": [
+        -1707.6793212890625,
+        1250.0,
+        15388.98828125
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Lobby Rear Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 0,
+      "pos": [
+        -144.67379760742188,
+        1250.0,
+        16525.87109375
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Stalactite Room Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 1,
+      "pos": [
+        1417.59716796875,
+        1813.6099853515625,
+        7807.2255859375
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Chandelier Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 3,
+      "pos": [
+        -0.8691989779472351,
+        2100.0,
+        2.1099050045013428
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Central Room Spire Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 3,
+      "pos": [
+        0.0,
+        -940.0,
+        -315.5
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Central Room Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 3,
+      "pos": [
+        2010.577392578125,
+        0.0,
+        -1656.341552734375
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Central Room Small Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 3,
+      "pos": [
+        1629.5045166015625,
+        0.0,
+        2049.635009765625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple East Lower Waterwheel Stalactite Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 8,
+      "pos": [
+        12900.0,
+        -600.0,
+        1850.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple East Lower Waterwheel Bridge Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 8,
+      "pos": [
+        11356.224609375,
+        -550.0,
+        4896.6640625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple East Second Floor Southeast Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 7,
+      "pos": [
+        11550.8037109375,
+        1500.0,
+        2866.646240234375
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple East Second Floor Southwest Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 7,
+      "pos": [
+        8779.115234375,
+        1500.0,
+        1667.6258544921875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple East Water Supply Small Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 10,
+      "pos": [
+        18228.33203125,
+        3995.0,
+        -466.3260803222656
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple East Water Supply Clawshot Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 10,
+      "pos": [
+        21000.0,
+        4170.0,
+        85.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Before Deku Toad Alcove Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 9,
+      "pos": [
+        13550.0,
+        10.0,
+        -2500.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Before Deku Toad Underwater Left Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 9,
+      "pos": [
+        13193.291015625,
+        -1189.31005859375,
+        -2433.406005859375
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Before Deku Toad Underwater Right Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 9,
+      "pos": [
+        13757.0,
+        -1275.3310546875,
+        -4783.150390625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Deku Toad Chest": [
+    {
+      "stage": "D_MN01B",
+      "room": 51,
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple West Lower Small Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 12,
+      "pos": [
+        -10687.0947265625,
+        -299.3999938964844,
+        -1161.590576171875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple West Second Floor Central Small Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 12,
+      "pos": [
+        -10180.671875,
+        1500.0,
+        -1939.7305908203125
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple West Second Floor Northeast Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 11,
+      "pos": [
+        -9270.0,
+        1450.0,
+        -2100.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple West Second Floor Southeast Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 11,
+      "pos": [
+        -10950.0,
+        1450.0,
+        2590.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple West Second Floor Southwest Underwater Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 11,
+      "pos": [
+        -14158.2880859375,
+        700.0,
+        2868.1103515625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple West Water Supply Small Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 13,
+      "pos": [
+        -20310.0,
+        4015.0,
+        460.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple West Water Supply Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 13,
+      "pos": [
+        -23100.0,
+        4200.0,
+        -85.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Underwater Maze Small Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 5,
+      "pos": [
+        -18544.220703125,
+        -200.0,
+        475.5745849609375
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lakebed Temple Big Key Chest": [
+    {
+      "stage": "D_MN01",
+      "room": 6,
+      "pos": [
+        -16549.87890625,
+        -1345.7093505859375,
+        2820.391845703125
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Entrance Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 0,
+      "pos": [
+        -3000.0,
+        -19.0,
+        5600.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Torch Room East Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 2,
+      "pos": [
+        1300.0,
+        62.5,
+        -3012.5
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Torch Room West Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 2,
+      "pos": [
+        -1300.0,
+        50.0,
+        -3012.5
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds West Small Chest Behind Block": [
+    {
+      "stage": "D_MN10",
+      "room": 6,
+      "pos": [
+        -4065.0,
+        150.0,
+        -2660.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds East Lower Turnable Redead Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 15,
+      "pos": [
+        4125.0,
+        -741.5800170898438,
+        -2250.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds East Upper Turnable Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 4,
+      "pos": [
+        9400.0,
+        990.0599975585938,
+        6100.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds East Upper Turnable Redead Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 4,
+      "pos": [
+        12275.0,
+        980.0,
+        4537.5
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Ghoul Rat Room Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 14,
+      "pos": [
+        4150.0,
+        825.0,
+        775.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds West Chandelier Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 6,
+      "pos": [
+        -4450.0,
+        400.0,
+        1150.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds West Stalfos Northeast Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 7,
+      "pos": [
+        -8113.0,
+        500.0,
+        -1382.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds West Stalfos West Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 7,
+      "pos": [
+        -9975.0,
+        500.0,
+        -600.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds North Turning Room Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 16,
+      "pos": [
+        3790.0,
+        -1050.0,
+        -6080.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Death Sword Chest": [
+    {
+      "stage": "D_MN10B",
+      "room": 51,
+      "pos": [
+        0.0,
+        50.0,
+        -6200.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Spinner Room First Small Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 13,
+      "pos": [
+        -8331.4091796875,
+        -1800.0,
+        -3677.746826171875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Spinner Room Second Small Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 13,
+      "pos": [
+        -10212.5,
+        -1840.0,
+        -3725.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Spinner Room Lower Central Small Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 13,
+      "pos": [
+        -10812.5,
+        -1825.0,
+        -5712.5
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Spinner Room Stalfos Alcove Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 13,
+      "pos": [
+        -5475.0,
+        -1325.0,
+        -4875.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Spinner Room Lower North Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 13,
+      "pos": [
+        -6225.0,
+        -1125.0,
+        -7275.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Arbiters Grounds Big Key Chest": [
+    {
+      "stage": "D_MN10",
+      "room": 9,
+      "pos": [
+        -3675.0,
+        500.0,
+        -7250.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Lobby West Armor Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 0,
+      "pos": [
+        -900.0,
+        -50.0,
+        5950.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Lobby East Armor Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 0,
+      "pos": [
+        930.0,
+        -50.0,
+        5350.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Lobby Armor Poe": [
+    {
+      "stage": "D_MN11",
+      "room": 0,
+      "pos": [
+        763.28076171875,
+        -25.0,
+        5940.8623046875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Lobby Poe": [
+    {
+      "stage": "D_MN11",
+      "room": 0,
+      "pos": [
+        -1.8081350326538086,
+        300.0,
+        2500.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Lobby Chandelier Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 0,
+      "pos": [
+        0.0,
+        1118.3201904296875,
+        4690.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins East Courtyard Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 4,
+      "pos": [
+        1350.0,
+        50.0,
+        -1400.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins East Courtyard Buried Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 4,
+      "pos": [
+        1350.0,
+        -40.0,
+        -4150.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Ordon Pumpkin Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 5,
+      "pos": [
+        5300.0,
+        0.0,
+        -5100.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Courtyard Central Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 4,
+      "pos": [
+        0.0,
+        0.0,
+        -1250.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins West Courtyard Buried Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 4,
+      "pos": [
+        -1500.0,
+        -60.0,
+        -4458.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins West Cannon Room Central Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 9,
+      "pos": [
+        -5347.30712890625,
+        -50.0,
+        -6500.88671875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins West Cannon Room Corner Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 9,
+      "pos": [
+        -1818.32177734375,
+        0.0,
+        -7562.98388671875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Wooden Beam Central Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 8,
+      "pos": [
+        -4355.0,
+        0.0,
+        -2160.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Wooden Beam Chandelier Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 8,
+      "pos": [
+        -4350.0,
+        950.0,
+        -3850.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Wooden Beam Northwest Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 8,
+      "pos": [
+        -3510.0,
+        0.0,
+        -1350.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Chest After Darkhammer": [
+    {
+      "stage": "D_MN11B",
+      "room": 51,
+      "pos": [
+        0.0,
+        0.0,
+        -3196.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Broken Floor Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 7,
+      "pos": [
+        -3600.0,
+        0.0,
+        1600.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Ice Room Poe": [
+    {
+      "stage": "D_MN11",
+      "room": 6,
+      "pos": [
+        4881.26806640625,
+        1000.0,
+        423.89678955078125
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Northeast Chandelier Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 5,
+      "pos": [
+        4350.0,
+        953.0,
+        -4900.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Snowpeak Ruins Chapel Chest": [
+    {
+      "stage": "D_MN11",
+      "room": 11,
+      "pos": [
+        -4350.0,
+        1050.0,
+        -8560.57421875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Lobby Lantern Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 0,
+      "pos": [
+        2500.0,
+        56.25,
+        368.75
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time First Staircase Gohma Gate Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 1,
+      "pos": [
+        -12.5,
+        1100.0,
+        8362.5
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time First Staircase Window Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 1,
+      "pos": [
+        5795.0,
+        2505.0,
+        4210.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time First Staircase Armos Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 1,
+      "pos": [
+        6925.0,
+        2325.0,
+        3400.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Poe Behind Gate": [
+    {
+      "stage": "D_MN06",
+      "room": 2,
+      "pos": [
+        -3450.0,
+        2925.0,
+        0.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Armos Antechamber East Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 3,
+      "pos": [
+        -1737.5,
+        4500.0,
+        5812.5
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Armos Antechamber North Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 3,
+      "pos": [
+        0.0,
+        4850.0,
+        9200.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Armos Antechamber Statue Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 3,
+      "pos": [
+        1740.0,
+        4500.0,
+        5815.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Moving Wall Beamos Room Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 4,
+      "pos": [
+        -3450.0,
+        4450.0,
+        -5510.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Moving Wall Dinalfos Room Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 4,
+      "pos": [
+        -8740.0,
+        5100.0,
+        -4515.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Scales Gohma Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 5,
+      "pos": [
+        -30.0,
+        5750.0,
+        -1515.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Scales Upper Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 5,
+      "pos": [
+        1195.0,
+        7400.0,
+        2350.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Poe Above Scales": [
+    {
+      "stage": "D_MN06",
+      "room": 5,
+      "pos": [
+        1694.25,
+        7700.0,
+        -875.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Floor Switch Puzzle Room Upper Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 6,
+      "pos": [
+        6135.0,
+        8000.0,
+        0.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Big Key Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 6,
+      "pos": [
+        5350.0,
+        7400.0,
+        0.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Gilloutine Chest": [
+    {
+      "stage": "D_MN06",
+      "room": 7,
+      "pos": [
+        5319.0,
+        7550.0,
+        8592.75
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Chest Before Darknut": [
+    {
+      "stage": "D_MN06",
+      "room": 7,
+      "pos": [
+        5300.0,
+        8100.0,
+        -800.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Temple of Time Darknut Chest": [
+    {
+      "stage": "D_MN06B",
+      "room": 51,
+      "pos": [
+        0.0,
+        -350.0,
+        -2400.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Underwater East Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 0,
+      "pos": [
+        1170.0,
+        -755.0,
+        6670.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Underwater West Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 0,
+      "pos": [
+        -1170.08349609375,
+        -755.0,
+        6670.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky West Wing First Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 10,
+      "pos": [
+        -14514.4443359375,
+        0.0,
+        -12000.8310546875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky West Wing Baba Balcony Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 10,
+      "pos": [
+        -11099.1240234375,
+        -1500.0,
+        -15658.8515625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky West Wing Narrow Ledge Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 10,
+      "pos": [
+        -13458.794921875,
+        0.0,
+        -13410.556640625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky West Wing Tile Worm Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 10,
+      "pos": [
+        -10742.9599609375,
+        0.0,
+        -15156.7197265625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Baba Tower Top Small Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 11,
+      "pos": [
+        -15654.83984375,
+        2840.22998046875,
+        -18906.7890625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Baba Tower Narrow Ledge Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 11,
+      "pos": [
+        -12630.169921875,
+        2430.89990234375,
+        -19611.431640625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Baba Tower Alcove Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 11,
+      "pos": [
+        -14567.109375,
+        2281.0,
+        -16989.03515625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky West Garden Corner Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 12,
+      "pos": [
+        -15782.7958984375,
+        2980.0,
+        -11466.6982421875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky West Garden Lone Island Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 12,
+      "pos": [
+        -14270.5380859375,
+        1982.199951171875,
+        -7411.91015625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Garden Island Poe": [
+    {
+      "stage": "D_MN07",
+      "room": 12,
+      "pos": [
+        -12776.3251953125,
+        2495.016845703125,
+        -7461.8974609375
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky West Garden Lower Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 12,
+      "pos": [
+        -12592.9677734375,
+        2400.0,
+        -13712.767578125
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky West Garden Ledge Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 12,
+      "pos": [
+        -11494.318359375,
+        3000.0,
+        -9888.673828125
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Central Outside Ledge Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 13,
+      "pos": [
+        75.23761749267578,
+        4500.0,
+        -10853.455078125
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Central Outside Poe Island Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 13,
+      "pos": [
+        4010.31494140625,
+        4500.0,
+        -12451.9033203125
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Poe Above Central Fan": [
+    {
+      "stage": "D_MN07",
+      "room": 13,
+      "pos": [
+        3872.030517578125,
+        5200.0,
+        -12203.236328125
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Big Key Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 2,
+      "pos": [
+        -1090.9830322265625,
+        4500.0,
+        -12411.76171875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Chest Below Big Key Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 2,
+      "pos": [
+        11.803009033203125,
+        3000.0,
+        -13501.78515625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky East First Wing Chest After Fans": [
+    {
+      "stage": "D_MN07",
+      "room": 5,
+      "pos": [
+        17665.134765625,
+        0.0,
+        -11924.103515625
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky East Tile Worm Small Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 7,
+      "pos": [
+        15824.609375,
+        -110.0,
+        -9750.685546875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky East Wing After Dinalfos Alcove Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 7,
+      "pos": [
+        17550.0,
+        1500.0,
+        -7200.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky East Wing After Dinalfos Ledge Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 7,
+      "pos": [
+        13470.0,
+        1500.0,
+        -7925.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky East Wing Lower Level Chest": [
+    {
+      "stage": "D_MN07",
+      "room": 4,
+      "pos": [
+        10800.0,
+        -1775.0,
+        -11850.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Aeralfos Chest": [
+    {
+      "stage": "D_MN07B",
+      "room": 51,
+      "pos": [
+        -0.36296001076698303,
+        600.0,
+        2279.76904296875
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "City in the Sky Chest Behind North Fan": [
+    {
+      "stage": "D_MN07",
+      "room": 14,
+      "pos": [
+        0.0,
+        894.47998046875,
+        -23853.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight West Wing First Room Central Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 1,
+      "pos": [
+        -3950.0,
+        -1071.0,
+        1375.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight West Wing Chest Behind Wall of Darkness": [
+    {
+      "stage": "D_MN08",
+      "room": 1,
+      "pos": [
+        -6850.0,
+        -771.25,
+        3200.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight West Wing Second Room Central Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 2,
+      "pos": [
+        -3950.0,
+        -1200.0,
+        -5075.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight West Wing Second Room Lower South Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 2,
+      "pos": [
+        -5200.0,
+        -1196.0,
+        -1650.0
+      ],
+      "anchor": "actor"
+    },
+    {
+      "stage": "D_MN08",
+      "room": 2,
+      "pos": [
+        -2700.0,
+        -1196.0,
+        -1661.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight West Wing Second Room Southeast Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 2,
+      "pos": [
+        -2400.0,
+        -21.25,
+        -1550.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight East Wing First Room Zant Head Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 4,
+      "pos": [
+        4650.0,
+        -696.25,
+        1235.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight East Wing First Room East Alcove Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 4,
+      "pos": [
+        5352.5,
+        -171.25,
+        3500.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight East Wing First Room North Small Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 4,
+      "pos": [
+        3250.0,
+        -696.25,
+        1235.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight East Wing First Room West Alcove Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 4,
+      "pos": [
+        2547.5,
+        -171.25,
+        3500.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight East Wing Second Room Northeast Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 5,
+      "pos": [
+        5700.0,
+        3.75,
+        -4350.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight East Wing Second Room Northwest Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 5,
+      "pos": [
+        2200.0,
+        3.75,
+        -5100.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight East Wing Second Room Southeast Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 5,
+      "pos": [
+        5600.0,
+        -296.25,
+        -3300.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight East Wing Second Room Southwest Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 5,
+      "pos": [
+        2300.0,
+        -396.25,
+        -3300.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight Central First Room Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 7,
+      "pos": [
+        1500.0,
+        128.75,
+        6250.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight Central Outdoor Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 11,
+      "pos": [
+        -2900.0,
+        -71.25,
+        -2055.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight Big Key Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 11,
+      "pos": [
+        0.0,
+        3130.0,
+        -3600.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Palace of Twilight Central Tower Chest": [
+    {
+      "stage": "D_MN08",
+      "room": 8,
+      "pos": [
+        -800.0,
+        1130.0,
+        1200.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle West Courtyard Central Small Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 13,
+      "pos": [
+        -6400.0,
+        350.0,
+        125.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle West Courtyard North Small Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 13,
+      "pos": [
+        -6420.0,
+        30.0,
+        -8017.818359375
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle East Wing Boomerang Puzzle Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 14,
+      "pos": [
+        1210.0,
+        0.0,
+        -7002.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle East Wing Balcony Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 14,
+      "pos": [
+        4775.0,
+        1200.0,
+        3875.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Graveyard Grave Switch Room Back Left Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 9,
+      "pos": [
+        4075.0,
+        150.0,
+        -12725.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Graveyard Grave Switch Room Front Left Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 9,
+      "pos": [
+        3850.0,
+        152.0,
+        -12725.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Graveyard Grave Switch Room Right Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 9,
+      "pos": [
+        4025.0,
+        152.0,
+        -11735.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Graveyard Owl Statue Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 9,
+      "pos": [
+        375.0,
+        600.0,
+        -6900.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Main Hall Northeast Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 1,
+      "pos": [
+        2400.0,
+        1250.0,
+        -875.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Main Hall Northwest Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 1,
+      "pos": [
+        -2375.0,
+        1250.0,
+        -900.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Main Hall Southwest Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 1,
+      "pos": [
+        -1225.0,
+        2000.0,
+        2125.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Lantern Staircase Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 2,
+      "pos": [
+        25.0,
+        1875.0,
+        -4975.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Southeast Balcony Tower Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 15,
+      "pos": [
+        8685.0,
+        2000.0,
+        8690.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Big Key Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 15,
+      "pos": [
+        -8700.0,
+        2000.0,
+        8700.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room First Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        2250.0,
+        6150.0,
+        2525.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Second Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        2350.0,
+        6150.0,
+        2425.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Third Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        2450.0,
+        6150.0,
+        2325.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Fourth Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        2550.0,
+        6150.0,
+        2225.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Fifth Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        2650.0,
+        6150.0,
+        2125.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room First Small Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        3700.0,
+        6150.0,
+        2300.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Second Small Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        3700.0,
+        6150.0,
+        2525.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Third Small Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        3700.0,
+        6150.0,
+        2750.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Fourth Small Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        3700.0,
+        6150.0,
+        3075.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Fifth Small Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        3700.0,
+        6150.0,
+        3250.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Sixth Small Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        3600.0,
+        6150.0,
+        3425.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Seventh Small Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        3475.0,
+        6150.0,
+        3550.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Hyrule Castle Treasure Room Eighth Small Chest": [
+    {
+      "stage": "D_MN09",
+      "room": 8,
+      "pos": [
+        3350.0,
+        6150.0,
+        3675.0
+      ],
+      "anchor": "actor"
+    }
+  ],
+  "Lanayru Spring Hint Sign": [
+    {
+      "stage": "F_SP115",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -90300.0,
+          -18710.078125,
+          52280.23046875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Lanayru Spring",
+        "grotto": true
+      }
+    }
+  ],
+  "Lake Lantern Cave Hint Sign": [
+    {
+      "stage": "D_SB03",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP115",
+        "room": 0,
+        "pos": [
+          -101662.2265625,
+          -17110.640625,
+          61921.8203125
+        ],
+        "anchor": "exterior entrance",
+        "label": "Lake Hylia Long Cave",
+        "grotto": true
+      }
+    }
+  ],
+  "Cave of Ordeals Hint Sign": [
+    {
+      "stage": "D_SB01",
+      "room": -1,
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "local": false,
+      "overworld": {
+        "stage": "F_SP124",
+        "room": 0,
+        "pos": [
+          -460.6126403808594,
+          2291.161376953125,
+          58809.66796875
+        ],
+        "anchor": "exterior entrance",
+        "label": "Cave of Ordeals",
+        "grotto": true
+      }
+    }
+  ]
+}

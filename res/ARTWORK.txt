@@ -1,0 +1,11 @@
+Chest textures: exact PNG references supplied by the user (closed wooden chest and gray open chest), converted without pixel editing to native GX RGBA8 BTI. Zelda artwork belongs to Nintendo and its respective rights holders. Native heart texture is loaded from the installed game archive.
+
+Version 0.4.20 sidebar: Henriko Magnifico, Twilight Princess 4K 4.0d texture pack, supplied from the user's installed texture_replacements directory. https://www.henrikomagnifico.com/zelda-twilight-princess-4k . DDS filenames are retained in inventory.json for provenance. Converted to 96x96 transparent PNG thumbnails with preserved aspect ratio. Shared bug, bottle, and key icons retain full item labels. Entries marked fallback use shared artwork where a dedicated sprite was not found (including Bedroom Key and Goron key shards); these are not claimed to be unique item textures.
+
+Version 0.4.18 temple indicators: user-supplied D:\TPIcons\Temple.png and TempleAvailable.png, converted to 64x64 GX RGBA8 BTI with transparent padding and preserved aspect ratio.
+
+Version 0.4.0 icon set: user-provided PNGs from D:\TPIcons. Aspect-preserving thumbnails (maximum 64 x 64) are encoded as native GX RGBA8 BTI with alpha. Available/Locked variants retain the supplied artwork. Grotto has one source variant; Poe has Available/Collected variants. Status colors and labels distinguish accessibility when no Locked source variant exists. No source folder is needed at runtime.
+
+Version 0.4.21 corrections: inventory.json records exact native resource names and providers. Boomerang, Bomb Bag, Auru's Memo and Sky Book use hash-matched Henriko replacements. Letter, invoice, wallet, pumpkin, cheese and skill scroll use the corresponding installed game itemicon.arc resources. Shadow Crystal and Fused Shadow use the Dusklight randomizer's custom item sprites. These native sprites are not Henriko textures. Conversion preserves their colors and aspect ratios.
+
+Version 0.4.22: Progressive Mirror Shard uses mods/randomizer/res/mirror_shard_4.bti from the Dusklight randomizer, converted with preserved colors and aspect ratio.

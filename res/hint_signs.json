@@ -1,0 +1,342 @@
+[
+  {
+    "name": "Lakebed Temple Hint Sign",
+    "stage": "D_MN01",
+    "room": 2,
+    "pos": [
+      -4765.38037,
+      -1.21,
+      272.192261
+    ]
+  },
+  {
+    "name": "Goron Mines Hint Sign",
+    "stage": "D_MN04",
+    "room": 17,
+    "pos": [
+      11394.1855,
+      2878.65,
+      -17913.05
+    ]
+  },
+  {
+    "name": "Forest Temple Hint Sign",
+    "stage": "D_MN05",
+    "room": 0,
+    "pos": [
+      -1972.11682,
+      3150,
+      7610.9751
+    ]
+  },
+  {
+    "name": "Temple of Time First Hint Sign",
+    "stage": "D_MN06",
+    "room": 0,
+    "pos": [
+      -618.9335,
+      725.0,
+      3112.2
+    ]
+  },
+  {
+    "name": "Temple of Time Second Hint Sign",
+    "stage": "D_MN06",
+    "room": 4,
+    "pos": [
+      -3885.2157,
+      4450.0,
+      -6353.38135
+    ]
+  },
+  {
+    "name": "City in the Sky Hint Sign",
+    "stage": "D_MN07",
+    "room": 2,
+    "pos": [
+      3376.54,
+      0.0,
+      -12709.0352
+    ]
+  },
+  {
+    "name": "Palace of Twilight Hint Sign",
+    "stage": "D_MN08",
+    "room": 0,
+    "pos": [
+      679.0,
+      -200.0,
+      9311.0
+    ]
+  },
+  {
+    "name": "Hyrule Castle Hint Sign",
+    "stage": "D_MN09",
+    "room": 11,
+    "pos": [
+      0.0,
+      25.0,
+      11625.0
+    ]
+  },
+  {
+    "name": "Arbiters Grounds Hint Sign",
+    "stage": "D_MN10",
+    "room": 2,
+    "pos": [
+      -349.4044,
+      450.0,
+      -2876.90771
+    ]
+  },
+  {
+    "name": "Snowpeak Ruins Hint Sign",
+    "stage": "D_MN11",
+    "room": 1,
+    "pos": [
+      -530.0,
+      0.0,
+      -669.69
+    ]
+  },
+  {
+    "name": "Cave of Ordeals Hint Sign",
+    "stage": "D_SB01",
+    "room": 0,
+    "pos": [
+      -1191.42,
+      1100.0,
+      -260.65
+    ]
+  },
+  {
+    "name": "Lake Lantern Cave Hint Sign",
+    "stage": "D_SB03",
+    "room": 0,
+    "pos": [
+      -2897.38672,
+      -1636.68994,
+      -17674.8691
+    ]
+  },
+  {
+    "name": "Ordon Hint Sign",
+    "stage": "F_SP103",
+    "room": 1,
+    "pos": [
+      687.89,
+      800.0,
+      -1424.16
+    ]
+  },
+  {
+    "name": "South Faron Woods Hint Sign",
+    "stage": "F_SP108",
+    "room": 4,
+    "pos": [
+      -12423.8467,
+      273.277985,
+      -11518.958
+    ]
+  },
+  {
+    "name": "Kakariko Village Hint Sign",
+    "stage": "F_SP109",
+    "room": 0,
+    "pos": [
+      -3347.52734,
+      2999.16138,
+      -2865.99341
+    ]
+  },
+  {
+    "name": "Kakariko Graveyard Hint Sign",
+    "stage": "F_SP111",
+    "room": 0,
+    "pos": [
+      21765.9863,
+      500.0,
+      -62.247
+    ]
+  },
+  {
+    "name": "Zoras Domain Hint Sign",
+    "stage": "F_SP113",
+    "room": 1,
+    "pos": [
+      -2964.84839,
+      -2500.0,
+      17146.2676
+    ]
+  },
+  {
+    "name": "Snowpeak Hint Sign",
+    "stage": "F_SP114",
+    "room": 0,
+    "pos": [
+      15931.9238,
+      -14389.4912,
+      -17388.1992
+    ]
+  },
+  {
+    "name": "Lake Hylia Hint Sign",
+    "stage": "F_SP115",
+    "room": 0,
+    "pos": [
+      -109203.461,
+      -7220.0,
+      33083.7344
+    ]
+  },
+  {
+    "name": "Lanayru Spring Hint Sign",
+    "stage": "F_SP115",
+    "room": 1,
+    "pos": [
+      -309.997833,
+      -1614.82178,
+      157.970795
+    ]
+  },
+  {
+    "name": "Castle Town Center Hint Sign",
+    "stage": "F_SP116",
+    "room": 0,
+    "pos": [
+      0.0,
+      -200.0,
+      835.0
+    ]
+  },
+  {
+    "name": "Sacred Grove Hint Sign",
+    "stage": "F_SP117",
+    "room": 1,
+    "pos": [
+      -1543.0,
+      1725.0,
+      7964.85498
+    ]
+  },
+  {
+    "name": "Bulblin Camp Hint Sign",
+    "stage": "F_SP118",
+    "room": 1,
+    "pos": [
+      -568.556152,
+      260.0,
+      -3969.31
+    ]
+  },
+  {
+    "name": "Eldin Field Hint Sign",
+    "stage": "F_SP121",
+    "room": 0,
+    "pos": [
+      -12433.2744,
+      -1075.2218,
+      20885.7129
+    ]
+  },
+  {
+    "name": "Kakariko Gorge Hint Sign",
+    "stage": "F_SP121",
+    "room": 3,
+    "pos": [
+      -10116.0215,
+      -4923.46191,
+      43064.4375
+    ]
+  },
+  {
+    "name": "Faron Field Hint Sign",
+    "stage": "F_SP121",
+    "room": 6,
+    "pos": [
+      -46039.4922,
+      -9250.0,
+      81859.2891
+    ]
+  },
+  {
+    "name": "North Eldin Field Hint Sign",
+    "stage": "F_SP121",
+    "room": 7,
+    "pos": [
+      18468.8418,
+      1580.0,
+      -63560.9531
+    ]
+  },
+  {
+    "name": "Lanayru Field Hint Sign",
+    "stage": "F_SP121",
+    "room": 10,
+    "pos": [
+      -64943.7422,
+      -1359.66711,
+      -31897.8828
+    ]
+  },
+  {
+    "name": "Lake Hylia Bridge Hint Sign",
+    "stage": "F_SP121",
+    "room": 13,
+    "pos": [
+      -94678.8672,
+      -3900.0,
+      18410.543
+    ]
+  },
+  {
+    "name": "Beside Castle Town Hint Sign",
+    "stage": "F_SP122",
+    "room": 8,
+    "pos": [
+      -80699.5,
+      -765.58374,
+      1903.61462
+    ]
+  },
+  {
+    "name": "Outside South Castle Town Hint Sign",
+    "stage": "F_SP122",
+    "room": 16,
+    "pos": [
+      -51500.0,
+      -5500.0,
+      27368.3086
+    ]
+  },
+  {
+    "name": "Gerudo Desert Hint Sign",
+    "stage": "F_SP124",
+    "room": 0,
+    "pos": [
+      20356.23,
+      556.7,
+      38694.8047
+    ]
+  },
+  {
+    "name": "Fishing Hole Hint Sign",
+    "stage": "F_SP127",
+    "room": 0,
+    "pos": [
+      -2924.74585,
+      35.0,
+      8386.28906
+    ]
+  },
+  {
+    "name": "Hidden Village Hint Sign",
+    "stage": "F_SP128",
+    "room": 0,
+    "pos": [
+      5161.03,
+      0.0,
+      -5264.33
+    ]
+  }
+]
