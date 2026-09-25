@@ -39,6 +39,14 @@ bool trackerMapCheck(const Json& check) {
     return std::find(categories.begin(),categories.end(),"Twilit Insect")==categories.end()
         && state->enabled(check) && !state->skipped.contains(check.at("name").get<std::string>());
 }
+bool isRupeeCheck(const Json& check) {
+    const int type=checkType(check);
+    return type==8 || type==9;
+}
+JUtility::TColor checkDotColor(bool available,bool rupee,u8 alpha) {
+    if(!available) return JUtility::TColor(165,165,165,alpha);
+    return rupee ? JUtility::TColor(65,150,255,alpha) : JUtility::TColor(255,235,30,alpha);
+}
 bool isCoroReward(const std::string& name) {
     return name=="Coro Bottle" || name=="Coro Gate Key" || name=="Coro Lantern";
 }
@@ -218,9 +226,9 @@ void draw(ModContext*, void* args, void*, void*) {
                     auto found = state->accessible.find(name);
                     auto access = found == state->accessible.end() ? Truth::unknown : found->second;
                     JUtility::TColor color = done ? JUtility::TColor(145,145,145,255) : access == Truth::yes ? JUtility::TColor(90,240,115,255) : access == Truth::no ? JUtility::TColor(255,165,155,255) : JUtility::TColor(235,195,85,255);
-                    if (process == dMenu_Fmap_c::PROC_REGION_MAP) {
+                    if (process == dMenu_Fmap_c::PROC_REGION_MAP || isRupeeCheck(check)) {
                         if (done) continue;
-                        auto dot=access==Truth::yes ? JUtility::TColor(255,235,30,255) : JUtility::TColor(165,165,165,255);
+                        auto dot=checkDotColor(access==Truth::yes,isRupeeCheck(check),255);
                         fill(x-2,y-3,4,6,dot); fill(x-3,y-2,6,4,dot);
                     } else {
                     auto* picture = back->mPictures[tear ? ICON_LIGHT_DROP_e : ICON_TREASURE_CHEST_e];
@@ -258,7 +266,7 @@ void draw(ModContext*, void* args, void*, void*) {
     }
     // Static actor positions supplement live TRES (bugs, Poes, wolves, statues,
     // interiors). Exterior anchors are labelled, not presented as indoor coordinates.
-    struct InteriorGroup { float x=0,y=0; std::string label; bool grotto=false; int available=0,done=0,unknown=0; std::set<std::string> checks; };
+    struct InteriorGroup { float x=0,y=0; std::string label; bool grotto=false,rupeesOnly=true; int available=0,done=0,unknown=0; std::set<std::string> checks; };
     std::map<std::string,InteriorGroup> interiors;
     for (const auto& p : worldPositions) {
         const auto& check = state->catalogue.at("checks")[p.check];
@@ -280,6 +288,7 @@ void draw(ModContext*, void* args, void*, void*) {
             group.x=x;group.y=y;group.label=p.label;group.grotto=p.grotto;
             if (group.checks.insert(name).second) {
                 group.done+=done;
+                if(!done) group.rupeesOnly&=isRupeeCheck(check);
                 group.available+=!done && access==Truth::yes;
                 group.unknown+=!done && access==Truth::unknown;
             }
@@ -287,8 +296,8 @@ void draw(ModContext*, void* args, void*, void*) {
             continue;
         }
         if (x>right-14||y>bottom-14) continue;
-        if (process==dMenu_Fmap_c::PROC_REGION_MAP) {
-            auto dot=access==Truth::yes ? JUtility::TColor(255,235,30,255) : JUtility::TColor(165,165,165,255);
+        if (process==dMenu_Fmap_c::PROC_REGION_MAP || isRupeeCheck(check)) {
+            auto dot=checkDotColor(access==Truth::yes,isRupeeCheck(check),255);
             fill(x-2,y-3,4,6,dot);fill(x-3,y-2,6,4,dot);
         }
         else {
@@ -316,8 +325,8 @@ void draw(ModContext*, void* args, void*, void*) {
         auto color=done ? JUtility::TColor(155,155,155,255) : group.available ? JUtility::TColor(110,250,135,255) : group.unknown ? JUtility::TColor(240,205,100,255) : JUtility::TColor(255,180,170,255);
         const bool singleLocked=remaining==1 && group.available==0 && group.unknown==0;
         auto art=iconTextures.find(singleLocked ? "ItemChestLocked" : group.grotto ? "Grotto" : group.available ? "ItemChestAvailable" : "ItemChestLocked");
-        if (process==dMenu_Fmap_c::PROC_REGION_MAP || remaining>1 || group.label=="Coro") {
-            auto dot=group.available ? JUtility::TColor(255,235,30,255) : JUtility::TColor(165,165,165,255);
+        if (process==dMenu_Fmap_c::PROC_REGION_MAP || remaining>1 || group.label=="Coro" || group.rupeesOnly) {
+            auto dot=checkDotColor(group.available>0,group.rupeesOnly,255);
             fill(x-2,y-3,4,6,dot);fill(x-3,y-2,6,4,dot);
             if (remaining>1 && (group.label=="Coro" || (process==dMenu_Fmap_c::PROC_REGION_MAP && !group.available))) {
                 JUtility::TColor ink(240,240,240,255);
@@ -424,11 +433,11 @@ void drawDungeon(ModContext*,void* args,void*,void*) {
         const auto access=a==state->accessible.end() ? Truth::unknown : a->second;
         auto art=iconTextures.find(iconName(check,access));
         graf->setup2D();
-        if(art!=iconTextures.end()) {
+        if(!isRupeeCheck(check) && art!=iconTextures.end()) {
             J2DPicture picture(reinterpret_cast<ResTIMG*>(art->second.data()));
             picture.setAlpha(alpha); picture.draw(x-8,y-8,16,16,false,false,false);
         } else {
-            auto color=access==Truth::yes ? JUtility::TColor(255,235,30,alpha) : JUtility::TColor(165,165,165,alpha);
+            auto color=checkDotColor(access==Truth::yes,isRupeeCheck(check),alpha);
             J2DFillBox(x-2,y-3,4,6,color); J2DFillBox(x-3,y-2,6,4,color);
         }
         drawn.insert(index);
@@ -496,7 +505,7 @@ void drawMini(ModContext*,void* args,void*,void*) {
                 float y = top + (0.5f+(pos->z-map->mPosZ)/map->field_0xc)*miniRect.h;
                 if (!std::isfinite(x) || !std::isfinite(y) || x<left+3 || y<top+3 || x>left+miniRect.w-3 || y>top+miniRect.h-3) continue;
                 auto a = state->accessible.find(name);
-                auto color = a!=state->accessible.end() && a->second==Truth::yes ? JUtility::TColor(255,235,30,meter->mMapAlpha) : JUtility::TColor(165,165,165,meter->mMapAlpha);
+                auto color = checkDotColor(a!=state->accessible.end() && a->second==Truth::yes,isRupeeCheck(check),meter->mMapAlpha);
                 graf->setup2D();
                 J2DFillBox(x-1,y-2,2,4,color); J2DFillBox(x-2,y-1,4,2,color);
                 drawn.insert(index);
@@ -518,12 +527,12 @@ void drawMini(ModContext*,void* args,void*,void*) {
         float y=top+(0.5f+(pos.z-map->mPosZ)/map->field_0xc)*miniRect.h;
         if (!std::isfinite(x)||!std::isfinite(y)||x<left+3||y<top+3||x>left+miniRect.w-3||y>top+miniRect.h-3) continue;
         auto a=state->accessible.find(name);Truth access=a==state->accessible.end()?Truth::unknown:a->second;
-        JUtility::TColor color=access==Truth::yes?JUtility::TColor(255,235,30,meter->mMapAlpha):JUtility::TColor(165,165,165,meter->mMapAlpha);
+        JUtility::TColor color=checkDotColor(access==Truth::yes,isRupeeCheck(check),meter->mMapAlpha);
         graf->setup2D();J2DFillBox(x-1,y-2,2,4,color);J2DFillBox(x-2,y-1,4,2,color);drawn.insert(p.check);
     }
     // Exterior anchors are already room-corrected by the atlas exporter. Do not
     // apply correctionOriginPos again or use an interior's unrelated floor.
-    struct EntranceDot { float x=0,y=0; bool available=false; };
+    struct EntranceDot { float x=0,y=0; bool available=false,rupeesOnly=true; };
     std::map<std::string,EntranceDot> entranceDots;
     for (const auto& p : worldPositions) {
         if (!p.entrance || p.stage!=state->stage || drawn.contains(p.check) ||
@@ -535,13 +544,13 @@ void drawMini(ModContext*,void* args,void*,void*) {
         float y=top+(0.5f+(p.z-map->mPosZ)/map->field_0xc)*miniRect.h;
         if (!std::isfinite(x)||!std::isfinite(y)||x<left+3||y<top+3||x>left+miniRect.w-3||y>top+miniRect.h-3) continue;
         auto& dot=entranceDots[p.stage+":"+p.label];
-        dot.x=x;dot.y=y;
+        dot.x=x;dot.y=y;dot.rupeesOnly&=isRupeeCheck(check);
         const auto access=state->accessible.find(name);
         dot.available|=access!=state->accessible.end() && access->second==Truth::yes;
         drawn.insert(p.check);
     }
     for (const auto& [key,dot] : entranceDots) {
-        auto color=dot.available ? JUtility::TColor(255,235,30,meter->mMapAlpha) : JUtility::TColor(165,165,165,meter->mMapAlpha);
+        auto color=checkDotColor(dot.available,dot.rupeesOnly,meter->mMapAlpha);
         graf->setup2D();
         J2DFillBox(dot.x-1,dot.y-2,2,4,color);J2DFillBox(dot.x-2,dot.y-1,4,2,color);
     }

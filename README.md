@@ -1,4 +1,9 @@
-# TPTracker 0.4.27
+# TPTracker 0.4.28
+
+## 0.4.28 blue rupee markers
+
+Obtainable Hidden Rupees and Freestanding Rupees use blue dots on overworld maps, temple maps and minimaps. Inaccessible rupees stay gray. Interior groups containing only remaining rupee checks also use blue when accessible; mixed groups retain their normal color. Seed gating, category toggles and completion/skip behavior are unchanged.
+
 
 ## 0.4.27 navigation, rupees and check details
 

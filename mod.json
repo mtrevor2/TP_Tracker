@@ -1,7 +1,7 @@
 {
   "id": "com.mikey022.tp_randomizer_tracker",
   "name": "TPTracker",
-  "version": "0.4.27",
+  "version": "0.4.28",
   "author": "mikey022",
   "description": "Native Twilight Princess check and inventory tracker. No external tracker or web bridge.",
   "icon": "res/Poster.png",
