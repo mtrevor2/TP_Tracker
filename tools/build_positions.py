@@ -7,7 +7,7 @@ records=json.loads((root/'build/stage-records.json').read_text(encoding='utf-8')
 transforms=json.loads((root/'build/room-transforms.json').read_text())
 def actor(h):
  b=bytes.fromhex(h)
- return {'actor':b[:8].split(b'\0')[0].decode(errors='replace'),'param':int.from_bytes(b[8:12],'big'),'pos':list(struct.unpack_from('>fff',b,12)),'spawn':int.from_bytes(b[28:30],'big')}
+ return {'actor':b[:8].split(b'\0')[0].decode(errors='replace'),'param':int.from_bytes(b[8:12],'big'),'pos':list(struct.unpack_from('>fff',b,12)),'spawn':int.from_bytes(b[28:30],'big'),'angle_x':int.from_bytes(b[24:26],'big')}
 rooms={};actors={};spawns={};exits={}
 for path,chunks in records.items():
  stage=path.split('/')[-2];m=re.search(r'/R(\d+)_',path);room=int(m[1]) if m else -1
@@ -81,6 +81,28 @@ for check in ('Coro Bottle','Coro Gate Key','Coro Lantern'):
  npc_actors.setdefault(check,set()).update(object_names['NPC_KKRI'])
 for check in ('Sacred Grove Pedestal Master Sword','Sacred Grove Pedestal Shadow Crystal'):
  npc_actors.setdefault(check,set()).update(object_names['Obj_MasterSword'])
+# Item flags may be reassigned by the randomizer (notably Ordon and the
+# Coro boulder). Match the original actor before using its patched flag,
+# otherwise several independent pickups incorrectly collapse onto one point.
+patches=yaml.safe_load((RANDOMIZER/'generator/data/object_patches.yaml').read_text())
+for stage,room_patches in patches.items():
+ for room,changes in room_patches.items():
+  room=-1 if room=='Stage' else int(room)
+  for change in changes:
+   if change['name']!='item':continue
+   pos=[change['position'][axis] for axis in ('x','y','z')]
+   if change['action']=='add':
+    actors.setdefault(stage,[]).append(dict(actor='item',param=change['parameters'],pos=pos,room=room))
+    continue
+   for a in actors.get(stage,[]):
+    if a['actor']!='item' or a['room']!=room or a['param']!=change['parameters']:continue
+    if any(abs(x-y)>0.05 for x,y in zip(a['pos'],pos)):continue
+    if change['action']=='delete':a['actor']='deleted'
+    else:
+     patch=change['patch']
+     a['param']=patch.get('parameters',a['param'])
+     if 'position' in patch:a['pos']=[patch['position'].get(axis,a['pos'][i]) for i,axis in enumerate(('x','y','z'))]
+
 out={};counts={}
 for c in cat['checks']:
  candidates=[];stages=set(c['stages'])
@@ -92,6 +114,9 @@ for c in cat['checks']:
   for a in actors.get(stage,[]):
    name=a['actor'];p=a['param'];match=False
    for flag in c['flags']:
+    if flag['kind']=='item' and name.startswith('carry') and 'Freestanding Item' in c['categories']:match|=(a['angle_x']>>8)==flag['flag']
+    if flag['kind']=='item' and name in ('stone','stoneB') and 'Freestanding Item' in c['categories']:match|=((p>>16)&255)==flag['flag']
+    if flag['kind']=='item' and name=='item' and 'Freestanding Item' in c['categories']:match|=((p>>8)&255)==flag['flag']
     if flag['kind']=='chest' and name.startswith('tbox') and name!='tbox_sw':match|=(((p>>16)&255) if name.startswith('tboxEL') else ((p>>6)&63))==flag['flag']
     if flag['kind']=='switch' and name=='E_hp' and 'Poe' in c['categories']:match|=((p>>8)&255)==flag['flag']
    if name in bugs and 'Golden Bug' in c['categories']:

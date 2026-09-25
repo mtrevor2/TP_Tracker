@@ -236,6 +236,278 @@
       }
     }
   ],
+  "Ordon Bo Cliff Rupee": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -179.00433349609375,
+        1386.263671875,
+        7282.24267578125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -179.00433349609375,
+        1386.263671875,
+        7282.24267578125
+      ]
+    }
+  ],
+  "Ordon Bo Roof Rupee": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        1161.4259033203125,
+        1699.7110595703125,
+        5412.60546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1161.4259033203125,
+        1699.7110595703125,
+        5412.60546875
+      ]
+    }
+  ],
+  "Ordon Bo Window Rupee 1": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        590.0978393554688,
+        1158.028564453125,
+        5215.7802734375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        590.0978393554688,
+        1158.028564453125,
+        5215.7802734375
+      ]
+    }
+  ],
+  "Ordon Bo Window Rupee 2": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        567.5374755859375,
+        1153.66015625,
+        5289.6884765625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        567.5374755859375,
+        1153.66015625,
+        5289.6884765625
+      ]
+    }
+  ],
+  "Ordon Hidden Rusl House Rupee": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -4577.0,
+        579.1799926757812,
+        1967.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4577.0,
+        579.1799926757812,
+        1967.0
+      ]
+    }
+  ],
+  "Ordon Rupee In Grass By Bo": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -2051.65673828125,
+        514.537353515625,
+        6655.431640625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -2051.65673828125,
+        514.537353515625,
+        6655.431640625
+      ]
+    }
+  ],
+  "Ordon Rupee In River 1": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -4401.27490234375,
+        33.243202209472656,
+        4162.23779296875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4401.27490234375,
+        33.243202209472656,
+        4162.23779296875
+      ]
+    }
+  ],
+  "Ordon Rupee In River 2": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -4326.0654296875,
+        28.76333236694336,
+        4208.9892578125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4326.0654296875,
+        28.76333236694336,
+        4208.9892578125
+      ]
+    }
+  ],
+  "Ordon Rupee Under Bridge": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        1360.1588134765625,
+        0.0,
+        2448.8857421875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1360.1588134765625,
+        0.0,
+        2448.8857421875
+      ]
+    }
+  ],
+  "Ordon Rupee Under Tall Tree 1": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -1756.3441162109375,
+        1001.0642700195312,
+        1705.346923828125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1756.3441162109375,
+        1001.0642700195312,
+        1705.346923828125
+      ]
+    }
+  ],
+  "Ordon Rupee Under Tall Tree 2": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -1819.2646484375,
+        984.0989379882812,
+        1665.0623779296875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1819.2646484375,
+        984.0989379882812,
+        1665.0623779296875
+      ]
+    }
+  ],
+  "Ordon Rusl House Roof Rupee 1": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -4739.0400390625,
+        1155.9830322265625,
+        2239.535888671875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4739.0400390625,
+        1155.9830322265625,
+        2239.535888671875
+      ]
+    }
+  ],
+  "Ordon Rusl House Roof Rupee 2": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -4799.52783203125,
+        1130.345703125,
+        2379.662109375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4799.52783203125,
+        1130.345703125,
+        2379.662109375
+      ]
+    }
+  ],
+  "Ordon Shield House Ledge Grass Rupee": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        2836.50244140625,
+        185.0,
+        718.399658203125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        2836.50244140625,
+        185.0,
+        718.399658203125
+      ]
+    }
+  ],
+  "Ordon Tree Long Branch Rupee": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -1382.2867431640625,
+        2665.844482421875,
+        631.5396118164062
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1382.2867431640625,
+        2665.844482421875,
+        631.5396118164062
+      ]
+    }
+  ],
+  "Ordon Tree Short Branch Rupee": [
+    {
+      "stage": "F_SP103",
+      "room": 0,
+      "pos": [
+        -1495.0,
+        2652.82470703125,
+        875.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1495.0,
+        2652.82470703125,
+        875.0
+      ]
+    }
+  ],
   "Herding Goats Reward": [
     {
       "stage": "F_SP00",
@@ -450,6 +722,74 @@
         -13659.43359375,
         -0.45428401231765747,
         -14367.0830078125
+      ]
+    }
+  ],
+  "Faron Woods Coro Boulder Rupee 1": [
+    {
+      "stage": "F_SP108",
+      "room": 4,
+      "pos": [
+        -14761.6201171875,
+        -167.50648498535156,
+        -17239.197265625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -14761.6201171875,
+        -167.50648498535156,
+        -17239.197265625
+      ]
+    }
+  ],
+  "Faron Woods Coro Boulder Rupee 2": [
+    {
+      "stage": "F_SP108",
+      "room": 4,
+      "pos": [
+        -14823.521484375,
+        -207.5598602294922,
+        -17239.197265625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -14823.521484375,
+        -207.5598602294922,
+        -17239.197265625
+      ]
+    }
+  ],
+  "Faron Woods Coro Boulder Rupee 3": [
+    {
+      "stage": "F_SP108",
+      "room": 4,
+      "pos": [
+        -14708.259765625,
+        65.53128051757812,
+        -17336.09375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -14708.259765625,
+        65.53128051757812,
+        -17336.09375
+      ]
+    }
+  ],
+  "Faron Woods Coro Boulder Rupee 4": [
+    {
+      "stage": "F_SP108",
+      "room": 4,
+      "pos": [
+        -14725.6796875,
+        -29.14031982421875,
+        -17190.748046875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -14725.6796875,
+        -29.14031982421875,
+        -17190.748046875
       ]
     }
   ],
@@ -1162,6 +1502,23 @@
       ]
     }
   ],
+  "Kakariko Gorge Owl Statue Boulder Rupee": [
+    {
+      "stage": "F_SP121",
+      "room": 3,
+      "pos": [
+        -13912.9658203125,
+        -4696.61279296875,
+        45022.16796875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -13912.9658203125,
+        -4696.61279296875,
+        45022.16796875
+      ]
+    }
+  ],
   "Kakariko Gorge Poe": [
     {
       "stage": "F_SP121",
@@ -1193,6 +1550,23 @@
         -22100.0,
         -7176.02978515625,
         52140.0
+      ]
+    }
+  ],
+  "Kakariko Gorge Spire Boulder Rupee": [
+    {
+      "stage": "F_SP121",
+      "room": 3,
+      "pos": [
+        -25921.890625,
+        -5103.1923828125,
+        55976.52734375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -25921.890625,
+        -5103.1923828125,
+        55976.52734375
       ]
     }
   ],
@@ -1306,6 +1680,91 @@
         1300.0,
         -1600.0,
         16700.0
+      ]
+    }
+  ],
+  "Eldin Spring Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        520.8057861328125,
+        -1400.0,
+        15833.8369140625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        520.8057861328125,
+        -1400.0,
+        15833.8369140625
+      ]
+    }
+  ],
+  "Kakariko Village Bell Rupee": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        1504.9676513671875,
+        2650.0,
+        5668.5732421875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1504.9676513671875,
+        2650.0,
+        5668.5732421875
+      ]
+    }
+  ],
+  "Kakariko Village Hot Spring Ledge Box Rupee": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        -2896.802490234375,
+        2741.35009765625,
+        -3849.821533203125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -2896.802490234375,
+        2741.35009765625,
+        -3849.821533203125
+      ]
+    }
+  ],
+  "Kakariko Village Spring Shortcut Box Rupee 1": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        -3832.7685546875,
+        5.257719039916992,
+        12177.0380859375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -3832.7685546875,
+        5.257719039916992,
+        12177.0380859375
+      ]
+    }
+  ],
+  "Kakariko Village Spring Shortcut Box Rupee 2": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        -3732.7685546875,
+        0.0,
+        12127.0380859375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -3732.7685546875,
+        0.0,
+        12127.0380859375
       ]
     }
   ],
@@ -1495,6 +1954,23 @@
         "label": "Kakariko Bug House",
         "grotto": false
       }
+    }
+  ],
+  "Kakariko Village Ant House Ledge Box Rupee": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        854.247314453125,
+        1607.77001953125,
+        -535.042724609375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        854.247314453125,
+        1607.77001953125,
+        -535.042724609375
+      ]
     }
   ],
   "Barnes Bomb Bag": [
@@ -1823,6 +2299,23 @@
       ]
     }
   ],
+  "Kakariko Graveyard Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP111",
+      "room": 0,
+      "pos": [
+        20346.119140625,
+        -100.0,
+        1348.5125732421875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        20346.119140625,
+        -100.0,
+        1348.5125732421875
+      ]
+    }
+  ],
   "Kakariko Graveyard Golden Wolf": [
     {
       "stage": "F_SP111",
@@ -1888,6 +2381,74 @@
         -1646.010986328125,
         379.29998779296875,
         8487.9677734375
+      ]
+    }
+  ],
+  "Death Mountain Volcano Ledge Rupee 1": [
+    {
+      "stage": "F_SP110",
+      "room": 3,
+      "pos": [
+        -2596.9111328125,
+        3940.0,
+        -2923.733154296875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -2596.9111328125,
+        3940.0,
+        -2923.733154296875
+      ]
+    }
+  ],
+  "Death Mountain Volcano Ledge Rupee 2": [
+    {
+      "stage": "F_SP110",
+      "room": 3,
+      "pos": [
+        -2453.302978515625,
+        3940.0,
+        -2846.7998046875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -2453.302978515625,
+        3940.0,
+        -2846.7998046875
+      ]
+    }
+  ],
+  "Death Mountain Volcano Ledge Rupee 3": [
+    {
+      "stage": "F_SP110",
+      "room": 3,
+      "pos": [
+        -2314.823974609375,
+        3940.0,
+        -2785.25341796875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -2314.823974609375,
+        3940.0,
+        -2785.25341796875
+      ]
+    }
+  ],
+  "Death Mountain Volcano Pipe Ledge Rock Rupee": [
+    {
+      "stage": "F_SP110",
+      "room": 3,
+      "pos": [
+        135.0,
+        200.0,
+        -5670.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        135.0,
+        200.0,
+        -5670.0
       ]
     }
   ],
@@ -2114,6 +2675,23 @@
       ]
     }
   ],
+  "Bridge of Eldin Boulder Rupee": [
+    {
+      "stage": "F_SP121",
+      "room": 0,
+      "pos": [
+        37650.0,
+        -29.709775924682617,
+        -40100.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        37650.0,
+        -29.709775924682617,
+        -40100.0
+      ]
+    }
+  ],
   "Eldin Stockcave Upper Chest": [
     {
       "stage": "D_SB04",
@@ -2333,6 +2911,57 @@
       ]
     }
   ],
+  "Lanayru Field North Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP121",
+      "room": 10,
+      "pos": [
+        -45517.48828125,
+        -3607.520751953125,
+        -40587.76171875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -45517.48828125,
+        -3607.520751953125,
+        -40587.76171875
+      ]
+    }
+  ],
+  "Lanayru Field South Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP121",
+      "room": 10,
+      "pos": [
+        -44990.1484375,
+        -4572.04052734375,
+        -29624.35546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -44990.1484375,
+        -4572.04052734375,
+        -29624.35546875
+      ]
+    }
+  ],
+  "Lanayru Field Tree Boulder Rupee": [
+    {
+      "stage": "F_SP121",
+      "room": 10,
+      "pos": [
+        -72071.4921875,
+        -356.37451171875,
+        -34067.97265625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -72071.4921875,
+        -356.37451171875,
+        -34067.97265625
+      ]
+    }
+  ],
   "Lanayru Field Bridge Poe": [
     {
       "stage": "F_SP121",
@@ -2497,6 +3126,40 @@
       ]
     }
   ],
+  "Lanayru Field North Spinner Track Boulder Rupee": [
+    {
+      "stage": "F_SP121",
+      "room": 10,
+      "pos": [
+        -75900.0,
+        800.0,
+        -31850.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -75900.0,
+        800.0,
+        -31850.0
+      ]
+    }
+  ],
+  "Lanayru Field South Spinner Track Boulder Rupee": [
+    {
+      "stage": "F_SP121",
+      "room": 12,
+      "pos": [
+        -94250.0,
+        -2750.0,
+        4650.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -94250.0,
+        -2750.0,
+        4650.0
+      ]
+    }
+  ],
   "West Hyrule Field Female Butterfly": [
     {
       "stage": "F_SP122",
@@ -2543,6 +3206,40 @@
         -75063.0546875,
         -421.14093017578125,
         16017.3466796875
+      ]
+    }
+  ],
+  "West Hyrule Field Northern Boulder Rupee": [
+    {
+      "stage": "F_SP122",
+      "room": 8,
+      "pos": [
+        -70996.265625,
+        -1007.8360595703125,
+        -6918.06298828125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -70996.265625,
+        -1007.8360595703125,
+        -6918.06298828125
+      ]
+    }
+  ],
+  "West Hyrule Field Southern Boulder Rupee": [
+    {
+      "stage": "F_SP122",
+      "room": 8,
+      "pos": [
+        -71811.1953125,
+        -1902.7158203125,
+        -445.1954650878906
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -71811.1953125,
+        -1902.7158203125,
+        -445.1954650878906
       ]
     }
   ],
@@ -3653,6 +4350,23 @@
       ]
     }
   ],
+  "Outside South Castle Town Boulder Rupee": [
+    {
+      "stage": "F_SP122",
+      "room": 16,
+      "pos": [
+        -46178.421875,
+        -5826.849609375,
+        26267.83984375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -46178.421875,
+        -5826.849609375,
+        26267.83984375
+      ]
+    }
+  ],
   "Wooden Statue": [
     {
       "stage": "F_SP122",
@@ -3701,6 +4415,23 @@
         -94664.0,
         -5040.0,
         18311.0
+      ]
+    }
+  ],
+  "Lake Hylia Bridge Owl Statue Boulder Rupee": [
+    {
+      "stage": "F_SP121",
+      "room": 13,
+      "pos": [
+        -89967.953125,
+        -5007.876953125,
+        21934.484375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -89967.953125,
+        -5007.876953125,
+        21934.484375
       ]
     }
   ],
@@ -3811,6 +4542,23 @@
         "label": "Lake Hylia Bridge Bubble Grotto",
         "grotto": true
       }
+    }
+  ],
+  "Lake Hylia Bridge Faron Boulder Rupee": [
+    {
+      "stage": "F_SP121",
+      "room": 13,
+      "pos": [
+        -78532.59375,
+        -7388.525390625,
+        58735.29296875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -78532.59375,
+        -7388.525390625,
+        58735.29296875
+      ]
     }
   ],
   "Auru Gift To Fyer": [
@@ -4320,6 +5068,74 @@
       ]
     }
   ],
+  "Lake Hylia Left Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -94754.4296875,
+        -31915.41015625,
+        40178.7109375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -94754.4296875,
+        -31915.41015625,
+        40178.7109375
+      ]
+    }
+  ],
+  "Lake Hylia Left Underwater Pillar Rupee": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -94449.625,
+        -30463.99609375,
+        41279.72265625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -94449.625,
+        -30463.99609375,
+        41279.72265625
+      ]
+    }
+  ],
+  "Lake Hylia Right Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -92124.4453125,
+        -31630.9453125,
+        41673.6171875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -92124.4453125,
+        -31630.9453125,
+        41673.6171875
+      ]
+    }
+  ],
+  "Lake Hylia Right Underwater Pillar Rupee": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -92301.0078125,
+        -31192.546875,
+        39636.15625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -92301.0078125,
+        -31192.546875,
+        39636.15625
+      ]
+    }
+  ],
   "Lake Hylia Alcove Poe": [
     {
       "stage": "F_SP115",
@@ -4651,49 +5467,35 @@
   "Lanayru Spring Lower Underwater Boulder Rupee": [
     {
       "stage": "F_SP115",
-      "room": -1,
+      "room": 1,
       "pos": [
-        0,
-        0,
-        0
+        -713.0348510742188,
+        -1542.1094970703125,
+        -331.38824462890625
       ],
-      "local": false,
-      "overworld": {
-        "stage": "F_SP115",
-        "room": 0,
-        "pos": [
-          -90300.0,
-          -18710.078125,
-          52280.23046875
-        ],
-        "anchor": "exterior entrance",
-        "label": "Lake Hylia Lanayru Spring",
-        "grotto": true
-      }
+      "anchor": "actor",
+      "world_pos": [
+        -90713.03485107422,
+        -1542.1094970703125,
+        57668.611755371094
+      ]
     }
   ],
   "Lanayru Spring Upper Underwater Boulder Rupee": [
     {
       "stage": "F_SP115",
-      "room": -1,
+      "room": 1,
       "pos": [
-        0,
-        0,
-        0
+        -1130.9765625,
+        -1065.379150390625,
+        1712.9237060546875
       ],
-      "local": false,
-      "overworld": {
-        "stage": "F_SP115",
-        "room": 0,
-        "pos": [
-          -90300.0,
-          -18710.078125,
-          52280.23046875
-        ],
-        "anchor": "exterior entrance",
-        "label": "Lake Hylia Lanayru Spring",
-        "grotto": true
-      }
+      "anchor": "actor",
+      "world_pos": [
+        -91130.9765625,
+        -1065.379150390625,
+        59712.92370605469
+      ]
     }
   ],
   "Upper Zoras River Female Dragonfly": [
@@ -4710,6 +5512,74 @@
         -1650.4501953125,
         80.77571105957031,
         -102121.2275390625
+      ]
+    }
+  ],
+  "Upper Zoras River Central Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP126",
+      "room": 0,
+      "pos": [
+        1310.5755615234375,
+        -1978.78564453125,
+        -919.7244873046875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -6189.4244384765625,
+        -1978.78564453125,
+        -101919.72448730469
+      ]
+    }
+  ],
+  "Upper Zoras River East Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP126",
+      "room": 0,
+      "pos": [
+        3414.7001953125,
+        -1126.488037109375,
+        4088.664306640625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4085.2998046875,
+        -1126.488037109375,
+        -96911.33569335938
+      ]
+    }
+  ],
+  "Upper Zoras River Ledge Boulder Rupee": [
+    {
+      "stage": "F_SP126",
+      "room": 0,
+      "pos": [
+        -165.7960662841797,
+        385.88818359375,
+        -3189.212890625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -7665.79606628418,
+        385.88818359375,
+        -104189.212890625
+      ]
+    }
+  ],
+  "Upper Zoras River West Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP126",
+      "room": 0,
+      "pos": [
+        -991.28662109375,
+        -1536.31591796875,
+        1265.1947021484375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -8491.28662109375,
+        -1536.31591796875,
+        -99734.80529785156
       ]
     }
   ],
@@ -4887,6 +5757,174 @@
       ]
     }
   ],
+  "Zoras Domain Behind Waterfall Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        1718.60986328125,
+        -3746.050537109375,
+        7712.47119140625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1718.60986328125,
+        -3746.050537109375,
+        7712.47119140625
+      ]
+    }
+  ],
+  "Zoras Domain Central Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        192.3341827392578,
+        -8410.05078125,
+        12804.083984375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        192.3341827392578,
+        -8410.05078125,
+        12804.083984375
+      ]
+    }
+  ],
+  "Zoras Domain North Underwater Boulder Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        59.0531120300293,
+        -8793.5107421875,
+        8390.6220703125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        59.0531120300293,
+        -8793.5107421875,
+        8390.6220703125
+      ]
+    }
+  ],
+  "Zoras Domain Shortcut Ledge Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        -2102.0419921875,
+        -1943.800048828125,
+        10099.1015625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -2102.0419921875,
+        -1943.800048828125,
+        10099.1015625
+      ]
+    }
+  ],
+  "Zoras Domain Shortcut Lower Boulder Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        -4679.72705078125,
+        -1048.6497802734375,
+        6724.98876953125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4679.72705078125,
+        -1048.6497802734375,
+        6724.98876953125
+      ]
+    }
+  ],
+  "Zoras Domain Shortcut Upper Boulder Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        -3725.782470703125,
+        -659.6610717773438,
+        6770.3798828125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -3725.782470703125,
+        -659.6610717773438,
+        6770.3798828125
+      ]
+    }
+  ],
+  "Zoras Domain Top Ledge Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        -1678.0706787109375,
+        -402.20001220703125,
+        8457.9130859375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1678.0706787109375,
+        -402.20001220703125,
+        8457.9130859375
+      ]
+    },
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        -2152.6767578125,
+        -1943.800048828125,
+        10098.0888671875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -2152.6767578125,
+        -1943.800048828125,
+        10098.0888671875
+      ]
+    }
+  ],
+  "Zoras Domain Vine Ledge Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        -1627.8746337890625,
+        -2013.9801025390625,
+        8958.861328125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1627.8746337890625,
+        -2013.9801025390625,
+        8958.861328125
+      ]
+    }
+  ],
+  "Zoras Domain Waterfall Ledge Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 1,
+      "pos": [
+        -1133.89306640625,
+        -3841.669921875,
+        8646.486328125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1133.89306640625,
+        -3841.669921875,
+        8646.486328125
+      ]
+    }
+  ],
   "Zoras Domain Extinguish All Torches Chest": [
     {
       "stage": "F_SP113",
@@ -4918,6 +5956,108 @@
         200.0,
         -349.6226806640625,
         -1900.0
+      ]
+    }
+  ],
+  "Zoras Domain Throne East Gate Underwater Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 0,
+      "pos": [
+        640.6141357421875,
+        -1058.357421875,
+        -185.50799560546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        640.6141357421875,
+        -1058.357421875,
+        -185.50799560546875
+      ]
+    }
+  ],
+  "Zoras Domain Throne East Underwater Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 0,
+      "pos": [
+        1721.93408203125,
+        -2842.921630859375,
+        -3501.987060546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        1721.93408203125,
+        -2842.921630859375,
+        -3501.987060546875
+      ]
+    }
+  ],
+  "Zoras Domain Throne Northwest Underwater Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 0,
+      "pos": [
+        -1103.8702392578125,
+        -1740.0350341796875,
+        -5082.32275390625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1103.8702392578125,
+        -1740.0350341796875,
+        -5082.32275390625
+      ]
+    }
+  ],
+  "Zoras Domain Throne South Underwater Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 0,
+      "pos": [
+        -170.34561157226562,
+        -2500.961181640625,
+        -906.6925048828125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -170.34561157226562,
+        -2500.961181640625,
+        -906.6925048828125
+      ]
+    }
+  ],
+  "Zoras Domain Throne West Gate Underwater Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 0,
+      "pos": [
+        -541.8400268554688,
+        -1095.5391845703125,
+        -181.86585998535156
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -541.8400268554688,
+        -1095.5391845703125,
+        -181.86585998535156
+      ]
+    }
+  ],
+  "Zoras Domain Throne West Underwater Rupee": [
+    {
+      "stage": "F_SP113",
+      "room": 0,
+      "pos": [
+        -1879.4649658203125,
+        -2820.2216796875,
+        -4813.44189453125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -1879.4649658203125,
+        -2820.2216796875,
+        -4813.44189453125
       ]
     }
   ],
@@ -5108,6 +6248,329 @@
         -15339.2548828125,
         1600.0,
         -9847.228515625
+      ]
+    }
+  ],
+  "Snowboarding Bridge Ledge Bottom Rupee": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -48119.171875,
+        0.0,
+        -2599.256103515625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -48119.171875,
+        0.0,
+        -2599.256103515625
+      ]
+    }
+  ],
+  "Snowboarding Bridge Ledge Middle Rupee": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -46534.28125,
+        11544.2265625,
+        -8413.3955078125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -46534.28125,
+        11544.2265625,
+        -8413.3955078125
+      ]
+    }
+  ],
+  "Snowboarding Bridge Ledge Upper Rupee": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -43177.66796875,
+        15660.8828125,
+        -9569.9169921875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -43177.66796875,
+        15660.8828125,
+        -9569.9169921875
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 1": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -47645.078125,
+        0.0,
+        39380.15234375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -47645.078125,
+        0.0,
+        39380.15234375
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 2": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -46933.09375,
+        0.0,
+        40671.33984375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -46933.09375,
+        0.0,
+        40671.33984375
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 3": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -44577.45703125,
+        0.0,
+        47715.25390625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -44577.45703125,
+        0.0,
+        47715.25390625
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 4": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -44606.390625,
+        0.0,
+        48379.03125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -44606.390625,
+        0.0,
+        48379.03125
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 5": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -44649.34765625,
+        0.0,
+        48967.97265625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -44649.34765625,
+        0.0,
+        48967.97265625
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 6": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -44645.703125,
+        0.0,
+        50150.0078125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -44645.703125,
+        0.0,
+        50150.0078125
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 7": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -44480.6953125,
+        0.0,
+        51324.0078125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -44480.6953125,
+        0.0,
+        51324.0078125
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 8": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -43814.9921875,
+        0.0,
+        55098.53125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -43814.9921875,
+        0.0,
+        55098.53125
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 9": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -43624.30078125,
+        0.0,
+        57275.41796875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -43624.30078125,
+        0.0,
+        57275.41796875
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 10": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -43662.1171875,
+        0.0,
+        59659.77734375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -43662.1171875,
+        0.0,
+        59659.77734375
+      ]
+    }
+  ],
+  "Snowboarding Shortcut Rupee 11": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -44644.55859375,
+        0.0,
+        62885.18359375
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -44644.55859375,
+        0.0,
+        62885.18359375
+      ]
+    }
+  ],
+  "Snowboarding Snowy Tree Top Rupee 1": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -48988.61328125,
+        -27072.4296875,
+        22625.138671875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -48988.61328125,
+        -27072.4296875,
+        22625.138671875
+      ]
+    }
+  ],
+  "Snowboarding Snowy Tree Top Rupee 2": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -49091.05859375,
+        0.0,
+        25205.296875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -49091.05859375,
+        0.0,
+        25205.296875
+      ]
+    }
+  ],
+  "Snowboarding Snowy Tree Top Rupee 3": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -49256.0,
+        0.0,
+        27146.310546875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -49256.0,
+        0.0,
+        27146.310546875
+      ]
+    }
+  ],
+  "Snowboarding Top Left Rupee": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -33332.109375,
+        15760.8828125,
+        -5062.1845703125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -33332.109375,
+        15760.8828125,
+        -5062.1845703125
+      ]
+    }
+  ],
+  "Snowboarding Top Right Rupee": [
+    {
+      "stage": "F_SP114",
+      "room": 1,
+      "pos": [
+        -36254.51953125,
+        15760.8828125,
+        -13958.623046875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -36254.51953125,
+        15760.8828125,
+        -13958.623046875
       ]
     }
   ],

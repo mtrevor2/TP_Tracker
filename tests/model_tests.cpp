@@ -249,6 +249,70 @@ int main(int argc, char** argv) {
             ++ballBugs;
         }
         require(ballBugs==9,"expected nine tool-gated bug pickup routes");
+        // The async worker must return the same area/event state that produced
+        // OPEN/LOCKED, without overwriting notes, skips or the live inventory.
+        auto worker=warp; worker.solve();
+        const auto expectedAreas=worker.reached;
+        const auto expectedEvents=worker.events;
+        auto result=worker.takeLogicResult();
+        Model live=warp; live.reached.clear(); live.events.clear(); live.accessible.clear();
+        live.skipped.insert("Faron Mist Stump Chest");
+        live.inventory["Lantern"]=1;
+        live.applyLogicResult(std::move(result));
+        require(live.reached==expectedAreas && live.events==expectedEvents,"worker discarded area/event results");
+        require(live.checkDetails("Flight By Fowl Second Platform Chest").find("Area access: OPEN")!=std::string::npos,"async details report UNKNOWN for a reachable area");
+        require(live.skipped.contains("Faron Mist Stump Chest") && live.inventory.at("Lantern")==1,"worker replaced live user state");
+        // Each rupee type has its own seed switch and map visibility category.
+        int freeRupees=0,hiddenRupees=0;
+        for(const auto& check:data.at("checks")) {
+            const int type=checkType(check);
+            if(type!=8 && type!=9) continue;
+            const char* setting=type==8 ? "Freestanding Rupees" : "Hidden Rupees";
+            type==8 ? ++freeRupees : ++hiddenRupees;
+            live.settings["Freestanding Rupees"]=live.settings["Hidden Rupees"]="On";
+            require(live.enabled(check),"enabled rupee excluded from tracker");
+            live.settings[setting]="Off";
+            require(!live.enabled(check),"disabled seed rupee included in tracker");
+            live.settings.erase(setting);
+            require(!live.enabled(check),"rupee included without an enabled seed setting");
+        }
+        require(freeRupees==51 && hiddenRupees==37,"rupee category coverage incomplete");
+        Model rupeeCounts; rupeeCounts.load(data);
+        rupeeCounts.settings["Freestanding Rupees"]=rupeeCounts.settings["Hidden Rupees"]="On";
+        bool visibleTypes[10]={true,true,true,true,true,true,true,true,true,true};
+        for(const auto& check:data.at("checks")) {
+            const int type=checkType(check);
+            if(type<8 || !dungeonCheck(check)) continue;
+            const std::string name=check.at("name"), dungeon=check.at("group");
+            rupeeCounts.accessible.clear(); rupeeCounts.accessible[name]=Truth::yes;
+            require(rupeeCounts.availableDungeonChecks(dungeon,visibleTypes)==1,"enabled dungeon rupee absent from temple count");
+            visibleTypes[type]=false;
+            require(rupeeCounts.availableDungeonChecks(dungeon,visibleTypes)==0,"hidden rupee category included in temple count");
+            require(rupeeCounts.availableDungeonChecks(dungeon)==1,"map filter changed unfiltered availability");
+            visibleTypes[type]=true;
+        }
+        // Isolate the dungeon route from the overworld approach. Local combat
+        // equipment alone must not bypass locked doors on the way to Chapel.
+        auto snowData=data;
+        for(auto& area:snowData["areas"]) if(area["Name"]=="Root")
+            {
+            area["Exits"]={{"Snowpeak Ruins Entrance","Human_Link"}};
+            area["Events"]={{"Can Refill Regular Bombs","Nothing"}};
+        }
+        Model snow; snow.load(snowData); snow.seedLoaded=true; snow.settings=warp.settings;
+        snow.settings["Small Keys"]="Own Dungeon";
+        for(const auto& item:data.at("items")) snow.inventory[item.at("Name")]=0;
+        snow.inventory["Shadow Crystal"]=1; snow.inventory["Progressive Sword"]=2;
+        snow.inventory["Ball and Chain"]=1; snow.inventory["Bomb Bag"]=2;
+        snow.countedItems.insert("Snowpeak Ruins Small Key");
+        snow.solve();
+        require(snow.accessible.at("Snowpeak Ruins Chapel Chest")!=Truth::yes,"Chapel route bypasses small keys");
+        snow.inventory["Snowpeak Ruins Small Key"]=4; snow.inventory["Ordon Cheese"]=1; snow.solve();
+        require(snow.accessible.at("Snowpeak Ruins Chapel Chest")==Truth::yes,"equipped four-key Snowpeak route remains locked");
+        require(snow.accessible.at("Snowpeak Ruins Broken Floor Chest")==Truth::yes,"reachable broken-floor chest remains locked");
+        require(snow.checkDetails("Snowpeak Ruins Chapel Chest").find("Area access: OPEN")!=std::string::npos,"Chapel area access differs from check state");
+        snow.inventory["Snowpeak Ruins Small Key"]=0; snow.inventory["Ordon Cheese"]=0; snow.settings["Small Keys"]="Keysy"; snow.solve();
+        require(snow.accessible.at("Snowpeak Ruins Chapel Chest")==Truth::yes,"Keysy Chapel route incorrectly needs keys");
         Model shops; shops.load(data);
         shops.settings=warp.settings; shops.seedLoaded=true;
         for (const auto& item : data.at("items")) shops.inventory[item.at("Name")]=0;

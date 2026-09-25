@@ -2,6 +2,14 @@
 
 The authoritative reference is this checkout's Randomizer, rather than a generic vanilla walkthrough. The wiki's List of Randomizer Checks explicitly says it is not a definitive logic-based list: https://wiki.tprandomizer.com/index.php?title=List_of_Randomizer_Checks .
 
+## 0.4.27 follow-up
+
+The async solver previously transferred only check statuses back to the UI model. Its area/form reachability and event maps were discarded, so details incorrectly displayed UNKNOWN even for solved areas. These maps now transfer atomically with the status result, retaining the existing generation guard and leaving live inventory, skips and completion data untouched.
+
+Snowpeak regression fixtures verify that local combat equipment does not bypass the route into Chapel. Own Dungeon small keys plus the cheese gate permit the equipped route, and Keysy supplies the supported alternative. Missing route requirements remain locked; this fix does not mark an entire dungeon reachable just because Link entered it.
+
+The 51 Freestanding and 37 Hidden Rupee checks require their seed option to be On. Both kinds have separate map/minimap filters. Coordinates come from item, stone/stoneB and carry actor flags, including the randomizer's object-patch reassignment of shared vanilla flags. All 88 have verified stage/room actor positions; raw stage records are not distributed. Asset validation covers 541 mapped checks and all 14 separate boss/miniboss entrance groups.
+
 ## Confirmed fixes
 
 `randomizer/src/item.cpp` grants Coro's key by setting stage-save 2, switch 0x0C. The vanilla check function reads the current area's key count, so it cannot identify this randomized key. TPTracker now reads the persistent switch. North Faron's key similarly uses stage-save 2, switch 0x14; escort Gate Keys use event 0x0810.

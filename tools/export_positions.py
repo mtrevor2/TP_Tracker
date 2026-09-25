@@ -71,8 +71,8 @@ if __name__=='__main__':
     chunks={}
     for i in range(u32(b,0)):
      p=4+12*i;tag=b[p:p+4].decode();n=u32(b,p+4);o=u32(b,p+8)
-     if tag in ('TRES','ACTR','SCOB','PLYR','SCLS','FILI','Door') or tag.startswith(('ACT','TRE','SCO')):
-      step=13 if tag=='SCLS' else 36 if tag=='Door' or tag.startswith('SCO') else 32
+     if tag in ('TRES','ACTR','SCOB','PLYR','SCLS','FILI','Door','TGOB','TGSC') or tag.startswith(('ACT','TRE','SCO')):
+      step=13 if tag=='SCLS' else 36 if tag in ('Door','TGSC') or tag.startswith('SCO') else 32
       chunks[tag]=[b[o+j*step:o+(j+1)*step].hex() for j in range(n)]
     records[path]=chunks
  (ROOT/'build/stage-records.json').write_text(json.dumps(records))

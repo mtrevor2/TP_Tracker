@@ -114,3 +114,19 @@ assert set(darkhammer['checks'])=={'Snowpeak Ruins Ball and Chain','Snowpeak Rui
 assert darkhammer['room']==blizzeta['room']==4
 assert darkhammer['pos'][1] < blizzeta['pos'][1]  # Same XZ, different floors.
 print(f'Validated {len(arenas)} boss/miniboss entrance groups.')
+
+# All seed-shuffled rupees need a local anchor, including crates and rocks.
+rupees=[c for c in checks.values() if any(cat in c['categories'] for cat in ('Rupee - Freestanding','Rupee - Hidden'))]
+assert len(rupees)==88
+for c in rupees:
+    assert c['name'] in positions, c['name']
+    assert all(p.get('local',True) and p['stage'] in c['stages'] and p['room']>=0 for p in positions[c['name']]),c['name']
+# Coro's shared vanilla flag is split by randomizer object patches.
+coro_rupees=[positions[f'Faron Woods Coro Boulder Rupee {i}'] for i in range(1,5)]
+assert all(len(points)==1 for points in coro_rupees)
+assert len({tuple(points[0]['pos']) for points in coro_rupees})==4
+assert positions['Kakariko Village Hot Spring Ledge Box Rupee'][0]['pos'][1]>2700
+assert positions['Death Mountain Volcano Pipe Ledge Rock Rupee'][0]['room']==3
+for name in ('HiddenRupeeAvailable','HiddenRupeeLocked'):
+    assert (root/f'res/icons/{name}.bti').exists()
+print('Validated all 88 rupee checks, including patched pickup flags and container sources.')

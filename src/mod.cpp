@@ -46,7 +46,7 @@ UiElementHandle detailText = 0, detailButton = 0;
 std::string selectedCheck;
 std::string detailMarkup;
 uint64_t detailRevision=0;
-std::vector<UiElementHandle> detailSections, detailAnchors;
+std::vector<UiElementHandle> detailSections, detailAnchors, detailBlocks;
 size_t detailSectionCount=0;
 int detailScrollRow=0;
 tracker::StickNavigation detailNavigation;
@@ -72,10 +72,11 @@ UiElementHandle bindingButtons[2]{};
 bool shortcutHeld = true;
 int64_t previousKeyboard = -1, previousController = -1;
 UiElementHandle inventoryElement = 0, checksElement = 0;
+std::vector<UiElementHandle> inventorySections, inventoryBlocks;
 UiElementHandle settingsStatus = 0, countElement = 0;
 constexpr size_t pageSize = 10;
 size_t checkPage = 0, totalPages = 1, visibleRows = 0;
-bool focusPageStart = false;
+bool restorePageFocus = false;
 UiElementHandle pageControl = 0;
 std::vector<UiElementHandle> checkRows, headingRows;
 std::vector<std::string> visibleNames;
@@ -85,7 +86,7 @@ std::vector<std::string> personalNotes;
 std::vector<UiElementHandle> personalCards, personalDeletes;
 Json inventoryArt=Json::object();
 UiElementHandle notesElement=0, newNoteControl=0;
-std::vector<UiElementHandle> hintSections, hintAnchors;
+std::vector<UiElementHandle> hintSections, hintAnchors, hintBlocks;
 size_t hintSectionCount=0;
 tracker::StickNavigation notesNavigation;
 int notesScrollRow=0;
@@ -102,22 +103,22 @@ bool engineDirty = false;
 bool seedRefreshPending = false;
 int statusFilter = 0;
 uint64_t revision = 1, renderedRevision = 0;
-void previousPage(ModContext*,void*) { if (checkPage) { --checkPage; ++revision; focusPageStart=true; } }
-void nextPage(ModContext*,void*) { if (checkPage+1<totalPages) { ++checkPage; ++revision; focusPageStart=true; } }
+void previousPage(ModContext*,void*) { if (checkPage) { --checkPage; ++revision; } }
+void nextPage(ModContext*,void*) { if (checkPage+1<totalPages) { ++checkPage; ++revision; } }
 bool previousDisabled(ModContext*,void*) { return checkPage==0; }
 bool nextDisabled(ModContext*,void*) { return checkPage+1>=totalPages; }
 bool rowDisabled(ModContext*,void* data) { return reinterpret_cast<uintptr_t>(data)>=visibleRows; }
 void pageGet(ModContext*,void*,UiControlValue* v) { v->int_value=checkPage+1; }
 void pageSet(ModContext*,void*,const UiControlValue* v) {
     size_t next=static_cast<size_t>(std::clamp<int64_t>(v->int_value,1,static_cast<int64_t>(totalPages)))-1;
-    if (next!=checkPage) { checkPage=next; ++revision; focusPageStart=true; }
+    if (next!=checkPage) { checkPage=next; ++revision; }
 }
 uint64_t logicGeneration = 0, runningGeneration = 0;
 bool logicRequested = false;
-std::future<std::map<std::string, Truth>> logicJob;
+std::future<tracker::LogicResult> logicJob;
 std::string search;
 std::string status = "Select this save's anti-spoiler log in F1 > Mods > TPTracker.";
-std::string lastInventory, lastChecks;
+std::string lastChecks;
 std::set<std::string> journal;
 std::chrono::steady_clock::time_point nextScan{};
 constexpr const char* blobName = "tracker-v1";
@@ -125,9 +126,8 @@ constexpr const char* blobName = "tracker-v1";
 const char* styles = R"(
 window { max-width: 1120dp; max-height: 800dp; background-color: #211e15; border-color: #9b8955; }
 window content pane { font-size: 17dp; }
-window content { flex-direction: row-reverse; }
-window content pane:first-child { flex: 1; background-color: #302c20; }
-window content pane:last-child { flex: 0 0 32%; background-color: #191a15; }
+window content pane:first-child { flex: 0 0 32%; background-color: #191a15; }
+window content pane:last-child { flex: 1; background-color: #302c20; }
 .tp-title { display: block; color: #e6d39e; font-size: 24dp; font-weight: bold; margin-bottom: 12dp; }
 .tp-note { display: block; color: #c5baa0; font-size: 14dp; margin-top: 4dp; margin-bottom: 12dp; }
 .tp-group { display: block; color: #e6d39e; font-size: 20dp; margin-top: 18dp; margin-bottom: 8dp; border-bottom: 2dp #9b8955; padding-bottom: 6dp; }
@@ -142,6 +142,7 @@ window content pane:last-child { flex: 0 0 32%; background-color: #191a15; }
 .tp-check.skipped { color: #cd91f4; text-decoration: line-through; }
 .tp-detail-sections { display: block; }
 .tp-scroll-anchor { display: block; height: 1dp; min-height: 1dp; padding: 0dp; margin: 0dp; border-width: 0dp; opacity: 0; }
+.tp-scroll-anchor:focus { opacity: 1; background-color: #d2b04f; }
 .tp-postit { display: block; background-color: #514629; color: #fff0b7; border-left: 4dp #d2b04f; padding: 12dp; margin-top: 10dp; font-size: 17dp; }
 .tp-item img { display: block; width: 48dp; height: 48dp; margin: 0dp auto 5dp auto; }
 .tp-item { text-align: center; font-size: 13dp; min-height: 92dp; }
@@ -183,6 +184,11 @@ ModResult updateDetail(ModContext*,void*,ModError*) {
     navigateDetail();
     if(detailRevision==revision) return MOD_OK;
     detailRevision=revision;
+    if(detailButton) {
+        const bool skipped=model.skipped.contains(selectedCheck);
+        svc_ui->control_set_label(mod_ctx,detailButton,skipped ? "Skipped" : "Skip this check");
+        svc_ui->control_set_tooltip(mod_ctx,detailButton,skipped ? "Undo skipped check?" : "Hide this check from the maps until restored.");
+    }
     const auto markup=model.checkDetails(selectedCheck);
     if(markup==detailMarkup) return MOD_OK;
     detailMarkup=markup;
@@ -195,14 +201,19 @@ ModResult updateDetail(ModContext*,void*,ModError*) {
         end=end==std::string::npos ? markup.size() : end+6;
         const auto part=markup.substr(start,end-start);
         if(detailSectionCount==detailSections.size()) {
-            UiElementHandle section=0,anchor=0;
+            UiElementHandle section=0,anchor=0,block=0;
+            UiRowDesc row=UI_ROW_DESC_INIT;
+            auto result=svc_ui->pane_add_row(mod_ctx,detailText,&row,&block);
+            if(result!=MOD_OK) return result;
+            svc_ui->elem_set_class(mod_ctx,block,"tp-detail-sections",true);
+            detailBlocks.push_back(block);
             UiControlDesc control=UI_CONTROL_DESC_INIT;
             control.kind=UI_CONTROL_BUTTON; control.label="";
             control.on_pressed=[](ModContext*,void*) {};
-            auto result=svc_ui->pane_add_control(mod_ctx,detailText,&control,&anchor);
+            result=svc_ui->pane_add_control(mod_ctx,block,&control,&anchor);
             if(result!=MOD_OK) return result;
             svc_ui->elem_set_class(mod_ctx,anchor,"tp-scroll-anchor",true);
-            result=svc_ui->pane_add_rml(mod_ctx,detailText,"",&section);
+            result=svc_ui->pane_add_rml(mod_ctx,block,"",&section);
             if(result!=MOD_OK) return result;
             detailAnchors.push_back(anchor); detailSections.push_back(section);
         }
@@ -210,26 +221,24 @@ ModResult updateDetail(ModContext*,void*,ModError*) {
         ++detailSectionCount; start=end;
     }
     for(size_t i=0;i<detailSections.size();++i) {
-        svc_ui->elem_set_visible(mod_ctx,detailSections[i],i<detailSectionCount);
-        svc_ui->elem_set_visible(mod_ctx,detailAnchors[i],i<detailSectionCount);
+        svc_ui->elem_set_visible(mod_ctx,detailBlocks[i],i<detailSectionCount);
     }
-    svc_ui->elem_set_text(mod_ctx,detailButton,model.skipped.contains(selectedCheck) ? "Undo skipping this check" : "Skip this check");
     return MOD_OK;
 }
 ModResult buildDetail(ModContext*,UiWindowHandle,UiElementHandle left,UiElementHandle right,void*,ModError*) {
-    UiRowDesc row=UI_ROW_DESC_INIT;
-    auto result=svc_ui->pane_add_row(mod_ctx,left,&row,&detailText);
-    svc_ui->elem_set_class(mod_ctx,detailText,"tp-detail-sections",true);
+    detailText=left;
+    auto result=updateDetail(nullptr,nullptr,nullptr);
     if(result!=MOD_OK) return result;
     UiControlDesc button=UI_CONTROL_DESC_INIT;
     button.kind=UI_CONTROL_BUTTON; button.label="Skip this check";
     button.on_pressed=skipSelectedCheck; button.is_disabled=skipSelectedDisabled;
     result=svc_ui->pane_add_control(mod_ctx,left,&button,&detailButton);
     if(result!=MOD_OK) return result;
-    svc_ui->pane_add_text(mod_ctx,right,"Right stick: up/down scrolls requirements. Requirements use this seed's settings and your current inventory. Area access and local requirements must both be met. Completed checks cannot be skipped.",nullptr);
+    svc_ui->pane_add_text(mod_ctx,right,"Left stick or D-pad: up/down scrolls requirements. Right stick also scrolls. Requirements use this seed's settings and your current inventory. Area access and local requirements must both be met. Completed checks cannot be skipped.",nullptr);
+    detailRevision=0;
     return updateDetail(nullptr,nullptr,nullptr);
 }
-void detailClosed(ModContext*,UiWindowHandle,void*) { detailWindow=0; detailText=detailButton=0; selectedCheck.clear(); detailMarkup.clear(); detailRevision=0; detailSections.clear(); detailAnchors.clear(); detailSectionCount=0; detailScrollRow=0; detailNavigation={}; stickNavigation={}; }
+void detailClosed(ModContext*,UiWindowHandle,void*) { detailWindow=0; detailText=detailButton=0; selectedCheck.clear(); detailMarkup.clear(); detailRevision=0; detailSections.clear(); detailAnchors.clear(); detailBlocks.clear(); detailSectionCount=0; detailScrollRow=0; detailNavigation={}; stickNavigation={}; }
 void inspectCheck(ModContext*, void* data) {
     stickRow=static_cast<int>(reinterpret_cast<uintptr_t>(data));
     if (stickRow<0 || static_cast<size_t>(stickRow)>=visibleNames.size() || detailWindow) return;
@@ -243,6 +252,7 @@ window content pane:last-child { flex: 0 0 24%; }
 window content pane { font-size: 17dp; }
 .tp-detail-sections { display: block; }
 .tp-scroll-anchor { display: block; height: 1dp; min-height: 1dp; padding: 0dp; margin: 0dp; border-width: 0dp; opacity: 0; }
+.tp-scroll-anchor:focus { opacity: 1; background-color: #d2b04f; }
 window content pane div { display: block; margin-bottom: 8dp; }
 .tp-title { display: block; font-size: 24dp; font-weight: bold; color: #e4d196; margin-bottom: 14dp; }
 .tp-group { display: block; font-size: 20dp; color: #e4d196; margin-top: 18dp; margin-bottom: 10dp; padding-bottom: 6dp; border-bottom: 1dp #9b8955; }
@@ -303,7 +313,7 @@ void restore(bool autoSeed = true) {
     }
     dirty = true;
     nextScan = {};
-    lastInventory.clear(); lastChecks.clear();
+    lastChecks.clear();
 }
 void onSaveLoaded(ModContext*, uint32_t, void*) { restore(); }
 void onNewSave(ModContext*, uint32_t, void*) { restore(false); }
@@ -426,7 +436,7 @@ void scan() {
     if (changed) {
         ++revision;
         ++logicGeneration;
-        model.accessible.clear();
+        model.accessible.clear(); model.reached.clear(); model.events.clear();
         logicRequested = true;
     }
     dirty = false;
@@ -436,7 +446,7 @@ void updateLogic() {
     if (logicJob.valid() && logicJob.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
         try {
             auto result = logicJob.get();
-            if (runningGeneration == logicGeneration) { model.accessible = std::move(result); ++revision; }
+            if (runningGeneration == logicGeneration) { model.applyLogicResult(std::move(result)); ++revision; }
         } catch (const std::exception& e) {
             status = std::string("Logic unavailable: ") + e.what(); ++revision;
         }
@@ -447,7 +457,7 @@ void updateLogic() {
         // The worker owns its copy. No game pointers, SDK calls, or UI calls cross threads.
         logicJob = std::async(std::launch::async, [snapshot = model]() mutable {
             snapshot.solve();
-            return std::move(snapshot.accessible);
+            return snapshot.takeLogicResult();
         });
     }
 }
@@ -498,12 +508,14 @@ void onDialogueDraw(ModContext*, void* args, void*, void*) {
     notebookDirty=true; ++revision;
 }
 
-std::string inventoryRml() {
+std::vector<std::string> inventoryRml() {
+    std::vector<std::string> rows;
     std::string rml = "<div class='tp-title'>TPTracker</div><div class='tp-note'>" + tracker::escape(status) + "</div>";
     rml += "<div class='tp-note'>" + tracker::escape(model.stage.empty() ? "Waiting for gameplay" : model.stage) +
            " / room " + std::to_string(model.room) + "</div>";
     for (const char* section : {"Progression","Collectibles","Keys","Quest items"}) {
-      rml+="<div class='tp-group'>"+std::string(section)+"</div><div class='tp-grid'>";
+      rml+="<div class='tp-group'>"+std::string(section)+"</div>";
+      int column=0;
       for (const auto& item : model.catalogue.at("items")) {
         auto name = item.at("Name").get<std::string>();
         if (name.ends_with("Portal") || (name.find("Bottle") != std::string::npos && name != "Empty Bottle")) continue;
@@ -511,15 +523,43 @@ std::string inventoryRml() {
         const auto& art=inventoryArt.at(name);
         auto found = model.inventory.find(name);
         int count = found == model.inventory.end() ? -1 : found->second;
+        if(column==0) rml+="<div class='tp-grid'>";
         rml += "<div class='tp-item" + std::string(count > 0 ? " owned" : " missing") + "'>";
         rml += "<img src='mod://com.mikey022.tp_randomizer_tracker/res/"+tracker::escape(art.at("icon").get<std::string>())+"?rev=0.4.24'/>";
         rml += tracker::escape(name);
         rml += "<span class='tp-item-count'>" + (count<0 ? std::string("?") : std::to_string(count)) + " / " + std::to_string(model.inventoryMaximum(name)) + "</span>";
         rml += "</div>";
+        if(++column==2) { rml+="</div>"; rows.push_back(std::move(rml)); rml.clear(); column=0; }
       }
-      rml+="</div>";
+      if(column) { rml+="</div>"; rows.push_back(std::move(rml)); rml.clear(); }
     }
-    return rml + "<div class='tp-note'>Current / maximum. Progressive items show upgrade tiers; small keys include keys already used. ? = count unavailable. Collectibles, quest items and keys can also be required for progression. Artwork: Henriko Magnifico, game and randomizer item icons.</div>";
+    rows.push_back(rml + "<div class='tp-note'>Current / maximum. Progressive items show upgrade tiers; small keys include keys already used. ? = count unavailable. Collectibles, quest items and keys can also be required for progression. Artwork: Henriko Magnifico, game and randomizer item icons.</div>");
+    return rows;
+}
+ModResult renderInventory() {
+    const auto rows=inventoryRml();
+    for(size_t i=0;i<rows.size();++i) {
+        if(i==inventorySections.size()) {
+            UiRowDesc row=UI_ROW_DESC_INIT;
+            UiElementHandle block=0,anchor=0,text=0;
+            auto result=svc_ui->pane_add_row(mod_ctx,inventoryElement,&row,&block);
+            if(result!=MOD_OK) return result;
+            svc_ui->elem_set_class(mod_ctx,block,"tp-detail-sections",true);
+            UiControlDesc control=UI_CONTROL_DESC_INIT;
+            control.kind=UI_CONTROL_BUTTON; control.label=""; control.on_pressed=[](ModContext*,void*) {};
+            result=svc_ui->pane_add_control(mod_ctx,block,&control,&anchor);
+            if(result!=MOD_OK) return result;
+            svc_ui->elem_set_class(mod_ctx,anchor,"tp-scroll-anchor",true);
+            result=svc_ui->pane_add_rml(mod_ctx,block,"",&text);
+            if(result!=MOD_OK) return result;
+            inventorySections.push_back(text); inventoryBlocks.push_back(block);
+        }
+        svc_ui->elem_set_visible(mod_ctx,inventoryBlocks[i],true);
+        auto result=svc_ui->elem_set_rml(mod_ctx,inventorySections[i],rows[i].c_str());
+        if(result!=MOD_OK) return result;
+    }
+    for(size_t i=rows.size();i<inventoryBlocks.size();++i) svc_ui->elem_set_visible(mod_ctx,inventoryBlocks[i],false);
+    return MOD_OK;
 }
 std::string checksRml() {
     std::string rml = "<div class='tp-title'>" + std::string(allChecks ? "All Checks" : "Current Area") + "</div>";
@@ -530,7 +570,7 @@ std::string checksRml() {
     if (!model.seedLoaded) rml += "<div class='tp-note'>Load a seed log to evaluate logic.</div>";
     else if (logicRequested || logicJob.valid()) rml += "<div class='tp-note'>Updating reachability...</div>";
     rml += "<div class='tp-note'>Vanilla entrance logic: shuffled connections are intentionally ignored.</div>";
-    rml += "<div class='tp-note'>Controller right stick: up/down scrolls checks; left/right changes page. Page buttons also work with mouse or controller.</div>";
+    rml += "<div class='tp-note'>Left stick or D-pad: up/down selects rows; left/right moves between the inventory and checks. Right stick: up/down selects checks; left/right changes page without resetting the row. Page buttons also work with mouse or controller.</div>";
     size_t shown = 0, done = 0, enabled = 0;
     struct Row { std::string name, group, css, label; };
     std::vector<Row> rows;
@@ -586,9 +626,10 @@ std::string checksRml() {
     const auto count = "Page " + std::to_string(checkPage+1) + " of " + std::to_string(pages) + " / " + std::to_string(shown) + " matching checks / " + std::to_string(done) + " of " + std::to_string(enabled) + " completed across all areas";
     if (countElement) svc_ui->elem_set_text(mod_ctx,countElement,count.c_str());
     if (pageControl) svc_ui->control_set_label(mod_ctx,pageControl,("Page (left / right) / " + std::to_string(pages) + " total").c_str());
-    if (focusPageStart) {
-        focusPageStart=false;
-        svc_ui->elem_focus(mod_ctx,visibleRows ? checkRows.front() : pageControl);
+    if (restorePageFocus) {
+        restorePageFocus=false;
+        stickRow=std::clamp(stickRow,0,std::max(0,static_cast<int>(visibleRows)-1));
+        svc_ui->elem_focus(mod_ctx,visibleRows ? checkRows[stickRow] : pageControl);
     }
     if (shown == 0) rml += "<div class='tp-note'>No matching checks for " + tracker::escape(allChecks ? "All Checks" : model.stage) + ". Check the status filter, Filter checks text and Hide completed checks setting.</div>";
     return rml;
@@ -603,7 +644,6 @@ void navigateStick() {
     int target=stickRow;
     if (direction==2) target=std::min(target+1,static_cast<int>(visibleRows)-1);
     if (direction==-2) target=target<0 ? static_cast<int>(visibleRows)-1 : std::max(0,target-1);
-    if (direction==1 || direction==-1) target=0;
     target=std::clamp(target,0,std::max(0,static_cast<int>(visibleRows)-1));
     // Focus is checked by the host against the top document. Reassert while held
     // so its generic arrow-key pane selection cannot steal right-stick navigation.
@@ -611,19 +651,19 @@ void navigateStick() {
         stickNavigation={}; return;
     }
     stickRow=target;
-    if (direction==1) nextPage(mod_ctx,nullptr);
-    if (direction==-1) previousPage(mod_ctx,nullptr);
+    if (direction==1 || direction==-1) {
+        const auto before=checkPage;
+        if(direction==1) nextPage(mod_ctx,nullptr); else previousPage(mod_ctx,nullptr);
+        restorePageFocus=checkPage!=before;
+    }
 }
 ModResult updateTab(ModContext*, void*, ModError*) {
     if (!inventoryElement || !checksElement) return MOD_OK;
     if(!detailWindow) navigateStick();
     if (renderedRevision == revision) return MOD_OK;
-    auto inv = inventoryRml(), checks = checksRml();
-    if (inv != lastInventory) {
-        auto result = svc_ui->elem_set_rml(mod_ctx, inventoryElement, inv.c_str());
-        if (result != MOD_OK) return result;
-        lastInventory = std::move(inv);
-    }
+    const auto checks = checksRml();
+    auto inventoryResult=renderInventory();
+    if(inventoryResult!=MOD_OK) return inventoryResult;
     if (checks != lastChecks) {
         auto result = svc_ui->elem_set_rml(mod_ctx, checksElement, checks.c_str());
         if (result != MOD_OK) return result;
@@ -640,18 +680,17 @@ void sortSet(ModContext*, void*, const UiControlValue* v) {
     checkPage=0; stickRow=-1; ++revision;
 }
 ModResult buildTab(ModContext*, UiWindowHandle, UiElementHandle left, UiElementHandle right, void* data, ModError*) {
-    std::swap(left,right); // First SDK pane must contain the controls for tab -> Down navigation.
     allChecks = data != nullptr;
     notesTab=false; notesElement=0;
     statusFilter = 0; // Start with all statuses rather than inheriting the other tab's filter.
-    checkPage = 0; totalPages=1; visibleRows=0; focusPageStart=false; pageControl=0;
+    checkPage = 0; totalPages=1; visibleRows=0; restorePageFocus=false; pageControl=0;
     stickRow=-1; stickNavigation={};
     inventoryElement = checksElement = countElement = 0;
     checkRows.clear(); headingRows.clear();
-    lastInventory.clear(); lastChecks.clear();
+    lastChecks.clear();
     renderedRevision = 0;
-    auto result = svc_ui->pane_add_rml(mod_ctx, left, "", &inventoryElement);
-    if (result != MOD_OK) return result;
+    inventoryElement=left; inventorySections.clear(); inventoryBlocks.clear();
+    ModResult result=MOD_OK;
     static const char* options[] = {"All statuses", "OPEN", "LOCKED", "DONE", "UNKNOWN", "SKIPPED"};
     UiControlDesc filter = UI_CONTROL_DESC_INIT;
     filter.kind = UI_CONTROL_DROPDOWN; filter.label = "Check status";
@@ -723,6 +762,7 @@ void manualSet(ModContext*,void*,const UiControlValue* value) {
     if (!persist()) { personalNotes=previous; manualNotes=text; }
     ++revision;
 }
+bool deleteNoteDisabled(ModContext*,void* data) { return reinterpret_cast<uintptr_t>(data)>=personalNotes.size(); }
 void deleteNote(ModContext*,void* data) {
     const auto previous=personalNotes;
     if (!tracker::deletePersonalNote(personalNotes,reinterpret_cast<uintptr_t>(data))) return;
@@ -754,14 +794,19 @@ ModResult updateNotes(ModContext*,void*,ModError*) {
         auto end=content.find("</div>",start);
         end=end==std::string::npos ? content.size() : end+6;
         if(hintSectionCount==hintSections.size()) {
-            UiElementHandle anchor=0,section=0;
+            UiElementHandle anchor=0,section=0,block=0;
+            UiRowDesc row=UI_ROW_DESC_INIT;
+            result=svc_ui->pane_add_row(mod_ctx,notesElement,&row,&block);
+            if(result!=MOD_OK) return result;
+            svc_ui->elem_set_class(mod_ctx,block,"tp-detail-sections",true);
+            hintBlocks.push_back(block);
             UiControlDesc control=UI_CONTROL_DESC_INIT;
             control.kind=UI_CONTROL_BUTTON; control.label="";
             control.on_pressed=[](ModContext*,void*) {};
-            result=svc_ui->pane_add_control(mod_ctx,notesElement,&control,&anchor);
+            result=svc_ui->pane_add_control(mod_ctx,block,&control,&anchor);
             if(result!=MOD_OK) return result;
             svc_ui->elem_set_class(mod_ctx,anchor,"tp-scroll-anchor",true);
-            result=svc_ui->pane_add_rml(mod_ctx,notesElement,"",&section);
+            result=svc_ui->pane_add_rml(mod_ctx,block,"",&section);
             if(result!=MOD_OK) return result;
             hintAnchors.push_back(anchor); hintSections.push_back(section);
         }
@@ -769,8 +814,7 @@ ModResult updateNotes(ModContext*,void*,ModError*) {
         ++hintSectionCount; start=end;
     }
     for(size_t i=0;i<hintSections.size();++i) {
-        svc_ui->elem_set_visible(mod_ctx,hintSections[i],i<hintSectionCount);
-        svc_ui->elem_set_visible(mod_ctx,hintAnchors[i],i<hintSectionCount);
+        svc_ui->elem_set_visible(mod_ctx,hintBlocks[i],i<hintSectionCount);
     }
     for (size_t i=0;i<personalCards.size();++i) {
         const bool visible=i<personalNotes.size();
@@ -778,19 +822,18 @@ ModResult updateNotes(ModContext*,void*,ModError*) {
         svc_ui->elem_set_visible(mod_ctx,personalDeletes[i],visible);
         if (visible) svc_ui->elem_set_text(mod_ctx,personalCards[i],personalNotes[i].c_str());
     }
-    if (inventoryElement) svc_ui->elem_set_rml(mod_ctx,inventoryElement,inventoryRml().c_str());
+    if (inventoryElement) { result=renderInventory(); if(result!=MOD_OK) return result; }
     renderedRevision=revision;
     return result;
 }
 ModResult buildNotes(ModContext*,UiWindowHandle,UiElementHandle left,UiElementHandle right,void*,ModError*) {
-    std::swap(left,right);
     notesTab=true; pageControl=checksElement=countElement=0;
-    personalCards.clear(); personalDeletes.clear(); hintSections.clear(); hintAnchors.clear(); hintSectionCount=0; notesScrollRow=0; notesNavigation={};
+    personalCards.clear(); personalDeletes.clear(); hintSections.clear(); hintAnchors.clear(); hintBlocks.clear(); hintSectionCount=0; notesScrollRow=0; notesNavigation={};
     checkRows.clear(); headingRows.clear(); visibleNames.clear(); visibleRows=0;
     stickRow=-1; stickNavigation={}; renderedRevision=0;
-    auto result=svc_ui->pane_add_rml(mod_ctx,left,"",&inventoryElement);
-    if (result!=MOD_OK) return result;
-    result=svc_ui->pane_add_rml(mod_ctx,right,"<div class='tp-title'>My notes</div><div class='tp-note'>Right stick: up/down scrolls notes and read hints. Type a reminder and press Enter to post it below. Select New note to write another. Each card has its own Delete button. Up to 64 notes, 1,000 characters each (16,000 total).</div>",nullptr);
+    inventoryElement=left; inventorySections.clear(); inventoryBlocks.clear();
+    ModResult result=MOD_OK;
+    result=svc_ui->pane_add_rml(mod_ctx,right,"<div class='tp-title'>My notes</div><div class='tp-note'>Left stick or D-pad: up/down scrolls notes and hints; left/right moves between panels. Right stick also scrolls notes. Type a reminder and press Enter to post it below. Select New note to write another. Each card has its own Delete button. Up to 64 notes, 1,000 characters each (16,000 total).</div>",nullptr);
     if (result!=MOD_OK) return result;
     UiControlDesc control=UI_CONTROL_DESC_INIT;
     control.kind=UI_CONTROL_STRING; control.label="New note - Enter to add";
@@ -805,14 +848,12 @@ ModResult buildNotes(ModContext*,UiWindowHandle,UiElementHandle left,UiElementHa
         svc_ui->elem_set_class(mod_ctx,card,"tp-postit",true);
         personalCards.push_back(card);
         control=UI_CONTROL_DESC_INIT; control.kind=UI_CONTROL_BUTTON;
-        control.label="Delete note"; control.on_pressed=deleteNote; control.user_data=reinterpret_cast<void*>(i);
+        control.label="Delete note"; control.on_pressed=deleteNote; control.is_disabled=deleteNoteDisabled; control.user_data=reinterpret_cast<void*>(i);
         result=svc_ui->pane_add_control(mod_ctx,right,&control,&button);
         if (result!=MOD_OK) return result;
         personalDeletes.push_back(button);
     }
-    UiRowDesc row=UI_ROW_DESC_INIT;
-    result=svc_ui->pane_add_row(mod_ctx,right,&row,&notesElement);
-    svc_ui->elem_set_class(mod_ctx,notesElement,"tp-detail-sections",true);
+    notesElement=right;
     return result==MOD_OK ? updateNotes(mod_ctx,nullptr,nullptr) : result;
 }
 void onClosed(ModContext*, UiWindowHandle, void*) { window = 0; inventoryElement = checksElement = notesElement = 0; notesTab=false; }
@@ -958,7 +999,7 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     control.kind=UI_CONTROL_TOGGLE; control.label=tracker::minimapAvailable ? "Minimap check dots" : "Minimap hook unavailable on this build"; control.get=miniGet; control.set=miniSet;
     result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
     if (result!=MOD_OK) return result;
-    static const char* types[]={"Treasure chests","NPC / event rewards","Golden bugs","Poe souls","Golden wolves","Shop items","Owl statues","Grotto checks"};
+    static const char* types[]={"Treasure chests","NPC / event rewards","Golden bugs","Poe souls","Golden wolves","Shop items","Owl statues","Grotto checks","Freestanding Rupees","Hidden Rupees"};
     for (int surface=0;surface<2;++surface) for (int i=0;i<tracker::checkTypeCount;++i) {
         std::string label=std::string(surface ? "Minimap: " : "Map: ")+types[i];
         control=UI_CONTROL_DESC_INIT; control.kind=UI_CONTROL_TOGGLE; control.label=label.c_str();

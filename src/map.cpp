@@ -29,8 +29,8 @@ namespace tracker {
 bool mapEnabled = true;
 bool mapAvailable = false;
 bool minimapEnabled = true, minimapAvailable = false;
-bool mapTypes[checkTypeCount] = {true,true,true,true,true,true,true,true};
-bool minimapTypes[checkTypeCount] = {true,true,true,true,true,true,true,true};
+bool mapTypes[checkTypeCount] = {true,true,true,true,true,true,true,true,true,true};
+bool minimapTypes[checkTypeCount] = {true,true,true,true,true,true,true,true,true,true};
 namespace {
 Model* state = nullptr;
 bool trackerMapCheck(const Json& check) {
@@ -64,7 +64,7 @@ void arenaDot(J2DGrafContext* graf,float x,float y,int available,u8 alpha,bool s
     auto color=available ? JUtility::TColor(255,235,30,alpha) : JUtility::TColor(165,165,165,alpha);
     graf->setup2D();
     J2DFillBox(x-2,y-3,4,6,color); J2DFillBox(x-3,y-2,6,4,color);
-    if(auto* font=mDoExt_getMesgFont()) {
+    if(auto* font=mDoExt_getMesgFont(); font && available>0) {
         JUtility::TColor ink(240,240,240,alpha);
         J2DPrint count(font,ink,ink);
         count.setFontSize(small ? 7 : 10,small ? 9 : 12);
@@ -86,7 +86,7 @@ std::map<std::string,std::vector<unsigned char>> iconTextures;
 std::set<std::string> caveIcons;
 std::string iconName(const Json& check, Truth access) {
     if (caveIcons.contains(check.at("name").get<std::string>())) return "Grotto";
-    const char* types[] = {"ItemChest","Gift","Bug","Poe","GoldenWolf","Gift","OwlStatue","Grotto"};
+    const char* types[] = {"ItemChest","Gift","Bug","Poe","GoldenWolf","Gift","OwlStatue","Grotto","HiddenRupee","HiddenRupee"};
     std::string base = types[checkType(check)];
     const std::string item = check.value("original_item",std::string{});
     if (base=="ItemChest" && check.at("name").get<std::string>().find("Owl Statue")!=std::string::npos)
@@ -346,12 +346,14 @@ void draw(ModContext*, void* args, void*, void*) {
                              temple.z+region->getRegionOffsetZ()+stage->getOffsetZ()-back->mStageTransZ,&x,&y);
         x+=back->mTransX; y+=back->mTransZ;
         if (!std::isfinite(x)||!std::isfinite(y)||x<left+16||y<top+28||x>right-16||y>bottom-16) continue;
-        const int available=state->availableDungeonChecks(temple.name);
+        const int available=state->availableDungeonChecks(temple.name,mapTypes);
         const auto art=iconTextures.find(available ? "TempleAvailable" : "Temple");
-        if (art==iconTextures.end()) continue;
         graf->setup2D();
-        J2DPicture picture(reinterpret_cast<ResTIMG*>(art->second.data()));
-        picture.draw(x-16,y-16,32,32,false,false,false);
+        if(available==0) arenaDot(graf,x,y,0,255,false);
+        else if(art!=iconTextures.end()) {
+            J2DPicture picture(reinterpret_cast<ResTIMG*>(art->second.data()));
+            picture.draw(x-16,y-16,32,32,false,false,false);
+        }
         if (available>0) {
             const std::string label=std::to_string(available)+"x";
             const float width=label.size()*7.f;
@@ -568,7 +570,7 @@ ModResult initializeMap(Model* model) {
             svc_resource->free(mod_ctx,&buffer);
         }
     };
-    for (const char* name : {"BossKeyChestAvailable","BossKeyChestLocked","BugAvailable","BugLocked","GiftAvailable","GiftLocked","GoldenWolfAvailable","GoldenWolfLocked","Grotto","HeartContainerAvailable","HeartContainerLocked","HeartPieceAvailable","HeartPieceLocked","ItemChestAvailable","ItemChestLocked","OwlStatueAvailable","OwlStatueLocked","PoeAvailable","PoeCollected","RupeeChestAvailable","RupeeChestLocked"}) {
+    for (const char* name : {"BossKeyChestAvailable","BossKeyChestLocked","BugAvailable","BugLocked","GiftAvailable","GiftLocked","HiddenRupeeAvailable","HiddenRupeeLocked","GoldenWolfAvailable","GoldenWolfLocked","Grotto","HeartContainerAvailable","HeartContainerLocked","HeartPieceAvailable","HeartPieceLocked","ItemChestAvailable","ItemChestLocked","OwlStatueAvailable","OwlStatueLocked","PoeAvailable","PoeCollected","RupeeChestAvailable","RupeeChestLocked"}) {
         std::string path = "icons/" + std::string(name) + ".bti";
         auto& bytes = iconTextures[name]; loadTexture(path.c_str(),bytes);
         if (bytes.empty()) iconTextures.erase(name);

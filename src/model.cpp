@@ -225,10 +225,12 @@ bool Model::enabled(const Json& check) const {
                  settings.value(std::string(province) + " Twilight Area Cleared", Json("Off")) == "On")) return false;
         }
     }
+    // Optional rupee locations exist in the tracker only when explicitly shuffled.
+    if (has("Rupee - Hidden") && settings.value("Hidden Rupees", Json("Off")) != "On") return false;
+    if (has("Rupee - Freestanding") && settings.value("Freestanding Rupees", Json("Off")) != "On") return false;
     for (const auto& [cat, setting] : std::initializer_list<std::pair<const char*, const char*>>{
              {"Sky Character", "Sky Characters"}, {"Npc", "Gifts From NPCs"},
-             {"Shop", "Shop Items"}, {"Golden Wolf", "Hidden Skills"}, {"Rupee - Hidden", "Hidden Rupees"},
-             {"Rupee - Freestanding", "Freestanding Rupees"}})
+             {"Shop", "Shop Items"}, {"Golden Wolf", "Hidden Skills"}})
         if (has(cat) && off(setting)) return false;
     // Unshuffled bugs and souls still exist and are useful collectible checks.
     return true;
@@ -238,13 +240,14 @@ bool dungeonCheck(const Json& check) {
     const auto& cats=check.at("categories");
     return std::find(cats.begin(),cats.end(),"Dungeon")!=cats.end();
 }
-int Model::availableDungeonChecks(const std::string& dungeon) const {
+int Model::availableDungeonChecks(const std::string& dungeon, const bool* visibleTypes) const {
     int count=0;
     for (const auto& check : catalogue.at("checks")) {
         const auto& categories=check.at("categories");
         auto has=[&](const char* category) { return std::find(categories.begin(),categories.end(),category)!=categories.end(); };
         if (!dungeonCheck(check) || std::find(categories.begin(),categories.end(),dungeon)==categories.end() ||
-            has("Non-Item Location") || has("Hint Sign") || !enabled(check)) continue;
+            has("Non-Item Location") || has("Hint Sign") || !enabled(check) ||
+            (visibleTypes && !visibleTypes[checkType(check)])) continue;
         const std::string name=check.at("name");
         const auto access=accessible.find(name);
         if (!obtained.contains(name) && !skipped.contains(name) && access!=accessible.end() && access->second==Truth::yes) ++count;
@@ -255,6 +258,8 @@ int checkType(const Json& check) {
     const auto& cats=check.at("categories");
     auto has=[&](const char* c){return std::find(cats.begin(),cats.end(),c)!=cats.end();};
     const std::string name=check.at("name");
+    if (has("Rupee - Freestanding")) return 8;
+    if (has("Rupee - Hidden")) return 9;
     if (has("Chest") && name.find("Grotto")!=std::string::npos) return 7;
     if (has("Sky Character")) return 6;
     if (has("Golden Bug")) return 2;

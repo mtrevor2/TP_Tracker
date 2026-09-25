@@ -1,4 +1,14 @@
-# TPTracker 0.4.24
+# TPTracker 0.4.27
+
+## 0.4.27 navigation, rupees and check details
+
+- Freestanding Rupees and Hidden Rupees have separate Map and Minimap visibility toggles in F1 > Mods > TPTracker. They appear in the checklists and maps only when their respective seed shuffle setting is On. All 88 rupee locations have actor-derived coordinates, including randomizer-reassigned item flags.
+- Left stick/D-pad navigation can move between inventory and check/notes panels and scroll through inventory, Notes and Check Details. Hidden note controls no longer take controller focus. Right-stick checklist page changes retain the row; native page controls retain their focus.
+- Skipped check details show **Skipped**, with **Undo skipped check?** on hover/focus. Selecting it restores the check.
+- Zero-accessibility temple and boss entrance markers show a gray dot without a number. Temple totals now follow the map category toggles.
+- The background solver now returns area reachability and events together with check status. This fixes misleading UNKNOWN area details caused by discarding those results; real unknown requirements and route restrictions remain intact.
+- Regression tests cover the async results, Snowpeak Chapel routes with keys/cheese and Keysy, rupee seed gating and category-filtered dungeon counts. All seven platform binaries share these fixes. Controller layout and map placement still need live gameplay validation.
+
 
 ## 0.4.26 temple maps and Notes navigation
 
@@ -50,7 +60,7 @@ Artwork mapping is in `res/inventory.json`; `tools/build_inventory_icons.py` rec
 
 ## 0.4.18 temple indicators
 
-The province and close-up overworld maps now show entrance icons for all nine main dungeons. TempleAvailable is used when at least one unfinished check is OPEN, with a count such as `3x` above it. Temple is used at zero. Hovering shows the dungeon name and count. Counts exclude completed, locked, unknown, seed-disabled checks and hint signs; they use all dungeon reward categories independently of individual marker filters. Coordinates come from entrance return spawns and room transforms, with Goron Mines projected through the sumo hall's exterior exit. Existing province totals continue to count overworld checks separately.
+The province and close-up overworld maps now show entrance icons for all nine main dungeons. TempleAvailable is used when at least one unfinished check is OPEN, with a count such as `3x` above it. A gray dot without a number is used at zero (updated in 0.4.27). Hovering shows the dungeon name and count. Counts exclude completed, locked, unknown, seed-disabled checks and hint signs; they follow the map category filters (updated in 0.4.27). Coordinates come from entrance return spawns and room transforms, with Goron Mines projected through the sumo hall's exterior exit. Existing province totals continue to count overworld checks separately.
 
 ## 0.4.17 fixes
 
@@ -103,7 +113,7 @@ Native C++ tracker for Dusklight, using RmlUi/UiService, HookService, ItemServic
 
 ## Remaining limits
 
-The native map/minimap features are experimental and have not been playtested in this build. Live chest/key/tear records are supplemented with an actor-coordinate atlas. Some scripted rewards and freestanding checks still lack verified coordinates. Interiors have one exterior entrance marker with available/total counts. Individual dungeon checks are summarized at their entrance icons rather than drawn on the Hyrule map. Province totals exclude dungeon checks; there is no separate dungeon-menu overlay. Kingdom counts cover checks associated with loaded region stages. All catalogue checks remain available through the checklist subject to seed/category filters.
+The native map/minimap features are experimental and have not been playtested in this build. Live chest/key/tear records are supplemented with an actor-coordinate atlas. Some scripted rewards still lack verified coordinates; all 88 shuffled rupee checks have actor-derived positions. Interiors have one exterior entrance marker with available/total counts. Individual dungeon checks are summarized at their entrance icons rather than drawn on the Hyrule map. Province totals exclude dungeon checks; temple pause maps have a separate floor-aware overlay. Kingdom counts cover checks associated with loaded region stages. All catalogue checks remain available through the checklist subject to seed/category filters.
 
 The catalogue contains 658 non-portal checks from the bundled randomizer. UNKNOWN remains valid for unsupported inventory adapters (including the randomizer's private live Sky Book count), missing settings or unsupported/generated requirements. Historical grants without persistent flags cannot always be reconstructed. Bug inventory is only correlated with original bug locations when Golden Bugs is Off; shuffled bug inventory cannot establish which location was collected.
 

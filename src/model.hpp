@@ -5,6 +5,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <utility>
 
 namespace tracker {
 using Json = nlohmann::json;
@@ -16,6 +17,12 @@ std::string trim(std::string text);
 bool dungeonCheck(const Json& check);
 int checkType(const Json& check);
 size_t pageCount(size_t rows, size_t size);
+
+// Transfer the entire solved state together without replacing live save data.
+struct LogicResult {
+    std::map<std::string, Truth> accessible, events;
+    std::map<std::string, std::array<Truth, 5>> reached;
+};
 
 // No game pointers or UI handles in the model. Unknown requirements fail closed.
 struct Model {
@@ -50,8 +57,12 @@ struct Model {
     bool matchesScene(const Json& check) const;
     bool enabled(const Json& check) const;
     int inventoryMaximum(const std::string& name) const;
-    int availableDungeonChecks(const std::string& dungeon) const;
+    int availableDungeonChecks(const std::string& dungeon, const bool* visibleTypes = nullptr) const;
     void solve();
+    LogicResult takeLogicResult() { return {std::move(accessible),std::move(events),std::move(reached)}; }
+    void applyLogicResult(LogicResult result) {
+        accessible=std::move(result.accessible); events=std::move(result.events); reached=std::move(result.reached);
+    }
     std::string checkDetails(const std::string& name) const;
     Truth evaluate(std::string expression, int form = 0, std::set<std::string> stack = {}) const;
 };
