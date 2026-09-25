@@ -1,4 +1,9 @@
-# TPTracker 0.4.28
+# TPTracker 0.4.29
+
+## 0.4.29 rupee artwork at close zoom
+
+Hidden and Freestanding Rupees show their existing Available/Locked rupee artwork at the closest overworld and temple map zoom. Zoomed-out maps and minimaps retain blue dots for obtainable rupees and gray dots for inaccessible rupees. A single remaining rupee at an interior entrance also uses the rupee artwork at close zoom; multi-check entrance groups keep their count markers. Seed settings and visibility filters still apply.
+
 
 ## 0.4.28 blue rupee markers
 

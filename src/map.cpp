@@ -93,6 +93,7 @@ std::vector<unsigned char> chestTexture, doneTexture;
 std::map<std::string,std::vector<unsigned char>> iconTextures;
 std::set<std::string> caveIcons;
 std::string iconName(const Json& check, Truth access) {
+    if (isRupeeCheck(check)) return access==Truth::yes ? "HiddenRupeeAvailable" : "HiddenRupeeLocked";
     if (caveIcons.contains(check.at("name").get<std::string>())) return "Grotto";
     const char* types[] = {"ItemChest","Gift","Bug","Poe","GoldenWolf","Gift","OwlStatue","Grotto","HiddenRupee","HiddenRupee"};
     std::string base = types[checkType(check)];
@@ -226,7 +227,7 @@ void draw(ModContext*, void* args, void*, void*) {
                     auto found = state->accessible.find(name);
                     auto access = found == state->accessible.end() ? Truth::unknown : found->second;
                     JUtility::TColor color = done ? JUtility::TColor(145,145,145,255) : access == Truth::yes ? JUtility::TColor(90,240,115,255) : access == Truth::no ? JUtility::TColor(255,165,155,255) : JUtility::TColor(235,195,85,255);
-                    if (process == dMenu_Fmap_c::PROC_REGION_MAP || isRupeeCheck(check)) {
+                    if (process == dMenu_Fmap_c::PROC_REGION_MAP) {
                         if (done) continue;
                         auto dot=checkDotColor(access==Truth::yes,isRupeeCheck(check),255);
                         fill(x-2,y-3,4,6,dot); fill(x-3,y-2,6,4,dot);
@@ -296,7 +297,7 @@ void draw(ModContext*, void* args, void*, void*) {
             continue;
         }
         if (x>right-14||y>bottom-14) continue;
-        if (process==dMenu_Fmap_c::PROC_REGION_MAP || isRupeeCheck(check)) {
+        if (process==dMenu_Fmap_c::PROC_REGION_MAP) {
             auto dot=checkDotColor(access==Truth::yes,isRupeeCheck(check),255);
             fill(x-2,y-3,4,6,dot);fill(x-3,y-2,6,4,dot);
         }
@@ -324,8 +325,8 @@ void draw(ModContext*, void* args, void*, void*) {
         if (done) continue;
         auto color=done ? JUtility::TColor(155,155,155,255) : group.available ? JUtility::TColor(110,250,135,255) : group.unknown ? JUtility::TColor(240,205,100,255) : JUtility::TColor(255,180,170,255);
         const bool singleLocked=remaining==1 && group.available==0 && group.unknown==0;
-        auto art=iconTextures.find(singleLocked ? "ItemChestLocked" : group.grotto ? "Grotto" : group.available ? "ItemChestAvailable" : "ItemChestLocked");
-        if (process==dMenu_Fmap_c::PROC_REGION_MAP || remaining>1 || group.label=="Coro" || group.rupeesOnly) {
+        auto art=iconTextures.find(group.rupeesOnly ? (group.available ? "HiddenRupeeAvailable" : "HiddenRupeeLocked") : singleLocked ? "ItemChestLocked" : group.grotto ? "Grotto" : group.available ? "ItemChestAvailable" : "ItemChestLocked");
+        if (process==dMenu_Fmap_c::PROC_REGION_MAP || remaining>1 || group.label=="Coro") {
             auto dot=checkDotColor(group.available>0,group.rupeesOnly,255);
             fill(x-2,y-3,4,6,dot);fill(x-3,y-2,6,4,dot);
             if (remaining>1 && (group.label=="Coro" || (process==dMenu_Fmap_c::PROC_REGION_MAP && !group.available))) {
@@ -433,7 +434,7 @@ void drawDungeon(ModContext*,void* args,void*,void*) {
         const auto access=a==state->accessible.end() ? Truth::unknown : a->second;
         auto art=iconTextures.find(iconName(check,access));
         graf->setup2D();
-        if(!isRupeeCheck(check) && art!=iconTextures.end()) {
+        if((!isRupeeCheck(check) || ctrl->isEndZoomIn()) && art!=iconTextures.end()) {
             J2DPicture picture(reinterpret_cast<ResTIMG*>(art->second.data()));
             picture.setAlpha(alpha); picture.draw(x-8,y-8,16,16,false,false,false);
         } else {
