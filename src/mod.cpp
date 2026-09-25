@@ -84,7 +84,11 @@ std::string manualNotes;
 std::vector<std::string> personalNotes;
 std::vector<UiElementHandle> personalCards, personalDeletes;
 Json inventoryArt=Json::object();
-UiElementHandle notesElement=0;
+UiElementHandle notesElement=0, newNoteControl=0;
+std::vector<UiElementHandle> hintSections, hintAnchors;
+size_t hintSectionCount=0;
+tracker::StickNavigation notesNavigation;
+int notesScrollRow=0;
 bool notesTab=false, notebookDirty=false;
 
 
@@ -136,6 +140,8 @@ window content pane:last-child { flex: 0 0 32%; background-color: #191a15; }
 .tp-check.unknown { color: #e5c977; }
 .tp-check.done { color: #999b95; text-decoration: line-through; }
 .tp-check.skipped { color: #cd91f4; text-decoration: line-through; }
+.tp-detail-sections { display: block; }
+.tp-scroll-anchor { display: block; height: 1dp; min-height: 1dp; padding: 0dp; margin: 0dp; border-width: 0dp; opacity: 0; }
 .tp-postit { display: block; background-color: #514629; color: #fff0b7; border-left: 4dp #d2b04f; padding: 12dp; margin-top: 10dp; font-size: 17dp; }
 .tp-item img { display: block; width: 48dp; height: 48dp; margin: 0dp auto 5dp auto; }
 .tp-item { text-align: center; font-size: 13dp; min-height: 92dp; }
@@ -724,9 +730,48 @@ void deleteNote(ModContext*,void* data) {
     ++revision;
 }
 ModResult updateNotes(ModContext*,void*,ModError*) {
-    if (!notesElement || renderedRevision==revision) return MOD_OK;
+    if (!notesElement) return MOD_OK;
+    int x=0,y=0;
+    if (tracker::readRightStick(x,y)) {
+        const auto now=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+        const int direction=notesNavigation.sample(x,y,now);
+        if(std::abs(notesNavigation.held)==2) {
+            std::vector<UiElementHandle> targets{newNoteControl};
+            for(size_t i=0;i<personalNotes.size() && i<personalDeletes.size();++i) targets.push_back(personalDeletes[i]);
+            targets.insert(targets.end(),hintAnchors.begin(),hintAnchors.begin()+hintSectionCount);
+            const int previousRow=notesScrollRow;
+            if(direction) notesScrollRow+=direction==2 ? 1 : -1;
+            notesScrollRow=std::clamp(notesScrollRow,0,static_cast<int>(targets.size())-1);
+            // The host refuses focus while a text-entry dialog is on top.
+            if(svc_ui->elem_focus(mod_ctx,targets[notesScrollRow])!=MOD_OK) { notesScrollRow=previousRow; notesNavigation={}; }
+        }
+    } else notesNavigation={};
+    if (renderedRevision==revision) return MOD_OK;
     const auto content=notesRml();
-    auto result=svc_ui->elem_set_rml(mod_ctx,notesElement,content.c_str());
+    ModResult result=MOD_OK;
+    hintSectionCount=0;
+    for(size_t start=0;start<content.size();) {
+        auto end=content.find("</div>",start);
+        end=end==std::string::npos ? content.size() : end+6;
+        if(hintSectionCount==hintSections.size()) {
+            UiElementHandle anchor=0,section=0;
+            UiControlDesc control=UI_CONTROL_DESC_INIT;
+            control.kind=UI_CONTROL_BUTTON; control.label="";
+            control.on_pressed=[](ModContext*,void*) {};
+            result=svc_ui->pane_add_control(mod_ctx,notesElement,&control,&anchor);
+            if(result!=MOD_OK) return result;
+            svc_ui->elem_set_class(mod_ctx,anchor,"tp-scroll-anchor",true);
+            result=svc_ui->pane_add_rml(mod_ctx,notesElement,"",&section);
+            if(result!=MOD_OK) return result;
+            hintAnchors.push_back(anchor); hintSections.push_back(section);
+        }
+        svc_ui->elem_set_rml(mod_ctx,hintSections[hintSectionCount],content.substr(start,end-start).c_str());
+        ++hintSectionCount; start=end;
+    }
+    for(size_t i=0;i<hintSections.size();++i) {
+        svc_ui->elem_set_visible(mod_ctx,hintSections[i],i<hintSectionCount);
+        svc_ui->elem_set_visible(mod_ctx,hintAnchors[i],i<hintSectionCount);
+    }
     for (size_t i=0;i<personalCards.size();++i) {
         const bool visible=i<personalNotes.size();
         svc_ui->elem_set_visible(mod_ctx,personalCards[i],visible);
@@ -740,18 +785,18 @@ ModResult updateNotes(ModContext*,void*,ModError*) {
 ModResult buildNotes(ModContext*,UiWindowHandle,UiElementHandle left,UiElementHandle right,void*,ModError*) {
     std::swap(left,right);
     notesTab=true; pageControl=checksElement=countElement=0;
-    personalCards.clear(); personalDeletes.clear();
+    personalCards.clear(); personalDeletes.clear(); hintSections.clear(); hintAnchors.clear(); hintSectionCount=0; notesScrollRow=0; notesNavigation={};
     checkRows.clear(); headingRows.clear(); visibleNames.clear(); visibleRows=0;
     stickRow=-1; stickNavigation={}; renderedRevision=0;
     auto result=svc_ui->pane_add_rml(mod_ctx,left,"",&inventoryElement);
     if (result!=MOD_OK) return result;
-    result=svc_ui->pane_add_rml(mod_ctx,right,"<div class='tp-title'>My notes</div><div class='tp-note'>Type a reminder and press Enter to post it below. Select New note to write another. Each card has its own Delete button. Up to 64 notes, 1,000 characters each (16,000 total).</div>",nullptr);
+    result=svc_ui->pane_add_rml(mod_ctx,right,"<div class='tp-title'>My notes</div><div class='tp-note'>Right stick: up/down scrolls notes and read hints. Type a reminder and press Enter to post it below. Select New note to write another. Each card has its own Delete button. Up to 64 notes, 1,000 characters each (16,000 total).</div>",nullptr);
     if (result!=MOD_OK) return result;
     UiControlDesc control=UI_CONTROL_DESC_INIT;
     control.kind=UI_CONTROL_STRING; control.label="New note - Enter to add";
     control.max_length=1000; control.get=manualGet; control.set=manualSet;
     control.string_set_mode=UI_STRING_SET_ON_COMMIT;
-    result=svc_ui->pane_add_control(mod_ctx,right,&control,nullptr);
+    result=svc_ui->pane_add_control(mod_ctx,right,&control,&newNoteControl);
     if (result!=MOD_OK) return result;
     for (size_t i=0;i<64;++i) {
         UiElementHandle card=0,button=0;
@@ -765,7 +810,9 @@ ModResult buildNotes(ModContext*,UiWindowHandle,UiElementHandle left,UiElementHa
         if (result!=MOD_OK) return result;
         personalDeletes.push_back(button);
     }
-    result=svc_ui->pane_add_rml(mod_ctx,right,"",&notesElement);
+    UiRowDesc row=UI_ROW_DESC_INIT;
+    result=svc_ui->pane_add_row(mod_ctx,right,&row,&notesElement);
+    svc_ui->elem_set_class(mod_ctx,notesElement,"tp-detail-sections",true);
     return result==MOD_OK ? updateNotes(mod_ctx,nullptr,nullptr) : result;
 }
 void onClosed(ModContext*, UiWindowHandle, void*) { window = 0; inventoryElement = checksElement = notesElement = 0; notesTab=false; }

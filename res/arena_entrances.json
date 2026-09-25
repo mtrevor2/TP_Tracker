@@ -1,0 +1,206 @@
+[
+  {
+    "stage": "D_MN01",
+    "room": 3,
+    "pos": [
+      0.18943600356578827,
+      -340.0,
+      566.114013671875
+    ],
+    "arena": "D_MN01A",
+    "checks": [
+      "Lakebed Temple Morpheel Heart Container",
+      "Lakebed Temple Dungeon Reward"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN01",
+    "room": 9,
+    "pos": [
+      14998.0,
+      -46.0,
+      -306.0
+    ],
+    "arena": "D_MN01B",
+    "checks": [
+      "Lakebed Temple Deku Toad Chest"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN04",
+    "room": 12,
+    "pos": [
+      -5924.99755859375,
+      1972.989990234375,
+      -11695.0
+    ],
+    "arena": "D_MN04A",
+    "checks": [
+      "Goron Mines Fyrus Heart Container",
+      "Goron Mines Dungeon Reward"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN05",
+    "room": 12,
+    "pos": [
+      7283.0,
+      3302.0,
+      -15680.0
+    ],
+    "arena": "D_MN05A",
+    "checks": [
+      "Forest Temple Diababa Heart Container",
+      "Forest Temple Dungeon Reward"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN05",
+    "room": 4,
+    "pos": [
+      0.0,
+      3902.611572265625,
+      -2700.0
+    ],
+    "arena": "D_MN05B",
+    "checks": [
+      "Forest Temple Gale Boomerang"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN06",
+    "room": 8,
+    "pos": [
+      -1.4241180419921875,
+      -250.0,
+      -14104.1591796875
+    ],
+    "arena": "D_MN06A",
+    "checks": [
+      "Temple of Time Armogohma Heart Container",
+      "Temple of Time Dungeon Reward"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN06",
+    "room": 7,
+    "pos": [
+      2775.0,
+      8150.0,
+      706.25
+    ],
+    "arena": "D_MN06B",
+    "checks": [
+      "Temple of Time Darknut Chest"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN07",
+    "room": 15,
+    "pos": [
+      0.0,
+      6000.0,
+      -24090.0
+    ],
+    "arena": "D_MN07A",
+    "checks": [
+      "City in the Sky Argorok Heart Container",
+      "City in the Sky Dungeon Reward"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN07",
+    "room": 5,
+    "pos": [
+      21550.96484375,
+      -4500.0,
+      -12727.185546875
+    ],
+    "arena": "D_MN07B",
+    "checks": [
+      "City in the Sky Aeralfos Chest"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN08",
+    "room": 9,
+    "pos": [
+      0.0,
+      1900.0,
+      -9700.0
+    ],
+    "arena": "D_MN08A",
+    "checks": [
+      "Palace of Twilight Zant Heart Container"
+    ],
+    "source": "boss Door actor in forward SCLS room"
+  },
+  {
+    "stage": "D_MN10",
+    "room": 9,
+    "pos": [
+      0.0,
+      4050.0,
+      -6975.0
+    ],
+    "arena": "D_MN10A",
+    "checks": [
+      "Arbiters Grounds Stallord Heart Container",
+      "Arbiters Grounds Dungeon Reward"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN10",
+    "room": 11,
+    "pos": [
+      -710.0,
+      -1700.0,
+      -4910.0
+    ],
+    "arena": "D_MN10B",
+    "checks": [
+      "Arbiters Grounds Death Sword Chest"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN11",
+    "room": 4,
+    "pos": [
+      -3.1244590282440186,
+      2109.0,
+      -4924.74755859375
+    ],
+    "arena": "D_MN11A",
+    "checks": [
+      "Snowpeak Ruins Blizzeta Heart Container",
+      "Snowpeak Ruins Dungeon Reward"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN11",
+    "room": 4,
+    "pos": [
+      0.0,
+      0.0,
+      -4950.0
+    ],
+    "arena": "D_MN11B",
+    "checks": [
+      "Snowpeak Ruins Ball and Chain",
+      "Snowpeak Ruins Chest After Darkhammer"
+    ],
+    "source": "reciprocal SCLS and return PLYR spawn"
+  }
+]

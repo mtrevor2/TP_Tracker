@@ -97,3 +97,20 @@ expected_icons = {'Progressive Mirror Shard':'mirror_shard_4.bti','Gale Boomeran
 for name, resource in expected_icons.items():
     assert art[name]['resource'] == resource, name
     assert not art[name]['fallback'], name
+
+# Every separate boss/miniboss check stage has one parent-dungeon anchor.
+import re, math
+arenas=json.loads((root/'res/arena_entrances.json').read_text())
+expected={stage for check in checks.values() for stage in check['stages'] if re.fullmatch(r'D_MN\d+[A-Z]',stage)}
+assert {a['arena'] for a in arenas}==expected
+assert len(arenas)==len(expected)
+for arena in arenas:
+    assert arena['stage']==arena['arena'][:-1]
+    assert 0 <= arena['room'] < 64 and all(math.isfinite(v) for v in arena['pos'])
+    assert set(arena['checks'])=={c['name'] for c in checks.values() if arena['arena'] in c['stages']}
+darkhammer=next(a for a in arenas if a['arena']=='D_MN11B')
+blizzeta=next(a for a in arenas if a['arena']=='D_MN11A')
+assert set(darkhammer['checks'])=={'Snowpeak Ruins Ball and Chain','Snowpeak Ruins Chest After Darkhammer'}
+assert darkhammer['room']==blizzeta['room']==4
+assert darkhammer['pos'][1] < blizzeta['pos'][1]  # Same XZ, different floors.
+print(f'Validated {len(arenas)} boss/miniboss entrance groups.')

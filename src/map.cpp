@@ -2,6 +2,8 @@
 #include <mods/svc/hook.hpp>
 #include "d/d_com_inf_game.h"
 #include "d/d_menu_fmap.h"
+#include "d/d_menu_dmap.h"
+#include "d/d_menu_dmap_map.h"
 #include "d/d_meter_map.h"
 #include "d/d_map.h"
 #include "d/d_menu_fmap2D.h"
@@ -20,6 +22,7 @@ extern "C" ModContext* mod_ctx;
 
 DEFINE_HOOK_SYMBOL("dMenu_Fmap2DBack_c::draw", void(dMenu_Fmap2DBack_c*), TrackerMapBackDraw);
 
+DEFINE_HOOK_SYMBOL("dMenuMapCommon_c::drawIcon", void(dMenuMapCommon_c*,f32,f32,f32,f32), TrackerDungeonIcons);
 DEFINE_HOOK_SYMBOL("dMeterMap_c::draw", void(dMeterMap_c*), TrackerMiniDraw);
 DEFINE_HOOK(static_cast<void (J2DPicture::*)(f32,f32,f32,f32,bool,bool,bool)>(&J2DPicture::draw), TrackerMiniPicture);
 namespace tracker {
@@ -43,6 +46,32 @@ struct Position { size_t check; std::string stage; int room; float x,y,z; bool e
 std::vector<Position> localPositions, worldPositions;
 struct Temple { std::string name,stage; int room; float x,z; };
 std::vector<Temple> temples;
+struct ArenaEntrance { std::string stage; int room; float x,y,z; std::vector<size_t> checks; };
+std::vector<ArenaEntrance> arenaEntrances;
+std::pair<int,int> arenaCounts(const ArenaEntrance& arena,const bool* types) {
+    int remaining=0,available=0;
+    for(auto index:arena.checks) {
+        const auto& check=state->catalogue.at("checks")[index];
+        const std::string name=check.at("name");
+        if(!trackerMapCheck(check) || !types[checkType(check)] || state->obtained.contains(name)) continue;
+        ++remaining;
+        const auto access=state->accessible.find(name);
+        if(access!=state->accessible.end() && access->second==Truth::yes) ++available;
+    }
+    return {remaining,available};
+}
+void arenaDot(J2DGrafContext* graf,float x,float y,int available,u8 alpha,bool small) {
+    auto color=available ? JUtility::TColor(255,235,30,alpha) : JUtility::TColor(165,165,165,alpha);
+    graf->setup2D();
+    J2DFillBox(x-2,y-3,4,6,color); J2DFillBox(x-3,y-2,6,4,color);
+    if(auto* font=mDoExt_getMesgFont()) {
+        JUtility::TColor ink(240,240,240,alpha);
+        J2DPrint count(font,ink,ink);
+        count.setFontSize(small ? 7 : 10,small ? 9 : 12);
+        count.print(x-5,y-5,alpha,"%dx",available);
+    }
+    graf->setup2D();
+}
 std::map<std::string,std::set<std::string>> exteriorStages;
 dMeterMap_c* drawingMeter=nullptr;
 struct MiniRect { float x,y,w,h; bool valid=false; } miniRect;
@@ -353,6 +382,83 @@ void draw(ModContext*, void* args, void*, void*) {
         }
     }
 }
+// The temple pause map has its own renderer. Draw during its icon pass so
+// native clipping, floor selection, zoom, panning and opening alpha apply.
+void drawDungeon(ModContext*,void* args,void*,void*) {
+    auto* common=mods::arg<dMenuMapCommon_c*>(args,0);
+    auto* active=dMenu_Dmap_c::myclass;
+    if(!mapEnabled || !state || !active || !active->mpDrawBg ||
+       static_cast<dMenuMapCommon_c*>(active->mpDrawBg)!=common || !active->mMapCtrl) return;
+    auto* ctrl=active->mMapCtrl;
+    auto* rend=ctrl->getRendPointer(0);
+    auto* graf=dComIfGp_getCurrentGrafPort();
+    auto* info=dComIfGp_getStageStagInfo();
+    if(!graf || !info) return;
+    const float originX=mods::arg<float>(args,1),originY=mods::arg<float>(args,2);
+    const float opacity=mods::arg<float>(args,3)*mods::arg<float>(args,4);
+    const int stay=dComIfGp_roomControl_getStayNo();
+    auto floorAlpha=[&](float height,int room) {
+        const auto floor=dMapInfo_c::calcFloorNo(height,true,room);
+        float blend=0;
+        if(floor==ctrl->getDispFloorNo()) blend+=ctrl->getMapBlendPer();
+        if(floor==ctrl->getDispFloor2No()) blend+=1.f-ctrl->getMapBlendPer();
+        return static_cast<u8>(255*std::clamp(blend*opacity,0.f,1.f));
+    };
+    auto project=[&](const BE(Vec)& pos,float& x,float& y) {
+        ctrl->cnvPosTo2Dpos(pos.x,pos.z,&x,&y);
+        x+=originX; y+=originY;
+        return std::isfinite(x) && std::isfinite(y);
+    };
+    std::set<size_t> drawn;
+    auto marker=[&](size_t index,const BE(Vec)& pos,int room) {
+        if(drawn.contains(index) || !rend->isDrawRoomIcon(room,stay)) return;
+        const auto& check=state->catalogue.at("checks")[index];
+        const std::string name=check.at("name");
+        if(!state->matchesScene(check) || !trackerMapCheck(check) || !mapTypes[checkType(check)] || state->obtained.contains(name)) return;
+        const auto alpha=floorAlpha(pos.y,room);
+        if(!alpha) return;
+        float x,y; if(!project(pos,x,y)) return;
+        const auto a=state->accessible.find(name);
+        const auto access=a==state->accessible.end() ? Truth::unknown : a->second;
+        auto art=iconTextures.find(iconName(check,access));
+        graf->setup2D();
+        if(art!=iconTextures.end()) {
+            J2DPicture picture(reinterpret_cast<ResTIMG*>(art->second.data()));
+            picture.setAlpha(alpha); picture.draw(x-8,y-8,16,16,false,false,false);
+        } else {
+            auto color=access==Truth::yes ? JUtility::TColor(255,235,30,alpha) : JUtility::TColor(165,165,165,alpha);
+            J2DFillBox(x-2,y-3,4,6,color); J2DFillBox(x-3,y-2,6,4,color);
+        }
+        drawn.insert(index);
+    };
+    const int save=dStage_stagInfo_GetSaveTbl(info);
+    for(int group:{0,2,5,9}) {
+        int guard=0;
+        for(auto* record=dTres_c::getFirstData(group);record && guard++<512;record=dTres_c::getNextData(record)) {
+            auto found=flagIndex.find({save,record->mNo});
+            if(found==flagIndex.end()) continue;
+            for(auto index:found->second) {
+                const auto& stages=state->catalogue.at("checks")[index].at("stages");
+                if(!stages.empty() && std::find(stages.begin(),stages.end(),state->stage)==stages.end()) continue;
+                marker(index,*record->getPos(),record->mRoomNo);
+            }
+        }
+    }
+    for(const auto& p:localPositions) {
+        if(p.stage!=state->stage) continue;
+        BE(Vec) pos=Vec{p.x,p.y,p.z}; dMapInfo_n::correctionOriginPos(static_cast<s8>(p.room),&pos);
+        marker(p.check,pos,p.room);
+    }
+    for(const auto& arena:arenaEntrances) {
+        if(arena.stage!=state->stage || !rend->isDrawRoomIcon(arena.room,stay)) continue;
+        const auto [remaining,available]=arenaCounts(arena,mapTypes);
+        const auto alpha=floorAlpha(arena.y,arena.room);
+        if(!remaining || !alpha) continue;
+        BE(Vec) pos=Vec{arena.x,arena.y,arena.z}; dMapInfo_n::correctionOriginPos(static_cast<s8>(arena.room),&pos);
+        float x,y; if(project(pos,x,y)) arenaDot(graf,x,y,available,alpha,false);
+    }
+    graf->setup2D();
+}
 void drawMini(ModContext*,void* args,void*,void*) {
     auto* meter = mods::arg<dMeterMap_c*>(args,0);
     drawingMeter=nullptr;
@@ -437,6 +543,17 @@ void drawMini(ModContext*,void* args,void*,void*) {
         graf->setup2D();
         J2DFillBox(dot.x-1,dot.y-2,2,4,color);J2DFillBox(dot.x-2,dot.y-1,4,2,color);
     }
+    for(const auto& arena:arenaEntrances) {
+        if(arena.stage!=state->stage || !map->isDrawRoomIcon(arena.room,map->getStayRoomNo()) ||
+           !map->isRenderingFloor(dMapInfo_c::calcFloorNo(arena.y,true,arena.room))) continue;
+        const auto [remaining,available]=arenaCounts(arena,minimapTypes);
+        if(!remaining) continue;
+        BE(Vec) pos=Vec{arena.x,arena.y,arena.z}; dMapInfo_n::correctionOriginPos(static_cast<s8>(arena.room),&pos);
+        float x=left+(0.5f+mirror*(pos.x-map->mPosX)/map->field_0x8)*miniRect.w;
+        float y=top+(0.5f+(pos.z-map->mPosZ)/map->field_0xc)*miniRect.h;
+        if(!std::isfinite(x)||!std::isfinite(y)||x<left+6||y<top+14||x>left+miniRect.w-6||y>top+miniRect.h-3) continue;
+        arenaDot(graf,x,y,available,meter->mMapAlpha,true);
+    }
     graf->setup2D();
 }
 
@@ -460,6 +577,22 @@ ModResult initializeMap(Model* model) {
         auto& bytes=iconTextures[name];
         loadTexture((std::string("icons/")+name+".bti").c_str(),bytes);
         if (bytes.empty()) iconTextures.erase(name);
+    }
+    arenaEntrances.clear();
+    ResourceBuffer arenaData=RESOURCE_BUFFER_INIT;
+    if(svc_resource->load(mod_ctx,"arena_entrances.json",&arenaData)==MOD_OK) {
+        try {
+            auto data=Json::parse(static_cast<const char*>(arenaData.data),static_cast<const char*>(arenaData.data)+arenaData.size);
+            for(const auto& entry:data) {
+                ArenaEntrance arena{entry.at("stage").get<std::string>(),entry.at("room").get<int>(),entry.at("pos")[0],entry.at("pos")[1],entry.at("pos")[2],{}};
+                for(size_t i=0;i<model->catalogue.at("checks").size();++i) {
+                    const auto& name=model->catalogue.at("checks")[i].at("name");
+                    if(std::find(entry.at("checks").begin(),entry.at("checks").end(),name)!=entry.at("checks").end()) arena.checks.push_back(i);
+                }
+                arenaEntrances.push_back(std::move(arena));
+            }
+        } catch(...) { arenaEntrances.clear(); }
+        svc_resource->free(mod_ctx,&arenaData);
     }
     temples.clear();
     ResourceBuffer templeData=RESOURCE_BUFFER_INIT;
@@ -515,11 +648,13 @@ ModResult initializeMap(Model* model) {
     const auto miniAfter=mods::hook::add_post<TrackerMiniDraw>(drawMini);
     minimapAvailable=miniBefore==MOD_OK && miniPicture==MOD_OK && miniAfter==MOD_OK;
     if (!minimapAvailable) minimapEnabled=false;
+    const auto dungeonResult=mods::hook::add_post<TrackerDungeonIcons>(drawDungeon);
+    if(dungeonResult!=MOD_OK) return dungeonResult;
     auto result = mods::hook::add_post<TrackerMapBackDraw>(draw);
     mapAvailable = result == MOD_OK;
     if (!mapAvailable) shutdownMap();
     return result;
 }
-void shutdownMap() { state = nullptr; mapAvailable = false; flagIndex.clear(); chestTexture.clear(); doneTexture.clear(); iconTextures.clear(); localPositions.clear(); worldPositions.clear(); temples.clear(); exteriorStages.clear(); drawingMeter=nullptr; minimapAvailable=false; }
+void shutdownMap() { state = nullptr; mapAvailable = false; flagIndex.clear(); chestTexture.clear(); doneTexture.clear(); iconTextures.clear(); localPositions.clear(); worldPositions.clear(); temples.clear(); arenaEntrances.clear(); exteriorStages.clear(); drawingMeter=nullptr; minimapAvailable=false; }
 }
 

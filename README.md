@@ -1,5 +1,12 @@
 # TPTracker 0.4.24
 
+## 0.4.26 temple maps and Notes navigation
+
+- Temple pause maps now display tracker check markers using the game's floor, zoom and pan transforms, with the existing map category filters.
+- Separate boss/miniboss rooms have entrance dots on temple maps and minimaps. Yellow means at least one accessible check; gray means none. The number above shows accessible checks. Completed and skipped checks are excluded, and empty groups disappear.
+- Entrance positions cover all 14 separate boss/miniboss check stages and are derived from game exits and return spawns, with Zant's actual boss-door actor used for his one-way entrance.
+- Right-stick up/down navigation now scrolls through personal notes and recorded hints.
+
 ## 0.4.25 controller details scrolling
 
 Move the controller right stick up/down to scroll through Check Details requirements and reach the Skip/Undo button. Navigation stays in the details popup and resets when it closes.
