@@ -1,5 +1,6 @@
 #include "model.hpp"
 #include "notebook.hpp"
+#include "check_guides.hpp"
 #include "stick_navigation.hpp"
 #include <chrono>
 #include <fstream>
@@ -24,6 +25,33 @@ int main(int argc, char** argv) {
         std::ifstream input(argv[1]);
         Json data; input >> data;
         Model model; model.load(data);
+        CheckGuides guides;
+        require(guides.blocks("unknown")[1].find("unavailable")!=std::string::npos,"missing guides must fail gracefully");
+        std::ifstream guideInput(std::filesystem::path(argv[1]).parent_path()/"check_guides.json");
+        Json guideData; guideInput >> guideData; guides.load(guideData);
+        require(guideData.at("checks").size()==data.at("checks").size(),"guide catalogue coverage differs");
+        for(const auto& check : data.at("checks")) {
+            const auto blocks=guides.blocks(check.at("name"));
+            require(blocks.size()>=4,"check lacks collection directions");
+            require(blocks[0].find("How to obtain")!=std::string::npos,"guide heading missing");
+            require(blocks.back().find("Sources:")!=std::string::npos,"guide attribution missing");
+        }
+        const auto rupeeGuide=guides.blocks("Ordon Shield House Ledge Grass Rupee")[1];
+        require(rupeeGuide.find("night")!=std::string::npos && rupeeGuide.find("Boomerang")!=std::string::npos && rupeeGuide.find("Clawshot")!=std::string::npos,"ledge rupee collection method incomplete");
+        require(guides.blocks("Ordon Hint Sign")[2].find("Notes")!=std::string::npos,"hint sign directions omit recording");
+        require(guides.blocks("City in the Sky Big Key Chest")[1].find("unavailable")==std::string::npos,"City in the Sky guide alias missing");
+        require(guides.blocks("Defeat Ganondorf")[1].find("Ganondorf")!=std::string::npos,"Ganondorf guide alias missing");
+        Json unsafe=guideData;
+        unsafe["checks"]["Coro Lantern"]["steps"]=Json::array({"<button onclick='evil'> & collectible"});
+        guides.load(unsafe);
+        require(guides.blocks("Coro Lantern")[1].find("<button")==std::string::npos && guides.blocks("Coro Lantern")[1].find("&lt;button")!=std::string::npos,"guide text injected markup");
+        guides.load(guideData);
+        auto malformed=guideData;
+        malformed["checks"]["Coro Lantern"]["sources"]=Json::array({"missing source"});
+        bool guideRejected=false;
+        try { guides.load(malformed); } catch(const std::exception&) { guideRejected=true; }
+        require(guideRejected && guides.blocks("Ordon Shield House Ledge Grass Rupee")[1]==rupeeGuide,"invalid guide reload changed valid data");
+
         for(const auto& [setting,options] : data.at("setting_options").items()) {
             for(size_t i=0;i<options.size();++i) for(size_t j=0;j<options.size();++j) {
                 model.settings[setting]=options[i];

@@ -1,0 +1,1147 @@
+{
+  "Ordon Hint Sign": {
+    "steps": [
+      "Beside the gate outside Link's house."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "South Faron Woods Hint Sign": {
+    "steps": [
+      "Ledge behind the scarecrow near Coro."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Sacred Grove Hint Sign": {
+    "steps": [
+      "Wall beside the doors to the past."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Faron Field Hint Sign": {
+    "steps": [
+      "Under the wooden bridge."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Kakariko Gorge Hint Sign": {
+    "steps": [
+      "Below the owl-statue chest."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Kakariko Village Hint Sign": {
+    "steps": [
+      "Near the inn's elevated hot spring."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Kakariko Graveyard Hint Sign": {
+    "steps": [
+      "Behind the Zora grave."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Eldin Field Hint Sign": {
+    "steps": [
+      "Wooden bridge toward Kakariko Gorge."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "North Eldin Field Hint Sign": {
+    "steps": [
+      "Spinner track toward Stalfos Grotto."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Hidden Village Hint Sign": {
+    "steps": [
+      "Fence beside the howling stone."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Lanayru Field Hint Sign": {
+    "steps": [
+      "Fork from the Castle Town approach."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Beside Castle Town Hint Sign": {
+    "steps": [
+      "Raised ground west of town."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Castle Town Center Hint Sign": {
+    "steps": [
+      "Central plaza fountain."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Outside South Castle Town Hint Sign": {
+    "steps": [
+      "Beside the fountain."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Lake Hylia Bridge Hint Sign": {
+    "steps": [
+      "Vine ledge above the owl statue."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Lake Hylia Hint Sign": {
+    "steps": [
+      "Falbi's Flight by Fowl building."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Lanayru Spring Hint Sign": {
+    "steps": [
+      "Underwater, between the smaller chests."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Lake Lantern Cave Hint Sign": {
+    "steps": [
+      "Halfway escape-light room."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Fishing Hole Hint Sign": {
+    "steps": [
+      "Near Hena's house."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Zoras Domain Hint Sign": {
+    "steps": [
+      "Alcove above the Snowpeak entrance."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Snowpeak Hint Sign": {
+    "steps": [
+      "Frozen lake, toward the blizzard."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Gerudo Desert Hint Sign": {
+    "steps": [
+      "Ledge near the central gate."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Bulblin Camp Hint Sign": {
+    "steps": [
+      "Corner opposite the roasted boar."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Forest Temple Hint Sign": {
+    "steps": [
+      "Hub door blocked by webs."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Goron Mines Hint Sign": {
+    "steps": [
+      "Gor Ebizo's room."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Lakebed Temple Hint Sign": {
+    "steps": [
+      "Lower western passage outside the hub."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Arbiters Grounds Hint Sign": {
+    "steps": [
+      "Hub, beside the Poe barrier."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Snowpeak Ruins Hint Sign": {
+    "steps": [
+      "Yeta's hearth room."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Temple of Time First Hint Sign": {
+    "steps": [
+      "Entrance beside Ooccoo."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Temple of Time Second Hint Sign": {
+    "steps": [
+      "Moving-wall corridor."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "City in the Sky Hint Sign": {
+    "steps": [
+      "Hub door toward the miniboss."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Palace of Twilight Hint Sign": {
+    "steps": [
+      "Entrance, toward the central wing."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Hyrule Castle Hint Sign": {
+    "steps": [
+      "Entrance statue."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "Cave of Ordeals Hint Sign": {
+    "steps": [
+      "First-floor entry ledge."
+    ],
+    "kind": "hint_sign",
+    "sources": [
+      "wiki_hints"
+    ]
+  },
+  "South Faron Woods Twilit Insect in Tunnel 1": {
+    "steps": [
+      "Follow the tunnel path near the Faron spring."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "South Faron Woods Twilit Insect in Tunnel 2": {
+    "steps": [
+      "Follow the tunnel path near the Faron spring."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "Faron Woods Coros House Interior Twilit Insect 1": {
+    "steps": [
+      "Enter Coro's window with Midna; speak to his spirit."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "Faron Woods Coros House Interior Twilit Insect 2": {
+    "steps": [
+      "Enter Coro's window with Midna; speak to his spirit."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "South Faron Woods Coros House Exterior Twilit Insect": {
+    "steps": [
+      "Ram the outside wall of Coro's house."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "South Faron Woods Twilit Insect Behind Gate 1": {
+    "steps": [
+      "Dig underneath Coro's gate; search immediately beyond it."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "South Faron Woods Twilit Insect Behind Gate 2": {
+    "steps": [
+      "Dig underneath Coro's gate; search immediately beyond it."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "Faron Mist Twilit Insect on Wall 1": {
+    "steps": [
+      "Check the wall near the cave exit into the mist."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "Faron Mist Twilit Insect on Wall 2": {
+    "steps": [
+      "Check the wall near the cave exit into the mist."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "Faron Mist Twilit Insect on Center Stump 1": {
+    "steps": [
+      "Follow Midna's jumps onto the central stump."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "Faron Mist Twilit Insect on Center Stump 2": {
+    "steps": [
+      "Follow Midna's jumps onto the central stump."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "Faron Mist Twilit Insect on Center Stump 3": {
+    "steps": [
+      "Follow Midna's jumps onto the central stump."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "Faron Mist Burrowing Twilit Insect 1": {
+    "steps": [
+      "Dig near the exit toward North Faron Woods."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "Faron Mist Burrowing Twilit Insect 2": {
+    "steps": [
+      "Dig near the exit toward North Faron Woods."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "North Faron Woods Twilit Insect 1": {
+    "steps": [
+      "Find the frightened monkey on the Forest Temple approach."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "North Faron Woods Twilit Insect 2": {
+    "steps": [
+      "Find the frightened monkey on the Forest Temple approach."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_faron"
+    ]
+  },
+  "Sanctuary Basement Twilit Insect 1": {
+    "steps": [
+      "Light the sanctuary candles; descend through the statue opening."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Sanctuary Basement Twilit Insect 2": {
+    "steps": [
+      "Light the sanctuary candles; descend through the statue opening."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Sanctuary Basement Twilit Insect 3": {
+    "steps": [
+      "Light the sanctuary candles; descend through the statue opening."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Kakariko Graveyard Twilit Insect": {
+    "steps": [
+      "Dig at the insect's marked graveyard position."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Kakariko Malo Mart Twilit Insect": {
+    "steps": [
+      "Crawl inside; climb the shelves behind the counter."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Kakariko Inn Pipe Twilit Insect": {
+    "steps": [
+      "Light the inn fireplace using a burning stick."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Kakariko Inn Bedroom Twilit Insect": {
+    "steps": [
+      "Search the upstairs bedroom wall."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Kakariko Bug House Twilit Insect": {
+    "steps": [
+      "Fall through the patched roof; push the crate."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Barnes Bomb Shop Twilit Insect": {
+    "steps": [
+      "Enter upstairs; ram the shelf against the wall."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Kakariko Destroyed Building Twilit Insect 1": {
+    "steps": [
+      "Ignite the building's fireplace, escape, then collect the drops."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Kakariko Destroyed Building Twilit Insect 2": {
+    "steps": [
+      "Ignite the building's fireplace, escape, then collect the drops."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Kakariko Destroyed Building Twilit Insect 3": {
+    "steps": [
+      "Ignite the building's fireplace, escape, then collect the drops."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Kakariko Watchtower Twilit Insect": {
+    "steps": [
+      "Dig beneath the watchtower; smash the barrels inside."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Death Mountain Trail Twilit Insect Near Howling Stone": {
+    "steps": [
+      "Dig near the steam vents and howling stone."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Death Mountain Trail Twilit Insect on Wall": {
+    "steps": [
+      "Ram the gate beside the Shadow Beast arena."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Death Mountain Trail Twilit Insect in Hot Spring": {
+    "steps": [
+      "Use Midna's mountain jumps; drop into the hot spring."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_eldin"
+    ]
+  },
+  "Castle Town Twilit Insect": {
+    "steps": [
+      "Break crates in Castle Town's southern street."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Lake Hylia Twilit Insect Between Bridges": {
+    "steps": [
+      "Search the path between the lake bridges."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Lake Hylia Burrowing Twilit Insect": {
+    "steps": [
+      "Dig on the raised southern lake shore."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Lake Hylia Twilit Insect Behind Canon": {
+    "steps": [
+      "Circle behind Fyer's cannon building."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Lake Hylia Twilit Insect on Docks": {
+    "steps": [
+      "Swim to the isolated dock near the spirit spring."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Lake Hylia Twilit Bloat": {
+    "steps": [
+      "After the other insects, attack Bloat between electrical charges. When overturned, target all six legs with Midna."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Zoras River Twilit Insect 1": {
+    "steps": [
+      "Ride the Shadow Kargarok upriver; target and dash into insects."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Zoras River Twilit Insect 2": {
+    "steps": [
+      "Ride the Shadow Kargarok upriver; target and dash into insects."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Zoras River Twilit Insect 3": {
+    "steps": [
+      "Ride the Shadow Kargarok upriver; target and dash into insects."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Zoras River Twilit Insect 4": {
+    "steps": [
+      "Ride the Shadow Kargarok upriver; target and dash into insects."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Upper Zoras River Twilit Insect": {
+    "steps": [
+      "Talk to Iza outside the boat-rental building."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Zoras Domain Twilit Insect near Lilypads 1": {
+    "steps": [
+      "Search the lily pads beneath the waterfall."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Zoras Domain Twilit Insect near Lilypads 2": {
+    "steps": [
+      "Search the lily pads beneath the waterfall."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Zoras Domain Burrowing Twilit Insect": {
+    "steps": [
+      "Dig on the raised shore below the waterfall."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Zoras Domain Twilit Insect on West Ledge": {
+    "steps": [
+      "Use Midna's waterfall jumps to reach the elevated ledge."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Zoras Domain Throne Room Twilit Insect": {
+    "steps": [
+      "Inside the throne room, ram the wall beneath the insect."
+    ],
+    "kind": "twilit_insect",
+    "sources": [
+      "bugs_lanayru"
+    ]
+  },
+  "Ordon Shield House Ledge Grass Rupee": {
+    "steps": [
+      "Visit the shield house in Ordon Village at night. Use the Gale Boomerang or Clawshot to retrieve the pickup from the grass on its ledge."
+    ]
+  },
+  "Forest Temple Big Key Chest": {
+    "steps": [
+      "Find the gated chest beside the four pinwheels. Target all four with the Gale Boomerang in the order shown by the Z-shaped floor marking, then open the chest."
+    ],
+    "sources": [
+      "forest_walkthrough"
+    ]
+  },
+  "Coro Lantern": {
+    "steps": [
+      "Talk to Coro at his camp beside the house in South Faron Woods to receive his first gift."
+    ]
+  },
+  "Coro Gate Key": {
+    "steps": [
+      "Speak to Coro at his camp in South Faron Woods and finish his dialogue to receive the gate-key reward."
+    ]
+  },
+  "Coro Bottle": {
+    "steps": [
+      "Talk to Coro in South Faron Woods and buy his bottled-oil offer. This is a separate reward from his Lantern and gate-key gifts."
+    ]
+  },
+  "Sacred Grove Pedestal Master Sword": {
+    "steps": [
+      "Reach the sword pedestal in Sacred Grove and interact with it to receive the pedestal rewards. The two rewards are tracked as separate checks."
+    ]
+  },
+  "Sacred Grove Pedestal Shadow Crystal": {
+    "steps": [
+      "Reach the sword pedestal in Sacred Grove and interact with it to receive the pedestal rewards. The two rewards are tracked as separate checks."
+    ]
+  },
+  "Defeat Ganondorf": {
+    "steps": [
+      "Reach Ganondorf beyond the Hyrule Castle throne room and finish the final boss sequence. Complete the duel and deliver the finishing blow."
+    ]
+  },
+  "Arbiters Grounds Big Key Chest": {
+    "steps": [
+      "Recover the four Poe flames to open the central barrier. Continue into the passages beyond it to reach the Big Key chest."
+    ]
+  },
+  "Faron Field Poe": {
+    "steps": [
+      "At night, search beneath the tree in the central part of Faron Field. Reveal the Poe with Wolf Link's senses, defeat it, and take its soul."
+    ]
+  },
+  "Uli Cradle Delivery": {
+    "steps": [
+      "Use hawk grass on the high village ledges to send a hawk at the monkey holding the cradle. Carry the cradle to Uli, then follow her home for the reward."
+    ],
+    "sources": [
+      "ordon_walkthrough"
+    ]
+  },
+  "Ordon Cat Rescue": {
+    "steps": [
+      "Fish at the dock beside the cat until it takes a fish and runs home. Follow it to Sera's shop and talk to Sera for the reward."
+    ],
+    "sources": [
+      "ordon_walkthrough"
+    ]
+  },
+  "Wrestling With Bo": {
+    "steps": [
+      "Visit Mayor Bo in Ordon Village and complete his sumo lessons. After winning the matches, open the chest he offers."
+    ]
+  },
+  "Faron Field Tree Heart Piece": {
+    "steps": [
+      "Look up into the tree branches near the central bridge in Faron Field. Target the pickup with the Gale Boomerang to bring it to you."
+    ]
+  },
+  "Kakariko Gorge Spire Heart Piece": {
+    "steps": [
+      "From Kakariko Gorge, aim the Gale Boomerang at the pickup on top of the tall rock spire beside the bridge."
+    ]
+  },
+  "Kakariko Village Bomb Rock Spire Heart Piece": {
+    "steps": [
+      "At the southern end of Kakariko Village, destroy the high rocks with Bomb Arrows, then retrieve the exposed pickup with the Gale Boomerang."
+    ]
+  },
+  "Renados Letter": {
+    "steps": [
+      "Talk to Renado inside Kakariko's sanctuary to receive his letter reward when the seed's Ilia-quest requirements are met."
+    ],
+    "sources": [
+      "sky_walkthrough"
+    ]
+  },
+  "Shad Dominion Rod": {
+    "steps": [
+      "Find Shad in the basement beneath Renado's sanctuary in Kakariko Village. Show him the Ancient Sky Book and finish the conversation."
+    ],
+    "sources": [
+      "sky_walkthrough"
+    ]
+  },
+  "Gift From Ralis": {
+    "steps": [
+      "Visit Ralis at the Zora tomb in Kakariko Graveyard. Show him Ashei's Sketch and finish his dialogue to receive the reward."
+    ]
+  },
+  "Goron Springwater Rush": {
+    "steps": [
+      "Speak to the elder outside Kakariko Malo Mart to start the delivery. Carry the hot springwater barrel across the field and throw it onto the exhausted Goron at the Castle Town bridge before it cools."
+    ]
+  },
+  "Skybook From Impaz": {
+    "steps": [
+      "Visit Impaz in the Hidden Village after clearing the Bulblins. Show her the Dominion Rod and finish her dialogue to receive the Sky Book reward."
+    ],
+    "sources": [
+      "sky_walkthrough"
+    ]
+  },
+  "Cats Hide and Seek Minigame": {
+    "steps": [
+      "As Wolf Link, speak to the Hidden Village Cucco and find all 20 cats. Report back, then collect the prize in front of Impaz's house."
+    ],
+    "sources": [
+      "sky_walkthrough"
+    ]
+  },
+  "Ilia Charm": {
+    "steps": [
+      "Defeat the 20 Bulblins in the Hidden Village, then speak to Impaz inside her house for the reward."
+    ],
+    "sources": [
+      "sky_walkthrough"
+    ]
+  },
+  "Telma Invoice": {
+    "steps": [
+      "Visit Telma's Bar in Castle Town's southern street. Show Renado's Letter to Telma to receive the Invoice reward."
+    ],
+    "sources": [
+      "sky_walkthrough"
+    ]
+  },
+  "Wooden Statue": {
+    "steps": [
+      "Show the Invoice to the doctor and learn the medicine scent from the crate in his office. Follow the scent to Louise, then defeat the Stalhounds outside Castle Town's south gate at night and collect their drop."
+    ],
+    "sources": [
+      "sky_walkthrough"
+    ]
+  },
+  "Plumm Fruit Balloon Minigame": {
+    "steps": [
+      "Speak to Plumm at Lake Hylia as Wolf Link. Ride the bird through the river course, popping fruit balloons; build a streak on matching fruit to score at least 10,000 points."
+    ]
+  },
+  "Fishing Hole Heart Piece": {
+    "steps": [
+      "Rent Hena's boat and approach the rock formation in the fishing pond. Cast the lure at the pickup on the ledge to reel it in."
+    ]
+  },
+  "Forest Temple Gale Boomerang": {
+    "steps": [
+      "Defeat Ook in the Forest Temple miniboss room. Roll into his pillar when he is off balance, attack while he is down, and collect the reward after the fight."
+    ],
+    "sources": [
+      "forest_walkthrough"
+    ]
+  },
+  "Goron Mines Dangoro Chest": {
+    "steps": [
+      "Defeat Dangoro in the miniboss arena, using Iron Boots to hold your ground and throw him off the platform when he curls up. Open the chest in the room beyond."
+    ]
+  },
+  "Lakebed Temple Deku Toad Chest": {
+    "steps": [
+      "Defeat Deku Toad: clear the small toads, avoid its landing, and attack its exposed tongue. Open the reward chest after the fight."
+    ]
+  },
+  "Arbiters Grounds Death Sword Chest": {
+    "steps": [
+      "Cut the ropes holding the sword to start the fight. Use Wolf Link's senses to attack the spirit, then fight its revealed form as Human Link. Open the chest after winning."
+    ]
+  },
+  "Hyrule Castle King Bulblin Key": {
+    "steps": [
+      "Defeat King Bulblin in Hyrule Castle's west courtyard and collect the reward he gives after the fight."
+    ]
+  },
+  "Lanayru Field Behind Gate Underwater Chest": {
+    "steps": [
+      "In Lanayru Field, find the wooden barriers underwater south of the stone bridge. Break through them with an underwater attack, then use Iron Boots to reach and open the chest."
+    ]
+  },
+  "Lanayru Ice Block Puzzle Cave Chest": {
+    "steps": [
+      "Enter the cave in Lanayru Field and solve its sliding-block puzzles. Position the blocks so you can reach the switches and continue to the chest at the back."
+    ]
+  },
+  "Goron Mines Outside Underwater Chest": {
+    "steps": [
+      "In Goron Mines' outdoor area, sink into the water with Iron Boots. Break the wooden barrier with an underwater attack and open the chest beyond."
+    ]
+  },
+  "Goron Mines Outside Clawshot Chest": {
+    "steps": [
+      "In Goron Mines' outdoor area, use the Clawshot targets toward the north side to reach the raised chest."
+    ]
+  },
+  "Lakebed Temple Chandelier Chest": {
+    "steps": [
+      "In Lakebed Temple's central staircase room, Clawshot onto the chandelier platform and open the chest on it."
+    ]
+  },
+  "Forest Temple Central Chest Behind Stairs": {
+    "steps": [
+      "In the central room, use a Bombling to break the boulder beneath the north door. If the staircase blocks the chest, extinguish its torches with the Gale Boomerang."
+    ],
+    "sources": [
+      "forest_walkthrough"
+    ]
+  },
+  "Forest Temple East Tile Worm Chest": {
+    "steps": [
+      "From the room east of the Windless Bridge, pass the Tile Worms and climb the vines to the chest ledge."
+    ]
+  },
+  "Snowpeak Ruins Lobby Chandelier Chest": {
+    "steps": [
+      "Climb to the upper lobby. Strike the chandeliers with the Ball and Chain to make them swing, then jump across them to the chest."
+    ]
+  },
+  "Snowpeak Ruins Wooden Beam Chandelier Chest": {
+    "steps": [
+      "From the upper wooden beams, set the chandelier swinging with the Ball and Chain. Jump onto it and across to the chest ledge."
+    ]
+  },
+  "Snowpeak Ruins Northeast Chandelier Chest": {
+    "steps": [
+      "In the northeastern room, reach the upper level and swing the chandelier with the Ball and Chain. Jump across to the chest."
+    ]
+  },
+  "Kakariko Village Malo Mart Hawkeye": {
+    "steps": [
+      "Enter Malo Mart in Kakariko Village and buy the shop slot normally containing the Hawkeye. Check the requirements on the left for this seed's shop access."
+    ]
+  },
+  "Kakariko Village Malo Mart Hylian Shield": {
+    "steps": [
+      "Enter Malo Mart in Kakariko Village and buy the shop slot normally containing the Hylian Shield. Check the requirements on the left for this seed's shop access."
+    ]
+  },
+  "Kakariko Village Malo Mart Red Potion": {
+    "steps": [
+      "Enter Malo Mart in Kakariko Village and buy the shop slot normally containing the Red Potion. Check the requirements on the left for this seed's shop access."
+    ]
+  },
+  "Kakariko Village Malo Mart Wooden Shield": {
+    "steps": [
+      "Enter Malo Mart in Kakariko Village and buy the shop slot normally containing the Wooden Shield. Check the requirements on the left for this seed's shop access."
+    ]
+  },
+  "Faron Mist South Chest": {
+    "steps": [
+      "In the poisonous mist area of North Faron Woods, near the locked gate that leads on into North Faron Woods proper. Larger chest guarded by a Deku Baba — chop it down, then open.",
+      "Use the Lantern to keep poison mist back, or follow available Midna jump routes across safe ground."
+    ]
+  },
+  "Faron Mist Stump Chest": {
+    "steps": [
+      "Inside the poisonous mist area of North Faron Woods — small chest sitting on top of a tree-stump ledge near the middle of the fog.",
+      "Use the Lantern to keep poison mist back, or follow available Midna jump routes across safe ground."
+    ]
+  },
+  "Faron Mist North Chest": {
+    "steps": [
+      "Small chest in the poisonous mist area of North Faron Woods, on the side near the entrance of the Faron Mist Cave (the small east-side cave, not the long tunnel from South Faron).",
+      "Use the Lantern to keep poison mist back, or follow available Midna jump routes across safe ground."
+    ]
+  },
+  "Faron Woods Owl Statue Sky Character": {
+    "steps": [
+      "Find the owl statue in Faron Woods. Move it with the powered Dominion Rod, then step onto the mark it was covering to obtain the Sky Character."
+    ]
+  },
+  "Faron Woods Owl Statue Chest": {
+    "steps": [
+      "Move the Faron Woods owl statue into the nearby depression with the powered Dominion Rod. Use it as a step on the Midna jump route to the high chest ledge."
+    ]
+  },
+  "Hyrule Castle Treasure Room First Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the first big chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Second Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the second big chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Third Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the third big chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Fourth Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the fourth big chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Fifth Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the fifth big chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room First Small Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the first small chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Second Small Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the second small chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Third Small Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the third small chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Fourth Small Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the fourth small chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Fifth Small Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the fifth small chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Sixth Small Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the sixth small chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Seventh Small Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the seventh small chest in the room. Walk around and open."
+    ]
+  },
+  "Hyrule Castle Treasure Room Eighth Small Chest": {
+    "steps": [
+      "In the Treasure Room next to the boss room in Hyrule Castle - a room packed with many chests.",
+      "This is the eighth small chest in the room. Walk around and open."
+    ]
+  },
+  "Doctors Office Balcony Chest": {
+    "steps": [
+      "In the Castle Town medical clinic, show the doctor the Invoice. As Wolf Link, climb the shelves and exit onto the balcony to open the chest."
+    ]
+  },
+  "Temple of Time Moving Wall Beamos Room Chest": {
+    "steps": [
+      "Shoot the eye switches with the Bow to move the walls in the Beamos room. Follow the opened passage to the chest."
+    ]
+  },
+  "Temple of Time Darknut Chest": {
+    "steps": [
+      "Defeat the Darknut in the Temple of Time miniboss arena and open the reward chest. Attack through openings in its defense, removing its armor before finishing the duel."
+    ]
+  },
+  "Goron Mines Main Magnet Room Top Chest": {
+    "steps": [
+      "Return to the upper part of the main magnet room. Ride the activated magnetic crane route with Iron Boots to reach the high chest ledge."
+    ]
+  },
+  "North Faron Woods Deku Baba Chest": {
+    "steps": [
+      "Look beside the path toward the Forest Temple in North Faron Woods. Clear the Deku Baba guarding the small chest and open it."
+    ]
+  },
+  "Hidden Village Poe": {
+    "steps": [
+      "At night, reach the roof ledge near the Hidden Village entrance. Reveal the Poe with Wolf Link's senses and defeat it to collect its soul."
+    ]
+  },
+  "Snowpeak Cave Ice Lantern Chest": {
+    "steps": [
+      "Inside the cave on the Snowpeak climb, shatter the ice with the Ball and Chain. Light the torches with the Lantern to reveal the chest."
+    ]
+  }
+}

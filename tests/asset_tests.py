@@ -130,3 +130,20 @@ assert positions['Death Mountain Volcano Pipe Ledge Rock Rupee'][0]['room']==3
 for name in ('HiddenRupeeAvailable','HiddenRupeeLocked'):
     assert (root/f'res/icons/{name}.bti').exists()
 print('Validated all 88 rupee checks, including patched pickup flags and container sources.')
+
+# Every selectable check has an offline collection guide, including optional rupees.
+guides=json.loads((root/'res/check_guides.json').read_text(encoding='utf-8'))
+assert guides['version']==1 and set(guides['checks'])==set(checks)
+assert len(guides['upstream_revision'])==40
+for name, guide in guides['checks'].items():
+    assert 1 <= len(guide['steps']) <= 8, name
+    assert guide['sources'] and all(s in guides['sources'] for s in guide['sources']), name
+    for step in guide['steps']:
+        assert isinstance(step,str) and 10 <= len(step) <= 1600, name
+        assert not any(token in step for token in ('**','Requires:','*Source:','<div','https://')), name
+for source in guides['sources'].values():
+    assert source['url'].startswith('https://') and source['label']
+assert sum(g.get('kind')=='hint_sign' for g in guides['checks'].values())==34
+assert sum(g.get('kind')=='twilit_insect' for g in guides['checks'].values())==48
+assert 'Copyright (c) 2026 Travis Gesslein' in (root/'res/CHECK_GUIDE_SOURCES.txt').read_text(encoding='utf-8')
+print(f"Validated {len(guides['checks'])} attributed offline collection guides.")

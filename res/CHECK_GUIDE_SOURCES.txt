@@ -1,0 +1,63 @@
+TPTracker collection-guide sources
+
+Guides are bundled for offline use. No runtime web requests are made.
+
+Most collection directions are adapted from Gleed's Tracker's MIT-licensed
+explanations, pinned to f0b121a35b8b296f62fd35e7ff0517a65d42ce88.
+https://github.com/gleedgleed/gleeds-tracker/tree/f0b121a35b8b296f62fd35e7ff0517a65d42ce88/explanations
+Archive: https://codeload.github.com/gleedgleed/gleeds-tracker/zip/f0b121a35b8b296f62fd35e7ff0517a65d42ce88
+SHA256: d2f3b4a8a69e765021e4fbd9e6959b303afe4cfeda9aff3fc32010bb2ccbd794
+
+Gleed's Tracker acknowledges the Twilight Princess Randomizer Wiki, Zelda
+Dungeon, Zelda Universe, Zelda Fandom and StrategyWiki as guide references.
+Per-check source references are retained in check_guides.json. New concise
+hint-sign and Twilit-insect directions use the cited walkthroughs and TPR Wiki.
+No walkthrough images are redistributed.
+
+Directions describe normal collection methods, not a definitive logic model.
+TPTracker evaluates the seed's settings and inventory separately. Guide text
+never imports the seed's randomized rewards. Directions use the unmirrored
+GameCube layout; numbered checks at the same site share collection guidance.
+
+Rebuild using tools/build_check_guides.py with the checksum-verified archive.
+Reviewed corrections and missing-check additions are maintained in
+ tools/check_guide_overrides.json.
+
+Upstream license and third-party notice follow:
+
+# License
+
+MIT License
+
+Copyright (c) 2026 Travis Gesslein
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+---
+
+## Third-party components
+
+This project bundles or links third-party components that retain their own
+licenses. See [acknowledgements.md](acknowledgements.md) for the full list
+and source links.
+
+The bundled **Inter** font is distributed under the SIL Open Font License
+version 1.1. Its license text ships alongside the font file at
+[`data/fonts/OFL.txt`](data/fonts/OFL.txt).
+

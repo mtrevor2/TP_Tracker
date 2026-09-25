@@ -1,5 +1,6 @@
 #include "model.hpp"
 #include "notebook.hpp"
+#include "check_guides.hpp"
 #include "seed.hpp"
 #include "map.hpp"
 #include "mods/svc/host.h"
@@ -40,6 +41,7 @@ namespace {
 using tracker::Json;
 using tracker::Truth;
 tracker::Model model;
+tracker::CheckGuides checkGuides;
 UiWindowHandle window = 0;
 UiWindowHandle detailWindow = 0;
 UiElementHandle detailText = 0, detailButton = 0;
@@ -234,7 +236,23 @@ ModResult buildDetail(ModContext*,UiWindowHandle,UiElementHandle left,UiElementH
     button.on_pressed=skipSelectedCheck; button.is_disabled=skipSelectedDisabled;
     result=svc_ui->pane_add_control(mod_ctx,left,&button,&detailButton);
     if(result!=MOD_OK) return result;
-    svc_ui->pane_add_text(mod_ctx,right,"Left stick or D-pad: up/down scrolls requirements. Right stick also scrolls. Requirements use this seed's settings and your current inventory. Area access and local requirements must both be met. Completed checks cannot be skipped.",nullptr);
+    // Direct-pane rows let native controller focus scroll each guide paragraph
+    // into view, just like the requirements on the left. Text is escaped RML.
+    for(const auto& markup : checkGuides.blocks(selectedCheck)) {
+        UiElementHandle block=0,anchor=0;
+        UiRowDesc row=UI_ROW_DESC_INIT;
+        result=svc_ui->pane_add_row(mod_ctx,right,&row,&block);
+        if(result!=MOD_OK) return result;
+        svc_ui->elem_set_class(mod_ctx,block,"tp-detail-sections",true);
+        UiControlDesc control=UI_CONTROL_DESC_INIT;
+        control.kind=UI_CONTROL_BUTTON; control.label="";
+        control.on_pressed=[](ModContext*,void*) {};
+        result=svc_ui->pane_add_control(mod_ctx,block,&control,&anchor);
+        if(result!=MOD_OK) return result;
+        svc_ui->elem_set_class(mod_ctx,anchor,"tp-scroll-anchor",true);
+        result=svc_ui->pane_add_rml(mod_ctx,block,markup.c_str(),nullptr);
+        if(result!=MOD_OK) return result;
+    }
     detailRevision=0;
     return updateDetail(nullptr,nullptr,nullptr);
 }
@@ -248,7 +266,7 @@ void inspectCheck(ModContext*, void* data) {
     desc.rcss=R"(
 window { max-width: 1000dp; max-height: 800dp; }
 window content pane:first-child { flex: 1; }
-window content pane:last-child { flex: 0 0 24%; }
+window content pane:last-child { flex: 0 0 32%; }
 window content pane { font-size: 17dp; }
 .tp-detail-sections { display: block; }
 .tp-scroll-anchor { display: block; height: 1dp; min-height: 1dp; padding: 0dp; margin: 0dp; border-width: 0dp; opacity: 0; }
@@ -1034,6 +1052,12 @@ MOD_EXPORT ModResult mod_initialize(ModError* error) {
     try { model.load(Json::parse(static_cast<const char*>(buffer.data), static_cast<const char*>(buffer.data) + buffer.size)); }
     catch (const std::exception& e) { svc_resource->free(mod_ctx, &buffer); return mods::set_error(error, MOD_ERROR, e.what()); }
     svc_resource->free(mod_ctx, &buffer);
+    buffer=RESOURCE_BUFFER_INIT;
+    if (svc_resource->load(mod_ctx,"check_guides.json",&buffer)==MOD_OK) {
+        try { checkGuides.load(Json::parse(static_cast<const char*>(buffer.data),static_cast<const char*>(buffer.data)+buffer.size)); }
+        catch (const std::exception& e) { mods::log::warn("TPTracker: collection guides unavailable: {}",e.what()); }
+        svc_resource->free(mod_ctx,&buffer);
+    } else mods::log::warn("TPTracker: collection-guide resource is missing");
     buffer=RESOURCE_BUFFER_INIT;
     if (svc_resource->load(mod_ctx,"hint_signs.json",&buffer)!=MOD_OK)
         return mods::set_error(error,MOD_ERROR,"TPTracker hint sign catalogue is missing");

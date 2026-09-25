@@ -1,4 +1,13 @@
-# TPTracker 0.4.29
+# TPTracker 0.4.30
+
+## 0.4.30 collection guides
+
+Check Details now has a **How to obtain** sidebar instead of controller instructions. All 658 catalogue checks have bundled collection directions, including all 88 optional rupees, 34 hint signs, and 48 Twilit insects. The wider sidebar scrolls through individual paragraphs and retains source credits. Guides work offline and do not import randomized reward placements.
+
+Most directions are adapted from [Gleed's Tracker](https://github.com/gleedgleed/gleeds-tracker/tree/f0b121a35b8b296f62fd35e7ff0517a65d42ce88/explanations), with concise missing-check additions researched from the [TPR Wiki](https://wiki.tprandomizer.com/index.php?title=Hints) and Zelda Dungeon. `res/CHECK_GUIDE_SOURCES.txt` contains license notices; `res/check_guides.json` retains each guide's sources. Rebuild with `tools/build_check_guides.py` and the pinned archive documented there. Correct or extend entries in `tools/check_guide_overrides.json`.
+
+Directions describe the normal collection method in the unmirrored GameCube layout. They are separate from the seed-aware requirements and availability shown on the left; they do not enumerate every trick or shuffled entrance route. Numbered pickups at one site may share instructions. Missing or malformed guide resources fall back to a message without disabling the tracker. Guide coverage, escaping and malformed-resource handling are tested; controller presentation still needs live gameplay validation.
+
 
 ## 0.4.29 rupee artwork at close zoom
 
