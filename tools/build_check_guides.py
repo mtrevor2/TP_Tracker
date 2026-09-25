@@ -42,6 +42,7 @@ def build(archive):
     sources = {
         'gleed': {'label': "Gleed's Tracker", 'url': UPSTREAM},
         'wiki_hints': {'label': 'TPR Wiki: Hint locations', 'url': WIKI+'Hints'},
+        'lake_cave': {'label': 'TPR Wiki: Long Lantern Cave', 'url': WIKI+'Long_Lantern_Cave'},
         'forest_walkthrough': {'label': 'Zelda Dungeon: Forest Temple', 'url': DUNGEON+'forest-temple/'},
         'ordon_walkthrough': {'label': 'Zelda Dungeon: Ordon Village', 'url': DUNGEON+'ordon-village/'},
         'sky_walkthrough': {'label': 'Zelda Dungeon: In Search of the Sky', 'url': DUNGEON+'in-search-of-the-sky/'},

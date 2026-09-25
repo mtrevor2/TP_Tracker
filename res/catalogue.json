@@ -8485,7 +8485,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Bomblings 5",
@@ -8516,7 +8516,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Yellow Rupee",
@@ -8547,7 +8547,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Red Rupee",
@@ -8578,7 +8578,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Arrows 10",
@@ -8609,7 +8609,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Red Rupee",
@@ -8640,7 +8640,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Orange Rupee",
@@ -8702,7 +8702,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Red Rupee",
@@ -8733,7 +8733,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Arrows 10",
@@ -8764,7 +8764,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Purple Rupee",
@@ -8795,7 +8795,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Bomblings 10",
@@ -8826,7 +8826,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Purple Rupee",
@@ -8857,7 +8857,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Seeds 50",
@@ -8888,7 +8888,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "Orange Rupee",
@@ -8950,7 +8950,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern and Can_Use_Senses"
+          "requirement": "'Lake_Cave_Boulders_Cleared' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -8981,7 +8981,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern and Can_Use_Senses"
+          "requirement": "'Lake_Cave_Boulders_Cleared' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -9012,7 +9012,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern and Can_Use_Senses"
+          "requirement": "'Lake_Cave_Boulders_Cleared' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -19946,7 +19946,7 @@
       "access": [
         {
           "area": "Lake Hylia Long Cave",
-          "requirement": "Can_Smash and Lantern"
+          "requirement": "Can_Smash"
         }
       ],
       "original_item": "",
@@ -26875,30 +26875,32 @@
     {
       "Name": "Lake Hylia Long Cave",
       "Locations": {
-        "Lake Lantern Cave First Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Second Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Third Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Fourth Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Fifth Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Sixth Chest": "Can_Smash and Lantern",
+        "Lake Lantern Cave First Chest": "Can_Smash",
+        "Lake Lantern Cave Second Chest": "Can_Smash",
+        "Lake Lantern Cave Third Chest": "Can_Smash",
+        "Lake Lantern Cave Fourth Chest": "Can_Smash",
+        "Lake Lantern Cave Fifth Chest": "Can_Smash",
+        "Lake Lantern Cave Sixth Chest": "Can_Smash",
         "Lake Lantern Cave Seventh Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Eighth Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Ninth Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Tenth Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Eleventh Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Twelfth Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Thirteenth Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave Fourteenth Chest": "Can_Smash and Lantern",
+        "Lake Lantern Cave Eighth Chest": "Can_Smash",
+        "Lake Lantern Cave Ninth Chest": "Can_Smash",
+        "Lake Lantern Cave Tenth Chest": "Can_Smash",
+        "Lake Lantern Cave Eleventh Chest": "Can_Smash",
+        "Lake Lantern Cave Twelfth Chest": "Can_Smash",
+        "Lake Lantern Cave Thirteenth Chest": "Can_Smash",
+        "Lake Lantern Cave Fourteenth Chest": "Can_Smash",
         "Lake Lantern Cave End Lantern Chest": "Can_Smash and Lantern",
-        "Lake Lantern Cave First Poe": "Can_Smash and Lantern and Can_Use_Senses",
-        "Lake Lantern Cave Second Poe": "Can_Smash and Lantern and Can_Use_Senses",
-        "Lake Lantern Cave Final Poe": "Can_Smash and Lantern and Can_Use_Senses",
-        "Lake Lantern Cave Hint Sign": "Can_Smash and Lantern"
+        "Lake Lantern Cave First Poe": "'Lake_Cave_Boulders_Cleared' and Can_Use_Senses",
+        "Lake Lantern Cave Second Poe": "'Lake_Cave_Boulders_Cleared' and Can_Use_Senses",
+        "Lake Lantern Cave Final Poe": "'Lake_Cave_Boulders_Cleared' and Can_Use_Senses",
+        "Lake Lantern Cave Hint Sign": "Can_Smash"
       },
       "Exits": {
         "Lake Hylia Cave Entrance": "Nothing"
       },
-      "Events": {}
+      "Events": {
+        "Lake Cave Boulders Cleared": "Can_Smash"
+      }
     },
     {
       "Name": "Lake Hylia Water Toadpoli Grotto",

@@ -56,6 +56,22 @@ for area in world:
         events['Can Warp'] = 'Nothing'
     if area.get('Map Sector'):
         events[area['Map Sector'] + ' Map Sector'] = 'Nothing'
+    # Darkness alone does not prevent collecting Lake cave checks. Keep the
+    # boulder and Senses requirements, and Lantern only for torch-spawned chests.
+    # D_SB03 chest flags 14 (Seventh) and 3 (End) use switches 0x51 and 0x2D;
+    # the wiki calls the first puzzle Sixth, but Dusklight maps Sixth to flag 8.
+    # Apply before building access so the world and per-check rules agree.
+    if area['Name'] == 'Lake Hylia Long Cave':
+        torch_chests = {'Lake Lantern Cave Seventh Chest', 'Lake Lantern Cave End Lantern Chest'}
+        for name, requirement in area['Locations'].items():
+            if name not in torch_chests:
+                area['Locations'][name] = str(requirement).replace(' and Lantern', '')
+        # Smashing is done as human, then Poes are collected as wolf. An area
+        # event preserves the obstacle without requiring both forms at once.
+        events['Lake Cave Boulders Cleared'] = 'Can_Smash'
+        for name in area['Locations']:
+            if name.endswith(' Poe'):
+                area['Locations'][name] = "'Lake_Cave_Boulders_Cleared' and Can_Use_Senses"
     for name, requirement in (area.get('Locations') or {}).items():
         access.setdefault(name, []).append({'area': area['Name'], 'requirement': str(requirement)})
 checks = []

@@ -10,6 +10,10 @@
       "label": "TPR Wiki: Hint locations",
       "url": "https://wiki.tprandomizer.com/index.php?title=Hints"
     },
+    "lake_cave": {
+      "label": "TPR Wiki: Long Lantern Cave",
+      "url": "https://wiki.tprandomizer.com/index.php?title=Long_Lantern_Cave"
+    },
     "forest_walkthrough": {
       "label": "Zelda Dungeon: Forest Temple",
       "url": "https://www.zeldadungeon.net/twilight-princess-walkthrough/forest-temple/"
@@ -2905,165 +2909,165 @@
     "Lake Lantern Cave First Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), right near the entrance.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave First Chest"
     },
     "Lake Lantern Cave Second Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), just after the first chest, on the way deeper in.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Second Chest"
     },
     "Lake Lantern Cave Third Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), a little further in, past a few enemies.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Third Chest"
     },
     "Lake Lantern Cave Fourth Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), mid-cave, accessible after smashing boulders.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Fourth Chest"
     },
     "Lake Lantern Cave Fifth Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), mid-cave.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Fifth Chest"
     },
     "Lake Lantern Cave Sixth Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), halfway through.",
-        "Light two unlit torches with the Lantern; the chest appears."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Sixth Chest"
     },
     "Lake Lantern Cave Seventh Chest": {
       "steps": [
-        "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), past the cave’s midpoint.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "In the middle section of the Lake Lantern Cave, beside two unlit torches.",
+        "Light both torches with the Lantern to reveal this chest. This is the mid-cave torch chest; some older guides call it the Sixth Chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Seventh Chest"
     },
     "Lake Lantern Cave Eighth Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), in the latter half of the cave.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Eighth Chest"
     },
     "Lake Lantern Cave Ninth Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), in the latter half of the cave.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Ninth Chest"
     },
     "Lake Lantern Cave Tenth Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), deeper still, past several Skulltulas / Keese.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Tenth Chest"
     },
     "Lake Lantern Cave Eleventh Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), near the back third of the cave.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Eleventh Chest"
     },
     "Lake Lantern Cave Twelfth Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), near the back of the cave.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Twelfth Chest"
     },
     "Lake Lantern Cave Thirteenth Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), one of the last rooms before the end.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Thirteenth Chest"
     },
     "Lake Lantern Cave Fourteenth Chest": {
       "steps": [
         "In the Lake Lantern Cave (the long cave at the south end of Lake Hylia), one of the last rooms before the end.",
-        "Use the Lantern to see your way through the dark cave; smash any boulders that block the path. The chest sits on the route."
+        "Smash the boulders blocking your route with Bombs or the Ball and Chain, then open the chest. The Lantern helps you see in the dark but is not required for this chest."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave Fourteenth Chest"
     },
     "Lake Lantern Cave End Lantern Chest": {
       "steps": [
-        "At the very end of the Lake Lantern Cave (south Lake Hylia).",
-        "Light all the torches in the final room with the Lantern; the chest appears."
+        "In the final room at the end of the Lake Lantern Cave.",
+        "Light both torches with the Lantern to make the chest appear."
       ],
       "sources": [
         "gleed",
-        "ref_c91ac7d9dce1"
+        "lake_cave"
       ],
       "upstream_name": "Lake Lantern Cave End Lantern Chest"
     },

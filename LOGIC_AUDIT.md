@@ -2,6 +2,18 @@
 
 The authoritative reference is this checkout's Randomizer, rather than a generic vanilla walkthrough. The wiki's List of Randomizer Checks explicitly says it is not a definitive logic-based list: https://wiki.tprandomizer.com/index.php?title=List_of_Randomizer_Checks .
 
+## 0.4.32 Lake Lantern Cave correction
+
+The generator requires Lantern for every location in Lake Hylia Long Cave. TPTracker now treats darkness as optional for the 13 ordinary chests, three Poes and hint sign, retaining Can_Smash and Can_Use_Senses where present. This correction is applied in export_catalogue.py before producing both per-check access and area Locations, so regeneration and the UI evaluator use the same rules.
+
+Two chests genuinely require torch lighting. The user's extracted D_SB03/R00_00.arc TRES records identify flag 14 (Seventh Chest in the installed Randomizer locations.yaml) as tboxB1, parameters 0xff151381, waiting on switch 0x51. AND_SW2 parameters 0x2e510002 combine the two candlL2 switches 0x2e/0x2f into 0x51. End Lantern Chest, flag 3, has parameters 0xff12d0c1, waiting on 0x2d; AND_SW2 0x2b2d0002 combines torch switches 0x2b/0x2c. These two keep Can_Smash and Lantern. Ordinary Sixth Chest is flag 8, tboxA0, parameters 0xff0ff200, with no spawn switch. The Randomizer's D_SB03 object patches only add its hint sign and do not remove the torch puzzles.
+
+The wiki confirms two torch rewards but uses older Sixth/Seventh naming: https://wiki.tprandomizer.com/index.php?title=Long_Lantern_Cave and https://wiki.tprandomizer.com/index.php?title=List_of_Randomizer_Checks . Runtime names and actor flags take precedence. Collection-guide overrides reflect this distinction. No raw disc records are packaged.
+
+Poe routes use a cave-local boulder-cleared event before Can_Use_Senses. This permits smashing as human followed by collecting as wolf; requiring Can_Smash and Can_Use_Senses in the same form would leave the Poes permanently locked.
+
+Regression scenarios verify ordinary chests without Lantern using either Bombs or Ball and Chain, both torch chests locked without Lantern and open with it, boulder-blocked routes still locked, Poes requiring Senses, and Check Details matching the corrected local requirement.
+
 ## 0.4.27 follow-up
 
 The async solver previously transferred only check statuses back to the UI model. Its area/form reachability and event maps were discarded, so details incorrectly displayed UNKNOWN even for solved areas. These maps now transfer atomically with the status result, retaining the existing generation guard and leaving live inventory, skips and completion data untouched.

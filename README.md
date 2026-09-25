@@ -1,4 +1,8 @@
-# TPTracker 0.4.31
+# TPTracker 0.4.32
+
+## 0.4.32 Lake Lantern Cave requirements
+
+Ordinary Lake Lantern Cave chests, the three Poes and the hint sign no longer require Lantern simply to navigate the darkness. Boulder access still requires Bombs or Ball and Chain, and Poes still require Senses. Lantern remains required for the two torch-spawned chests: Seventh Chest and End Lantern Chest. Dusklight's Seventh Chest is the mid-cave torch puzzle that older guides call Sixth. Collection directions and regenerated logic now agree, with regressions covering both boulder tools, the torch exceptions and blocked routes.
 
 ## 0.4.31 invisible controller scroll targets
 

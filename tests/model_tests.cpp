@@ -264,6 +264,51 @@ int main(int argc, char** argv) {
         require(warp.accessible.at("Flight By Fowl Second Platform Chest")==Truth::yes,"Lake Hylia warp checks remain inaccessible");
         require(warp.reached.at("Castle Town West")[0]==Truth::yes,"Castle Town warp remains inaccessible");
         require(warp.accessible.at("Lake Hylia Underwater Chest")!=Truth::yes,"warp bypasses local item requirements");
+        // Lake cave darkness is optional; only the two switch-spawned chests
+        // need torch lighting. Dusklight calls chest flag 14 Seventh, not Sixth.
+        auto lakeData=data;
+        for(auto& area:lakeData["areas"]) if(area["Name"]=="Root") {
+            area["Exits"]={{"Lake Hylia Cave Entrance","Can_Smash"}};
+            area["Events"]={{"Can Refill Regular Bombs","Nothing"},{"Can Refill Lantern Oil","Nothing"}};
+        }
+        Model lake; lake.load(lakeData); lake.seedLoaded=true; lake.settings=warp.settings;
+        for(const auto& item:data.at("items")) lake.inventory[item.at("Name")]=0;
+        const std::vector<std::string> torchChests={"Lake Lantern Cave Seventh Chest","Lake Lantern Cave End Lantern Chest"};
+        std::vector<std::string> ordinaryChests;
+        for(const auto& check:data.at("checks")) {
+            const std::string name=check.at("name");
+            if(name.starts_with("Lake Lantern Cave ") && name.ends_with(" Chest") &&
+               std::find(torchChests.begin(),torchChests.end(),name)==torchChests.end()) ordinaryChests.push_back(name);
+        }
+        require(ordinaryChests.size()==13,"Lake cave ordinary chest coverage changed");
+        for(const auto* tool:{"Ball and Chain","Bomb Bag"}) {
+            lake.inventory["Ball and Chain"]=lake.inventory["Bomb Bag"]=lake.inventory["Lantern"]=0;
+            lake.inventory[tool]=1; lake.solve();
+            for(const auto& name:ordinaryChests)
+                require(lake.accessible.at(name)==Truth::yes,"ordinary Lake cave chest needs Lantern");
+            for(const auto& name:torchChests)
+                require(lake.accessible.at(name)==Truth::no,"torch chest opened without Lantern");
+            const auto caveDetails=lake.checkDetails("Lake Lantern Cave Fourteenth Chest");
+            require(caveDetails.find("Area access: OPEN")!=std::string::npos &&
+                    caveDetails.find("Local requirement: Can Smash")!=std::string::npos &&
+                    caveDetails.find(" and Lantern")==std::string::npos,"Lake cave details still require Lantern");
+            require(lake.accessible.at("Lake Lantern Cave Hint Sign")==Truth::yes,"cave hint requires Lantern");
+            lake.inventory["Lantern"]=1; lake.solve();
+            for(const auto& name:torchChests)
+                require(lake.accessible.at(name)==Truth::yes,"torch chest remains locked with Lantern and boulder tool");
+        }
+        lake.inventory["Ball and Chain"]=lake.inventory["Bomb Bag"]=0; lake.solve();
+        for(const auto& name:ordinaryChests)
+            require(lake.accessible.at(name)==Truth::no,"cave chest bypasses boulder-blocked entrance");
+        for(const auto& name:torchChests)
+            require(lake.accessible.at(name)==Truth::no,"torch chest bypasses boulder-blocked entrance");
+        lake.inventory["Ball and Chain"]=1; lake.inventory["Lantern"]=0;
+        lake.inventory["Shadow Crystal"]=1; lake.solve();
+        for(const auto* name:{"Lake Lantern Cave First Poe","Lake Lantern Cave Second Poe","Lake Lantern Cave Final Poe"})
+            require(lake.accessible.at(name)==Truth::yes,"cave Poe needs Lantern despite boulder tool and Senses");
+        lake.inventory["Shadow Crystal"]=0; lake.solve();
+        for(const auto* name:{"Lake Lantern Cave First Poe","Lake Lantern Cave Second Poe","Lake Lantern Cave Final Poe"})
+            require(lake.accessible.at(name)==Truth::no,"cave Poe bypasses Senses");
         // Ball and Chain substitutes for the pickup tool, never for area access.
         int ballBugs=0;
         for (const auto& check : data.at("checks")) for (const auto& route : check.at("access")) {

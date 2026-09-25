@@ -147,3 +147,16 @@ assert sum(g.get('kind')=='hint_sign' for g in guides['checks'].values())==34
 assert sum(g.get('kind')=='twilit_insect' for g in guides['checks'].values())==48
 assert 'Copyright (c) 2026 Travis Gesslein' in (root/'res/CHECK_GUIDE_SOURCES.txt').read_text(encoding='utf-8')
 print(f"Validated {len(guides['checks'])} attributed offline collection guides.")
+
+# Regenerated cave rules must match their per-check copies and native puzzle IDs.
+lake_area=next(a for a in catalogue['areas'] if a['Name']=='Lake Hylia Long Cave')
+torch_names={'Lake Lantern Cave Seventh Chest':14,'Lake Lantern Cave End Lantern Chest':3}
+for name,requirement in lake_area['Locations'].items():
+    assert checks[name]['access']==[{'area':lake_area['Name'],'requirement':requirement}],name
+    assert ('Lantern' in requirement)==(name in torch_names),name
+for name,flag in torch_names.items():
+    assert any(f['kind']=='chest' and f['flag']==flag for f in checks[name]['flags']),name
+    assert 'both torches' in ' '.join(guides['checks'][name]['steps']),name
+assert 'not required' in ' '.join(guides['checks']['Lake Lantern Cave Sixth Chest']['steps'])
+assert 'not required' in ' '.join(guides['checks']['Lake Lantern Cave Fourteenth Chest']['steps'])
+print('Validated Lake cave ordinary chests and both torch-spawn exceptions.')
