@@ -1,4 +1,9 @@
-# TPTracker 0.4.30
+# TPTracker 0.4.31
+
+## 0.4.31 invisible controller scroll targets
+
+Removed the yellow focus bars shown while scrolling Check Details and the Progression/inventory panel. The same invisible scroll targets in Notes and the collection-guide sidebar stay transparent in focused, selected, hovered and pressed states. Controller scrolling and ordinary check/button highlights are preserved.
+
 
 ## 0.4.30 collection guides
 

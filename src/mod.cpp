@@ -144,7 +144,15 @@ window content pane:last-child { flex: 1; background-color: #302c20; }
 .tp-check.skipped { color: #cd91f4; text-decoration: line-through; }
 .tp-detail-sections { display: block; }
 .tp-scroll-anchor { display: block; height: 1dp; min-height: 1dp; padding: 0dp; margin: 0dp; border-width: 0dp; opacity: 0; }
-.tp-scroll-anchor:focus { opacity: 1; background-color: #d2b04f; }
+/* Keep scroll targets focusable without drawing the host button highlight. */
+window content pane .tp-scroll-anchor,
+window content pane .tp-scroll-anchor:hover,
+window content pane .tp-scroll-anchor:focus,
+window content pane .tp-scroll-anchor:focus-visible,
+window content pane .tp-scroll-anchor:selected,
+window content pane .tp-scroll-anchor:active {
+    opacity: 0; background-color: transparent; box-shadow: none; transition: none;
+}
 .tp-postit { display: block; background-color: #514629; color: #fff0b7; border-left: 4dp #d2b04f; padding: 12dp; margin-top: 10dp; font-size: 17dp; }
 .tp-item img { display: block; width: 48dp; height: 48dp; margin: 0dp auto 5dp auto; }
 .tp-item { text-align: center; font-size: 13dp; min-height: 92dp; }
@@ -270,7 +278,15 @@ window content pane:last-child { flex: 0 0 32%; }
 window content pane { font-size: 17dp; }
 .tp-detail-sections { display: block; }
 .tp-scroll-anchor { display: block; height: 1dp; min-height: 1dp; padding: 0dp; margin: 0dp; border-width: 0dp; opacity: 0; }
-.tp-scroll-anchor:focus { opacity: 1; background-color: #d2b04f; }
+/* Keep scroll targets focusable without drawing the host button highlight. */
+window content pane .tp-scroll-anchor,
+window content pane .tp-scroll-anchor:hover,
+window content pane .tp-scroll-anchor:focus,
+window content pane .tp-scroll-anchor:focus-visible,
+window content pane .tp-scroll-anchor:selected,
+window content pane .tp-scroll-anchor:active {
+    opacity: 0; background-color: transparent; box-shadow: none; transition: none;
+}
 window content pane div { display: block; margin-bottom: 8dp; }
 .tp-title { display: block; font-size: 24dp; font-weight: bold; color: #e4d196; margin-bottom: 14dp; }
 .tp-group { display: block; font-size: 20dp; color: #e4d196; margin-top: 18dp; margin-bottom: 10dp; padding-bottom: 6dp; border-bottom: 1dp #9b8955; }
