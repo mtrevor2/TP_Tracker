@@ -21972,7 +21972,7 @@
         "Forest Temple East Water Cave Chest": "Nothing"
       },
       "Exits": {
-        "Forest Temple Second Monkey Outside Room": "count(Forest_Temple_Small_Key, 4) or Small_Keys == Keysy",
+        "Forest Temple Second Monkey Outside Room": "(count(Forest_Temple_Small_Key, 4) or Small_Keys == Keysy) or (Human_Link and (Forest_Temple_Second_Monkey_Door_Unlocked or Forest_Temple_Small_Keys_Available))",
         "Forest Temple Outside East": "Nothing",
         "Forest Temple East Water Room Near Lobby": "Can_Break_Webs"
       },
@@ -21988,7 +21988,7 @@
         "Forest Temple Second Monkey Under Bridge Chest": "Nothing"
       },
       "Exits": {
-        "Forest Temple East Water Room": "count(Forest_Temple_Small_Key, 4) or Small_Keys == Keysy"
+        "Forest Temple East Water Room": "(count(Forest_Temple_Small_Key, 4) or Small_Keys == Keysy) or (Human_Link and (Forest_Temple_Second_Monkey_Door_Unlocked or Forest_Temple_Small_Keys_Available))"
       }
     },
     {

@@ -1293,5 +1293,16 @@
       "gleed",
       "lake_cave"
     ]
+  },
+  "Forest Temple Second Monkey Under Bridge Chest": {
+    "steps": [
+      "In the second-monkey room, reached through the locked door from the Forest Temple's east water room.",
+      "Use one Forest Temple Small Key if the door is still locked. An already-unlocked door does not need another key.",
+      "Drop down below the wooden bridge to reach and open the chest."
+    ],
+    "sources": [
+      "gleed",
+      "ref_c2086a09375a"
+    ]
   }
 }

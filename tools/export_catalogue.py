@@ -49,6 +49,18 @@ for entrance in yaml.safe_load((data / 'entrance_shuffle_data.yaml').read_text(e
                     if scene not in grotto_scenes.setdefault(destination, []):
                         grotto_scenes[destination].append(scene)
 for area in world:
+    # The generator's four-key worst-case route is too strict for a live save.
+    # This one door needs one unspent key, or its persistent unlocked flag.
+    # Retain the generator route for Keysy/all-keys and every unrelated gate.
+    forest_door = {
+        'Forest Temple East Water Room': 'Forest Temple Second Monkey Outside Room',
+        'Forest Temple Second Monkey Outside Room': 'Forest Temple East Water Room',
+    }
+    if area['Name'] in forest_door:
+        target = forest_door[area['Name']]
+        old_requirement = area['Exits'][target]
+        area['Exits'][target] = (f"({old_requirement}) or (Human_Link and "
+            "(Forest_Temple_Second_Monkey_Door_Unlocked or Forest_Temple_Small_Keys_Available))")
     # These events are synthesized by the generator, not stored in its YAML.
     events = area.setdefault('Events', {}) or {}
     area['Events'] = events

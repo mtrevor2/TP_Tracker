@@ -4535,8 +4535,9 @@
     },
     "Forest Temple Second Monkey Under Bridge Chest": {
       "steps": [
-        "In the room where the second caged monkey sits atop the Totem Pole (the West Wing room before the boss approach).",
-        "Look under the wooden bridge/ledge in that room — the chest is tucked underneath, easy to miss if you only look up at the cage."
+        "In the second-monkey room, reached through the locked door from the Forest Temple's east water room.",
+        "Use one Forest Temple Small Key if the door is still locked. An already-unlocked door does not need another key.",
+        "Drop down below the wooden bridge to reach and open the chest."
       ],
       "sources": [
         "gleed",

@@ -1,4 +1,10 @@
-# TPTracker 0.4.32
+# TPTracker 0.4.33
+
+## 0.4.33 Forest Temple door and Auru's Memo
+
+Auru's Memo is read from its randomizer inventory slot and remains recognized after it is handed to Fyer, restoring the memo-dependent Gerudo Desert route. The Forest Temple second-monkey door now recognizes its saved unlock flag or one unspent Forest Temple Small Key instead of always waiting for the generator's four-key threshold. Existing Keysy/all-keys routes and other dungeon gates keep their requirements. The under-bridge chest's collection guide now describes the correct approach.
+
+The GameBanana upload bundle `TP_Randomizer_Tracker_v6.5.zip` contains the 0.4.33 multiplatform `.dusk`, this README and REQUIREMENTS.md.
 
 ## 0.4.32 Lake Lantern Cave requirements
 

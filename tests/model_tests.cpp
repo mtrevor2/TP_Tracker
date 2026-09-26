@@ -1,3 +1,4 @@
+#include "inventory_adapters.hpp"
 #include "model.hpp"
 #include "notebook.hpp"
 #include "check_guides.hpp"
@@ -264,6 +265,65 @@ int main(int argc, char** argv) {
         require(warp.accessible.at("Flight By Fowl Second Platform Chest")==Truth::yes,"Lake Hylia warp checks remain inaccessible");
         require(warp.reached.at("Castle Town West")[0]==Truth::yes,"Castle Town warp remains inaccessible");
         require(warp.accessible.at("Lake Hylia Underwater Chest")!=Truth::yes,"warp bypasses local item requirements");
+        // Native inventory snapshots must follow the randomizer's relocated
+        // memo slot and consumed-item event, not vanilla's slot 19 query.
+        std::array<int,24> slots; slots.fill(0xff);
+        bool memoDelivered=false;
+        auto memoState=[&] { return aurusMemoOwned(
+            [&](int slot) { return slots.at(slot); },
+            [&](int event) { require(event==0x2680,"wrong memo delivery event"); return memoDelivered; }); };
+        Model desert=warp;
+        desert.inventory["Aurus Memo"]=memoState(); desert.solve();
+        require(desert.reached.at("Gerudo Desert")[0]!=Truth::yes,"desert opened without memo or portal");
+        slots[7]=0x90;
+        desert.inventory["Aurus Memo"]=memoState(); desert.solve();
+        require(desert.inventory.at("Aurus Memo")==1 && desert.reached.at("Gerudo Desert")[0]==Truth::yes,"slot 7 memo does not open desert");
+        require(desert.accessible.at("Gerudo Desert Campfire North Chest")==Truth::yes,"memo-dependent desert chest remains locked");
+        slots[7]=0xff; memoDelivered=true;
+        desert.inventory["Aurus Memo"]=memoState(); desert.solve();
+        require(desert.reached.at("Gerudo Desert")[0]==Truth::yes,"handing memo to Fyer relocks desert");
+        memoDelivered=false; slots[7]=0x91; slots[19]=0x91;
+        require(!memoState(),"Ashei sketch mistaken for memo");
+        desert.resetSave(); desert.load(data); desert.settings=warp.settings; desert.seedLoaded=true;
+        desert.inventory=warp.inventory; desert.inventory["Aurus Memo"]=memoState(); desert.solve();
+        require(desert.reached.at("Gerudo Desert")[0]!=Truth::yes,"memo state leaked across saves");
+        // Start at the actual room before the second monkey's key door. A used
+        // key must not relock an opened door, or unlock a different key door.
+        auto forestData=data;
+        for(auto& area:forestData["areas"]) if(area["Name"]=="Root")
+            area["Exits"]={{"Forest Temple East Water Room","Human_Link"}};
+        Model forestDoor; forestDoor.load(forestData); forestDoor.seedLoaded=true; forestDoor.settings=warp.settings;
+        forestDoor.settings["Small Keys"]="Keysanity";
+        for(const auto& item:data.at("items")) forestDoor.inventory[item.at("Name")]=0;
+        forestDoor.inventory["Gale Boomerang"]=1; // Reach the other key gate, without opening it.
+        forestDoor.countedItems.insert("Forest Temple Small Key");
+        bool unlocked=false;
+        auto doorState=[&] { return forestSecondMonkeyDoorUnlocked([&](int save,int flag) {
+            require(save==0x10 && flag==0x0b,"wrong Forest second monkey door switch"); return unlocked;
+        }); };
+        auto updateDoor=[&](int spare,int total) {
+            forestDoor.inventory["Forest Temple Small Keys Available"]=spare;
+            forestDoor.inventory["Forest Temple Small Key"]=total;
+            forestDoor.inventory["Forest Temple Second Monkey Door Unlocked"]=doorState();
+            forestDoor.solve();
+        };
+        updateDoor(0,0);
+        require(forestDoor.accessible.at("Forest Temple Second Monkey Under Bridge Chest")==Truth::no,"locked monkey door bypassed without keys");
+        updateDoor(1,1);
+        require(forestDoor.accessible.at("Forest Temple Second Monkey Under Bridge Chest")==Truth::yes,"one spare key does not open monkey door");
+        unlocked=true; updateDoor(0,1);
+        require(forestDoor.accessible.at("Forest Temple Second Monkey Under Bridge Chest")==Truth::yes,"spent key relocks opened monkey door");
+        require(forestDoor.checkDetails("Forest Temple Second Monkey Under Bridge Chest").find("Area access: OPEN")!=std::string::npos,"opened door details remain locked");
+        require(forestDoor.reached.at("Forest Temple East Tileworm Room")[0]!=Truth::yes,"monkey door flag bypasses another key gate");
+        unlocked=false; updateDoor(0,1);
+        require(forestDoor.accessible.at("Forest Temple Second Monkey Under Bridge Chest")==Truth::no,"key spent elsewhere opens monkey door");
+        forestDoor.settings["Small Keys"]="Keysy"; updateDoor(0,0);
+        require(forestDoor.accessible.at("Forest Temple Second Monkey Under Bridge Chest")==Truth::yes,"Keysy route broken");
+        forestDoor.settings["Small Keys"]="Own Dungeon"; updateDoor(0,4);
+        require(forestDoor.accessible.at("Forest Temple Second Monkey Under Bridge Chest")==Truth::yes,"original four-key route broken");
+        for(auto& area:forestData["areas"]) if(area["Name"]=="Root") area["Exits"]=Json::object();
+        forestDoor.load(forestData); unlocked=true; updateDoor(0,1);
+        require(forestDoor.accessible.at("Forest Temple Second Monkey Under Bridge Chest")==Truth::no,"opened door bypasses reaching the temple");
         // Lake cave darkness is optional; only the two switch-spawned chests
         // need torch lighting. Dusklight calls chest flag 14 Seventh, not Sixth.
         auto lakeData=data;

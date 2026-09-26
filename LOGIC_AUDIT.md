@@ -2,6 +2,14 @@
 
 The authoritative reference is this checkout's Randomizer, rather than a generic vanilla walkthrough. The wiki's List of Randomizer Checks explicitly says it is not a definitive logic-based list: https://wiki.tprandomizer.com/index.php?title=List_of_Randomizer_Checks .
 
+## 0.4.33 Memo inventory and Forest Temple key door
+
+Randomizer `src/item.cpp::randomizer_item_func_RAFRELS_MEMO` places item 0x90 in SLOT_7. Vanilla `src/d/d_item.cpp::item_getcheck_func_RAFRELS_MEMO` queries SLOT_19, explaining the missing memo despite its item-wheel presence. TPTracker now reads SLOT_7 directly and retains the item when event 0x2680 records delivery to Fyer, matching the Randomizer's `src/tools.cpp` inventory reconstruction. This is read-only and does not infer ownership from the memo reward check or spoiler placements.
+
+The generator's Forest Temple East Water Room <-> Second Monkey Outside Room exits require four total small keys or Keysy. Native D_MN05/STG_00 door parameters 0x6c102201 identify front room 1, back room 2 and a front key lock; angle.z 0xff0b supplies switch 0x0B in stage-save 0x10. The reported under-bridge chest is in room 2. The tracker adds a human-form route through this specific door when its unlock switch is set or at least one unspent Forest Temple key remains. The original four-key/Keysy alternatives remain. Other door requirements and access to the parent area are unchanged. The native stage-switch accessor selects live flags in the current dungeon and stored flags elsewhere.
+
+The unspent-key reading is captured before adding consumed keys to the existing total-key inventory count. Both runtime facts are refreshed each scan and cleared with the rest of inventory on save changes; worker snapshots carry the same facts as inventory. Tests verify held memo, delivered memo, missing memo, sketch discrimination, save reset, a locked door with zero keys, one usable key, a spent key with an open door, a key spent elsewhere, other-gate isolation, Keysy/all-key fallback and parent-route enforcement.
+
 ## 0.4.32 Lake Lantern Cave correction
 
 The generator requires Lantern for every location in Lake Hylia Long Cave. TPTracker now treats darkness as optional for the 13 ordinary chests, three Poes and hint sign, retaining Can_Smash and Can_Use_Senses where present. This correction is applied in export_catalogue.py before producing both per-check access and area Locations, so regeneration and the UI evaluator use the same rules.

@@ -1,3 +1,4 @@
+#include "inventory_adapters.hpp"
 #include "model.hpp"
 #include "notebook.hpp"
 #include "check_guides.hpp"
@@ -407,6 +408,11 @@ void scan() {
     // The engine's COPY_ROD_2 query returns -1. The randomizer restores it by
     // setting this event, rather than installing another inventory-slot item.
     inventory["Progressive Dominion Rod"] = checkItemGet(0x46, -1) > 0 ? (dComIfGs_isEventBit(0x2580) ? 2 : 1) : 0;
+    inventory["Aurus Memo"] = tracker::aurusMemoOwned(
+        [](int slot) { return dComIfGs_getItem(slot, false); },
+        [](int event) { return dComIfGs_isEventBit(static_cast<u16>(event)) != 0; });
+    inventory["Forest Temple Second Monkey Door Unlocked"] = tracker::forestSecondMonkeyDoorUnlocked(
+        [](int save, int flag) { return dComIfGs_isStageSwitch(save, flag) != 0; });
     inventory["Bomb Bag"] = 0;
     // Custom randomizer keys unlock persistent switches, not the current room's key counter.
     inventory["Faron Woods Coro Key"] = dComIfGs_isStageSwitch(0x2,0x0c) != 0;
@@ -442,6 +448,7 @@ void scan() {
         std::string small = std::string(key.name) + " Small Key";
         int count = key.save == dStage_stagInfo_GetSaveTbl(stageInfo) ? dComIfGs_getKeyNum()
             : dComIfGs_getSaveData()->getSave(key.save).getBit().getKeyNum();
+        if (key.save == 0x10) inventory["Forest Temple Small Keys Available"] = count;
         for (int door : key.doors) count += dComIfGs_isStageSwitch(key.save, door) != 0;
         inventory[small] = count;
         model.countedItems.insert(small);
