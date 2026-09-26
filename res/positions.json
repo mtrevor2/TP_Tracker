@@ -1127,6 +1127,23 @@
       ]
     }
   ],
+  "Faron Field Tree Heart Piece": [
+    {
+      "stage": "F_SP121",
+      "room": 6,
+      "pos": [
+        -45200.0,
+        -7285.99951171875,
+        85150.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -45200.0,
+        -7285.99951171875,
+        85150.0
+      ]
+    }
+  ],
   "Lost Woods Boulder Poe": [
     {
       "stage": "F_SP117",
@@ -1536,6 +1553,23 @@
       ]
     }
   ],
+  "Kakariko Gorge Spire Heart Piece": [
+    {
+      "stage": "F_SP121",
+      "room": 3,
+      "pos": [
+        -21170.93359375,
+        -4764.49755859375,
+        53477.390625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -21170.93359375,
+        -4764.49755859375,
+        53477.390625
+      ]
+    }
+  ],
   "Kakariko Gorge Double Clawshot Chest": [
     {
       "stage": "F_SP121",
@@ -1697,6 +1731,23 @@
         520.8057861328125,
         -1400.0,
         15833.8369140625
+      ]
+    }
+  ],
+  "Kakariko Village Bomb Rock Spire Heart Piece": [
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        -2360.0,
+        1586.455322265625,
+        9050.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -2360.0,
+        1586.455322265625,
+        9050.0
       ]
     }
   ],
@@ -2858,6 +2909,23 @@
         "label": "Hidden Village Impaz House",
         "grotto": false
       }
+    }
+  ],
+  "Cats Hide and Seek Minigame": [
+    {
+      "stage": "F_SP128",
+      "room": 0,
+      "pos": [
+        2200.0,
+        104.57499694824219,
+        -1200.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        2200.0,
+        104.57499694824219,
+        -1200.0
+      ]
     }
   ],
   "Hidden Village Poe": [
@@ -5498,6 +5566,23 @@
       ]
     }
   ],
+  "Plumm Fruit Balloon Minigame": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -77173.765625,
+        -18800.0,
+        40195.1640625
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -77173.765625,
+        -18800.0,
+        40195.1640625
+      ]
+    }
+  ],
   "Upper Zoras River Female Dragonfly": [
     {
       "stage": "F_SP126",
@@ -5648,28 +5733,38 @@
       }
     }
   ],
+  "Fishing Hole Bottle": [
+    {
+      "stage": "F_SP127",
+      "room": 0,
+      "pos": [
+        6800.0,
+        30.0,
+        -270.0
+      ],
+      "anchor": "native fishing catch region",
+      "world_pos": [
+        6800.0,
+        30.0,
+        -270.0
+      ]
+    }
+  ],
   "Fishing Hole Heart Piece": [
     {
       "stage": "F_SP127",
-      "room": -1,
+      "room": 0,
       "pos": [
-        0,
-        0,
-        0
+        -2242.0,
+        504.0,
+        567.0
       ],
-      "local": false,
-      "overworld": {
-        "stage": "F_SP127",
-        "room": 0,
-        "pos": [
-          -1713.0,
-          85.0,
-          8113.0
-        ],
-        "anchor": "exterior entrance",
-        "label": "Fishing Hole House",
-        "grotto": false
-      }
+      "anchor": "actor",
+      "world_pos": [
+        -2242.0,
+        504.0,
+        567.0
+      ]
     }
   ],
   "Zoras Domain Male Dragonfly": [

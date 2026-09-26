@@ -160,3 +160,19 @@ for name,flag in torch_names.items():
 assert 'not required' in ' '.join(guides['checks']['Lake Lantern Cave Sixth Chest']['steps'])
 assert 'not required' in ' '.join(guides['checks']['Lake Lantern Cave Fourteenth Chest']['steps'])
 print('Validated Lake cave ordinary chests and both torch-spawn exceptions.')
+
+# Scripted minigames and the special heart-piece actor need durable map anchors.
+assert checks['Plumm Fruit Balloon Minigame']['stages']==['F_SP115']
+for name,stage,pos in (
+    ('Plumm Fruit Balloon Minigame','F_SP115',[-77173.765625,-18800.0,40195.1640625]),
+    ('Fishing Hole Bottle','F_SP127',[6800.0,30.0,-270.0]),
+    ('Fishing Hole Heart Piece','F_SP127',[-2242.0,504.0,567.0])):
+    point=positions[name][0]
+    assert point['stage']==stage and point['room']==0 and point.get('local',True),name
+    assert point['pos']==pos and 'world_pos' in point,name
+for name in ('Iza Helping Hand','Iza Raging Rapids Minigame'):
+    point=positions[name][0]
+    assert not point['local'] and point['overworld']['stage']=='F_SP126',name
+    assert point['overworld']['room']==0 and point['overworld']['pos']==[-1116.0,400.0,-102956.0],name
+assert 'R_SP127' in checks['Fishing Hole Heart Piece']['stages']
+print('Validated Plumm, both Iza rewards and Fishing Hole map anchors.')

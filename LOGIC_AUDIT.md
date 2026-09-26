@@ -2,6 +2,16 @@
 
 The authoritative reference is this checkout's Randomizer, rather than a generic vanilla walkthrough. The wiki's List of Randomizer Checks explicitly says it is not a definitive logic-based list: https://wiki.tprandomizer.com/index.php?title=List_of_Randomizer_Checks .
 
+## 0.4.34 missing river minigame markers
+
+Plumm is a dynamic `item_check_commit("plumm_minigame_reward", ...)` in `d_a_npc_myna2.cpp`, missed by the static DUSK_ITEM_CHECK actor scan. Lake Hylia has ambiguous stage membership, so the catalogue now explicitly maps this check to F_SP115. Its myna2 actor in room 0 supplies the real position.
+
+Fishing Hole's placed heart piece is `htPiece`, not `item`. Both use an eight-bit save flag at parameter bits 8..15 (`daObjLife_c::getSaveBitNo`). Supporting this actor adds the actual F_SP127 flag-0x80 point and four other correctly flagged outdoor heart-piece markers. The bottle is a scripted catch without a placed actor: its point is parsed from `d_a_mg_rod.cpp`'s `cXyz bin_pos(6800.0f, 30.0f, -270.0f)` catch region. Hena's R_SP127 cabin is another Current Area for the heart-piece check because the world logic provides its canoe-rental route there.
+
+Iza's two atlas entries already had valid F_SP126 entrance spawns, but the map loader took its F_SP112 stage prefix as evidence of an outdoor point and ignored the explicit exterior anchor. It then rejected room -1 placeholder coordinates. The shared worldMapAnchor selector now prioritizes explicit entrances, preserves true outdoor coordinates and rejects non-local placeholders. Both Iza event flags remain distinct (0x0B01 vs 0x5908); native reward aliases complete each one independently. The single remaining check at an entrance is named in the hover label instead of an opaque interior label/count.
+
+Regression tests exercise the actual map-loader selector, affected Current Area memberships, all five scripted grant aliases, distinct Iza rewards/flags, fishing/clawshot heart-piece deduplication, NPC seed filtering and exact actor/catch-region coordinates. No game state is written. Live map layout still needs gameplay confirmation.
+
 ## 0.4.33 Memo inventory and Forest Temple key door
 
 Randomizer `src/item.cpp::randomizer_item_func_RAFRELS_MEMO` places item 0x90 in SLOT_7. Vanilla `src/d/d_item.cpp::item_getcheck_func_RAFRELS_MEMO` queries SLOT_19, explaining the missing memo despite its item-wheel presence. TPTracker now reads SLOT_7 directly and retains the item when event 0x2680 records delivery to Fyer, matching the Randomizer's `src/tools.cpp` inventory reconstruction. This is read-only and does not infer ownership from the memo reward check or spoiler placements.

@@ -147,6 +147,22 @@ for location in yaml.safe_load((data / 'locations.yaml').read_text(encoding='utf
             mapped = area_stages.get(route['area'], set())
             if len(mapped) == 1:
                 stage_names.update(mapped)
+    # Scripted rewards have no placed item actor in locations.yaml. Plumm's
+    # Lake Hylia area spans multiple stages, so it cannot use ambiguous inference.
+    if location['Name'] == 'Plumm Fruit Balloon Minigame':
+        stage_names.add('F_SP115')
+    # Renting Hena's canoe is an alternate route to this same heart-piece check.
+    if location['Name'] == 'Fishing Hole Heart Piece':
+        stage_names.add('R_SP127')
+    native_rewards = {
+        'Plumm Fruit Balloon Minigame': 'plumm_minigame_reward',
+        'Iza Helping Hand': 'iza_reward_1',
+        'Iza Raging Rapids Minigame': 'iza_reward_2',
+        'Fishing Hole Bottle': 'fishing_bottle',
+        'Fishing Hole Heart Piece': 'fishing_heart_piece',
+    }
+    if location['Name'] in native_rewards:
+        aliases.append(native_rewards[location['Name']])
     checks.append({'name': location['Name'], 'categories': categories, 'stages': sorted(stage_names),
                    'grotto_scenes': [scene for route in access.get(location['Name'], [])
                                      for scene in grotto_scenes.get(route['area'], [])],

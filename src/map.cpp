@@ -1,4 +1,5 @@
 #include "map.hpp"
+#include "map_positions.hpp"
 #include <mods/svc/hook.hpp>
 #include "d/d_com_inf_game.h"
 #include "d/d_menu_fmap.h"
@@ -343,7 +344,12 @@ void draw(ModContext*, void* args, void*, void*) {
         float dx=x-back->getArrowPos2DX(),dy=y-back->getArrowPos2DY(),distance=dx*dx+dy*dy;
         if (distance<closest) {
             closest=distance;hoverDone=done;hoverColor=color;
-            hovered=group.label+" - "+std::to_string(group.available)+" / "+std::to_string(remaining)+" available ("+std::to_string(group.done)+" completed)";
+            if (remaining==1) {
+                const auto last=std::find_if(group.checks.begin(),group.checks.end(),[](const auto& name) { return !state->obtained.contains(name); });
+                hovered=std::string(group.available ? "[OPEN] " : group.unknown ? "[UNKNOWN] " : "[LOCKED] ")+*last;
+            } else {
+                hovered=group.label+" - "+std::to_string(group.available)+" / "+std::to_string(remaining)+" available ("+std::to_string(group.done)+" completed)";
+            }
         }
     }
     // Count real dungeon checks, independently of the number of mapped actors.
@@ -635,13 +641,15 @@ ModResult initializeMap(Model* model) {
                 };
                 for (const auto& point : data.at(name)) {
                     auto p=parse(point,false);if (point.value("local",true) && !isCoroReward(name)) localPositions.push_back(p);
-                    if (p.stage.starts_with("F_")) {
-                        if (point.contains("world_pos")) {p.x=point.at("world_pos")[0];p.y=point.at("world_pos")[1];p.z=point.at("world_pos")[2];}
-                        // Coro is outdoors, but his rewards share one aggregate marker.
-                        if (isCoroReward(name)) { p.entrance=true; p.label="Coro"; }
+                    if (const auto* anchor=worldMapAnchor(point)) {
+                        if (anchor!=&point) p=parse(*anchor,true);
+                        else {
+                            if (point.contains("world_pos")) {p.x=point.at("world_pos")[0];p.y=point.at("world_pos")[1];p.z=point.at("world_pos")[2];}
+                            // Coro is outdoors, but his rewards share one aggregate marker.
+                            if (isCoroReward(name)) { p.entrance=true; p.label="Coro"; }
+                        }
                         worldPositions.push_back(p);
                     }
-                    else if (point.contains("overworld") && point.at("overworld").is_object()) worldPositions.push_back(parse(point.at("overworld"),true));
                 }
             }
         } catch (...) { localPositions.clear();worldPositions.clear(); }

@@ -1,4 +1,10 @@
-# TPTracker 0.4.33
+# TPTracker 0.4.34
+
+## 0.4.34 river minigames and Fishing Hole markers
+
+Plumm's Fruit Balloon Minigame now has an explicit Lake Hylia area mapping and an actor-derived map/minimap marker. Fishing Hole Bottle uses the game's fishing catch-region coordinates, and its Heart Piece uses the actual collectible position. The heart-piece check also appears in Hena's cabin, where the canoe route starts. Special heart-piece actor support restores four additional missing outdoor markers.
+
+Both Iza rewards now use the boat-rental entrance on the Upper Zora's River map/minimap, instead of invalid placeholder coordinates from the boat-course stage. They remain separate checks and completion flags. When one reward remains at an entrance, the hover label names that check, making Raging Rapids visible after Helping Hand is completed. NPC seed filters and skipped/completed marker hiding still apply. Native reward aliases also recognize these scripted grants immediately.
 
 ## 0.4.33 Forest Temple door and Auru's Memo
 

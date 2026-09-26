@@ -79,6 +79,8 @@ for file in (repo/'src/d/actor').glob('*.cpp'):
 # so the literal DUSK_ITEM_CHECK tag scan above cannot discover his rewards.
 for check in ('Coro Bottle','Coro Gate Key','Coro Lantern'):
  npc_actors.setdefault(check,set()).update(object_names['NPC_KKRI'])
+# Plumm commits his reward dynamically, outside the static tag scan.
+npc_actors.setdefault('Plumm Fruit Balloon Minigame',set()).update(object_names['MYNA2'])
 for check in ('Sacred Grove Pedestal Master Sword','Sacred Grove Pedestal Shadow Crystal'):
  npc_actors.setdefault(check,set()).update(object_names['Obj_MasterSword'])
 # Item flags may be reassigned by the randomizer (notably Ordon and the
@@ -103,6 +105,13 @@ for stage,room_patches in patches.items():
      a['param']=patch.get('parameters',a['param'])
      if 'position' in patch:a['pos']=[patch['position'].get(axis,a['pos'][i]) for i,axis in enumerate(('x','y','z'))]
 
+# The bottle is a scripted catch, not a placed item. Use the center of the
+# native catch region from d_a_mg_rod.cpp, rather than a guessed NPC/door point.
+rod_source=(repo/'src/d/actor/d_a_mg_rod.cpp').read_text(encoding='utf-8')
+bottle_match=re.search(r'cXyz bin_pos\(\s*([-\d.]+)f,\s*([-\d.]+)f,\s*([-\d.]+)f\)',rod_source)
+if not bottle_match:raise RuntimeError('Fishing bottle catch-region coordinate missing')
+bottle_pos=[float(v) for v in bottle_match.groups()]
+
 out={};counts={}
 for c in cat['checks']:
  candidates=[];stages=set(c['stages'])
@@ -116,7 +125,7 @@ for c in cat['checks']:
    for flag in c['flags']:
     if flag['kind']=='item' and name.startswith('carry') and 'Freestanding Item' in c['categories']:match|=(a['angle_x']>>8)==flag['flag']
     if flag['kind']=='item' and name in ('stone','stoneB') and 'Freestanding Item' in c['categories']:match|=((p>>16)&255)==flag['flag']
-    if flag['kind']=='item' and name=='item' and 'Freestanding Item' in c['categories']:match|=((p>>8)&255)==flag['flag']
+    if flag['kind']=='item' and name in ('item','htPiece') and 'Freestanding Item' in c['categories']:match|=((p>>8)&255)==flag['flag']
     if flag['kind']=='chest' and name.startswith('tbox') and name!='tbox_sw':match|=(((p>>16)&255) if name.startswith('tboxEL') else ((p>>6)&63))==flag['flag']
     if flag['kind']=='switch' and name=='E_hp' and 'Poe' in c['categories']:match|=((p>>8)&255)==flag['flag']
    if name in bugs and 'Golden Bug' in c['categories']:
@@ -132,6 +141,8 @@ for c in cat['checks']:
     parts=alias.split(':')
     if len(parts)==4 and parts[0]=='shop' and stage==parts[1] and a['room']==int(parts[2]) and name in ('ShopItm','TGSPITM') and (p&255)==int(parts[3]):match=True
    if match:candidates.append(dict(stage=stage,room=a['room'],pos=a['pos'],anchor='actor'))
+ if c['name']=='Fishing Hole Bottle':
+  candidates.append(dict(stage='F_SP127',room=0,pos=bottle_pos,anchor='native fishing catch region'))
  # Deduplicate actors repeated in time/event layers.
  unique=[]
  for a in candidates:

@@ -1,6 +1,6 @@
 # TPTracker requirements and installation
 
-This GameBanana v6.5 bundle contains TPTracker 0.4.33.
+These requirements apply to TPTracker 0.4.34.
 
 ## Required
 
@@ -14,7 +14,7 @@ The single multiplatform `.dusk` includes Windows x64, Linux x64/ARM64, macOS In
 
 ## Install or update
 
-1. Extract the ZIP and install `TPTracker-0.4.33-multiplatform.dusk` through Dusklight's mod installation workflow, or place it in Dusklight's `mods` directory.
+1. Extract the ZIP and install `TPTracker-0.4.34-multiplatform.dusk` through Dusklight's mod installation workflow, or place it in Dusklight's `mods` directory.
 2. Keep only one active TPTracker package; move the older version outside the `mods` directory before enabling the update.
 3. Restart Dusklight and enable TPTracker in its Mods menu. Assign a keyboard/controller shortcut in TPTracker's options if desired.
 
@@ -30,3 +30,5 @@ README.md describes the features and changes. Python, a web browser and an inter
 - The tracker window uses Dusklight's input focus and cannot detach to another monitor.
 
 Regression coverage for this release includes held/delivered Auru's Memo, desert access, the Forest Temple second-monkey door with available/spent keys, unrelated gate isolation, and the existing cave, warp, notes and marker cases.
+
+The 0.4.34 regression checks also cover river minigame area membership, independent Iza completion, native fishing reward aliases and outdoor entrance marker selection.

@@ -9844,7 +9844,9 @@
         "Name Lookup",
         "Event Flag"
       ],
-      "stages": [],
+      "stages": [
+        "F_SP115"
+      ],
       "grotto_scenes": [],
       "flags": [
         {
@@ -9861,7 +9863,8 @@
       "original_item": "Piece of Heart",
       "group": "Lake Hylia",
       "aliases": [
-        "Plumm Fruit Balloon Minigame"
+        "Plumm Fruit Balloon Minigame",
+        "plumm_minigame_reward"
       ]
     },
     {
@@ -10081,7 +10084,8 @@
       "original_item": "Bomb Bag",
       "group": "Upper Zoras River",
       "aliases": [
-        "Iza Helping Hand"
+        "Iza Helping Hand",
+        "iza_reward_1"
       ]
     },
     {
@@ -10114,7 +10118,8 @@
       "original_item": "Giant Bomb Bag",
       "group": "Upper Zoras River",
       "aliases": [
-        "Iza Raging Rapids Minigame"
+        "Iza Raging Rapids Minigame",
+        "iza_reward_2"
       ]
     },
     {
@@ -10146,7 +10151,8 @@
       "original_item": "Empty Bottle",
       "group": "Fishing Hole",
       "aliases": [
-        "Fishing Hole Bottle"
+        "Fishing Hole Bottle",
+        "fishing_bottle"
       ]
     },
     {
@@ -10160,7 +10166,8 @@
         "Name Lookup"
       ],
       "stages": [
-        "F_SP127"
+        "F_SP127",
+        "R_SP127"
       ],
       "grotto_scenes": [],
       "flags": [
@@ -10184,7 +10191,8 @@
       "group": "Fishing Hole",
       "aliases": [
         "Fishing Hole Heart Piece",
-        "freestanding:F_SP127:128"
+        "freestanding:F_SP127:128",
+        "fishing_heart_piece"
       ]
     },
     {

@@ -1,5 +1,6 @@
 #include "inventory_adapters.hpp"
 #include "model.hpp"
+#include "map_positions.hpp"
 #include "notebook.hpp"
 #include "check_guides.hpp"
 #include "stick_navigation.hpp"
@@ -106,6 +107,50 @@ int main(int argc, char** argv) {
         size_t lakeChecks=0;
         for (const auto& check : model.catalogue.at("checks")) lakeChecks+=model.inArea(check);
         require(lakeChecks>10,"Lake Hylia Current Area lost checks or pagination");
+        {
+            auto checkNamed=[&](const char* name)->const Json& {
+                for(const auto& check:data.at("checks")) if(check.at("name")==name) return check;
+                throw std::runtime_error("missing river check");
+            };
+            Model rivers=model;
+            rivers.settings["Gifts From NPCs"]="On";
+            rivers.stage="F_SP115";
+            require(rivers.inArea(checkNamed("Plumm Fruit Balloon Minigame")),"Plumm absent from Lake Hylia Current Area");
+            for(const char* stage:{"F_SP126","F_SP112"}) {
+                rivers.stage=stage;
+                for(const char* name:{"Iza Helping Hand","Iza Raging Rapids Minigame"})
+                    require(rivers.inArea(checkNamed(name)) && rivers.enabled(checkNamed(name)),"Iza reward absent at river/boat rental");
+            }
+            rivers.stage="F_SP127";
+            for(const char* name:{"Fishing Hole Bottle","Fishing Hole Heart Piece","Fishing Hole Hint Sign"})
+                require(rivers.inArea(checkNamed(name)) && rivers.enabled(checkNamed(name)),"Fishing Hole Current Area lost check");
+            rivers.stage="R_SP127";
+            require(rivers.inArea(checkNamed("Fishing Hole Heart Piece")),"Hena rental route missing its heart-piece check");
+            rivers.stage="F_SP103";
+            require(!rivers.inArea(checkNamed("Plumm Fruit Balloon Minigame")) && !rivers.inArea(checkNamed("Iza Raging Rapids Minigame")),"river checks leaked into unrelated area");
+            rivers.settings["Gifts From NPCs"]="Off";
+            require(!rivers.enabled(checkNamed("Plumm Fruit Balloon Minigame")) && !rivers.enabled(checkNamed("Iza Raging Rapids Minigame")),"NPC seed filter bypassed");
+            require(rivers.give("iza_reward_1") && !rivers.obtained.contains("Iza Raging Rapids Minigame"),"Helping Hand completed Iza minigame");
+            require(rivers.give("iza_reward_2"),"Iza minigame grant not recognized independently");
+            require(rivers.give("plumm_minigame_reward") && rivers.give("fishing_bottle") && rivers.give("fishing_heart_piece"),"scripted river grant missing");
+            require(!rivers.give("freestanding:F_SP127:128"),"fishing and clawshot duplicate the same heart-piece check");
+            require(checkNamed("Iza Helping Hand").at("flags")[0].at("flag")==0x0b01 && checkNamed("Iza Raging Rapids Minigame").at("flags")[0].at("flag")==0x5908,"Iza completion flags are not independent");
+            // Exercise the same anchor selector used by map initialization:
+            // F_SP112 is an F_ stage, but its zero/room-1 data is not a position.
+            for(const char* name:{"Iza Helping Hand","Iza Raging Rapids Minigame"}) {
+                const auto& point=positions.at(name)[0];
+                const auto* anchor=worldMapAnchor(point);
+                require(anchor && anchor!=&point && anchor->at("stage")=="F_SP126" && anchor->at("room")==0,"Iza exterior anchor discarded for F_ placeholder");
+                require(anchor->at("pos")[0]!=0 && anchor->at("pos")[2]!=0,"Iza marker uses dummy coordinates");
+            }
+            for(const char* name:{"Plumm Fruit Balloon Minigame","Fishing Hole Bottle","Fishing Hole Heart Piece"}) {
+                const auto& point=positions.at(name)[0];
+                require(worldMapAnchor(point)==&point && point.value("local",true),"river outdoor check missing from world map/minimap");
+            }
+            Json placeholder={{"stage","F_SP112"},{"local",false}};
+            require(!worldMapAnchor(placeholder),"unmapped placeholder accepted as world marker");
+            require(!worldMapAnchor(Json{{"stage","R_SP127"}}),"indoor coordinate treated as outdoor marker");
+        }
         model.stage.clear();
         require(pageCount(0,10)==1 && pageCount(10,10)==1 && pageCount(14,10)==2 && pageCount(40,10)==4,"check pagination boundaries");
         require(model.inventoryMaximum("Progressive Sword")==4 && model.inventoryMaximum("Progressive Clawshot")==2,"upgrade maximums");
