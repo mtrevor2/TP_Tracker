@@ -1749,6 +1749,21 @@
         1586.455322265625,
         9050.0
       ]
+    },
+    {
+      "stage": "F_SP109",
+      "room": 0,
+      "pos": [
+        -2360.0,
+        1586.455,
+        9050
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -2360.0,
+        1586.455,
+        9050.0
+      ]
     }
   ],
   "Kakariko Village Bell Rupee": [
@@ -2279,6 +2294,29 @@
         "anchor": "exterior entrance",
         "label": "Renado's Sanctuary: Renado's Letter",
         "grotto": false
+      }
+    }
+  ],
+  "Shad Dominion Rod": [
+    {
+      "stage": "R_SP209",
+      "room": 7,
+      "pos": [
+        154.70021057128906,
+        -770.0,
+        -2965.265869140625
+      ],
+      "anchor": "actor",
+      "overworld": {
+        "stage": "F_SP109",
+        "room": 0,
+        "pos": [
+          455.86212158203125,
+          100.0,
+          6457.2412109375
+        ],
+        "anchor": "interior entrance",
+        "label": "Renado's Sanctuary: Shad"
       }
     }
   ],
@@ -3400,6 +3438,38 @@
         -81193.0546875,
         -1650.010009765625,
         21669.857421875
+      ]
+    }
+  ],
+  "Charlo Donation Blessing": [
+    {
+      "stage": "F_SP116",
+      "room": 0,
+      "pos": [
+        -4029.692626953125,
+        0.0,
+        -516.8405151367188
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4029.692626953125,
+        0.0,
+        -516.8405151367188
+      ]
+    },
+    {
+      "stage": "F_SP116",
+      "room": 2,
+      "pos": [
+        -4029.692626953125,
+        0.0,
+        -616.8405151367188
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -4029.692626953125,
+        0.0,
+        -616.8405151367188
       ]
     }
   ],
@@ -5221,6 +5291,23 @@
       ]
     }
   ],
+  "Flight By Fowl Top Platform Reward": [
+    {
+      "stage": "F_SP115",
+      "room": 0,
+      "pos": [
+        -102523.015625,
+        -16646.677734375,
+        43291.4296875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        -102523.015625,
+        -16646.677734375,
+        43291.4296875
+      ]
+    }
+  ],
   "Flight By Fowl Second Platform Chest": [
     {
       "stage": "F_SP115",
@@ -5235,21 +5322,6 @@
         -102658.125,
         -17260.294921875,
         43169.55859375
-      ]
-    },
-    {
-      "stage": "F_SP115",
-      "room": 0,
-      "pos": [
-        -102523.015625,
-        -16646.677734375,
-        43291.4296875
-      ],
-      "anchor": "actor",
-      "world_pos": [
-        -102523.015625,
-        -16646.677734375,
-        43291.4296875
       ]
     }
   ],
@@ -7102,6 +7174,74 @@
         -3243.0224609375,
         424.51995849609375,
         11309.7763671875
+      ]
+    }
+  ],
+  "Bulblin Camp First Chest Under Tower At Entrance": [
+    {
+      "stage": "F_SP118",
+      "room": 1,
+      "pos": [
+        4761.640625,
+        0.0,
+        1580.5701904296875
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        4761.640625,
+        0.0,
+        1580.5701904296875
+      ]
+    }
+  ],
+  "Bulblin Camp Small Chest in Back of Camp": [
+    {
+      "stage": "F_SP118",
+      "room": 1,
+      "pos": [
+        2389.04541015625,
+        260.0,
+        -1473.38720703125
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        2389.04541015625,
+        260.0,
+        -1473.38720703125
+      ]
+    }
+  ],
+  "Bulblin Camp Roasted Boar": [
+    {
+      "stage": "F_SP118",
+      "room": 1,
+      "pos": [
+        4785.0,
+        260.0,
+        -3177.0
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        4785.0,
+        260.0,
+        -3177.0
+      ]
+    }
+  ],
+  "Bulblin Guard Key": [
+    {
+      "stage": "F_SP118",
+      "room": 1,
+      "pos": [
+        4000,
+        300.0,
+        -3500
+      ],
+      "anchor": "actor",
+      "world_pos": [
+        4000.0,
+        300.0,
+        -3500.0
       ]
     }
   ],

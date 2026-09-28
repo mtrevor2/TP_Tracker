@@ -2074,7 +2074,7 @@
       "access": [
         {
           "area": "Faron Field",
-          "requirement": "Clawshot or Gale_Boomerang or Ball_and_Chain"
+          "requirement": "Clawshot or Gale_Boomerang"
         }
       ],
       "original_item": "Female Beetle",
@@ -2454,7 +2454,7 @@
       "access": [
         {
           "area": "Sacred Grove Past",
-          "requirement": "Clawshot or Gale_Boomerang or Ball_and_Chain"
+          "requirement": "Clawshot or Gale_Boomerang"
         }
       ],
       "original_item": "Female Snail",
@@ -2486,7 +2486,7 @@
       "access": [
         {
           "area": "Sacred Grove Lower",
-          "requirement": "Clawshot or Gale_Boomerang or Ball_and_Chain"
+          "requirement": "Clawshot or Gale_Boomerang"
         }
       ],
       "original_item": "Male Snail",
@@ -2548,7 +2548,7 @@
       "access": [
         {
           "area": "Sacred Grove Past",
-          "requirement": "Dominion_Rod and Can_Use_Senses"
+          "requirement": "'Sacred_Grove_Poe_Statue_Moved' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -3400,7 +3400,7 @@
       "access": [
         {
           "area": "Eldin Lantern Cave",
-          "requirement": "Can_Break_Webs and Can_Use_Senses"
+          "requirement": "'Eldin_Cave_Webs_Cleared' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -4138,7 +4138,8 @@
       "original_item": "Progressive Dominion Rod",
       "group": "Kakariko Village",
       "aliases": [
-        "Shad Dominion Rod"
+        "Shad Dominion Rod",
+        "shad_dominion_rod"
       ]
     },
     {
@@ -4840,7 +4841,7 @@
       "access": [
         {
           "area": "Eldin Field North of Bridge",
-          "requirement": "Clawshot or Gale_Boomerang or Ball_and_Chain"
+          "requirement": "Clawshot or Gale_Boomerang"
         }
       ],
       "original_item": "Female Phasmid",
@@ -4872,7 +4873,7 @@
       "access": [
         {
           "area": "Eldin Field",
-          "requirement": "Clawshot or Gale_Boomerang or Ball_and_Chain"
+          "requirement": "Clawshot or Gale_Boomerang"
         }
       ],
       "original_item": "Male Phasmid",
@@ -5932,7 +5933,7 @@
       "access": [
         {
           "area": "Lanayru Field",
-          "requirement": "Clawshot or Gale_Boomerang or Ball_and_Chain"
+          "requirement": "Clawshot or Gale_Boomerang"
         }
       ],
       "original_item": "Female Stag Beetle",
@@ -5964,7 +5965,7 @@
       "access": [
         {
           "area": "Lanayru Field",
-          "requirement": "Clawshot or Gale_Boomerang or Ball_and_Chain"
+          "requirement": "Clawshot or Gale_Boomerang"
         }
       ],
       "original_item": "Male Stag Beetle",
@@ -6529,7 +6530,8 @@
       "original_item": "Piece of Heart",
       "group": "Castle Town",
       "aliases": [
-        "Charlo Donation Blessing"
+        "Charlo Donation Blessing",
+        "prayer_reward"
       ]
     },
     {
@@ -8192,7 +8194,7 @@
       "access": [
         {
           "area": "Lake Hylia Bridge South",
-          "requirement": "Not_Twilight and (Clawshot or Gale_Boomerang or Ball_and_Chain)"
+          "requirement": "Not_Twilight and (Clawshot or Gale_Boomerang)"
         }
       ],
       "original_item": "Female Mantis",
@@ -8224,7 +8226,7 @@
       "access": [
         {
           "area": "Lake Hylia Bridge North",
-          "requirement": "Clawshot or Gale_Boomerang or Ball_and_Chain"
+          "requirement": "Clawshot or Gale_Boomerang"
         }
       ],
       "original_item": "Male Mantis",
@@ -9384,7 +9386,7 @@
       "access": [
         {
           "area": "Flight by Fowl",
-          "requirement": "Night and Can_Use_Senses and Can_Talk_to_Humans and 'Can_Farm_Rupees'"
+          "requirement": "Night and 'Isle_of_Riches_Flight_Purchased' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -11125,7 +11127,7 @@
       "access": [
         {
           "area": "Snowpeak Summit Cave",
-          "requirement": "Ball_and_Chain and Can_Use_Senses"
+          "requirement": "'Snowpeak_Cave_Ice_Broken' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -15898,7 +15900,7 @@
       "access": [
         {
           "area": "Snowpeak Ruins Entrance",
-          "requirement": "Can_Break_Armor and Can_Use_Senses"
+          "requirement": "'Snowpeak_Lobby_Armor_Broken' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -16436,7 +16438,7 @@
       "access": [
         {
           "area": "Snowpeak Ruins Second Floor Mini Freezard Room",
-          "requirement": "Can_Break_Ice and Can_Use_Senses"
+          "requirement": "'Snowpeak_Poe_Ice_Broken' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -16723,7 +16725,7 @@
       "access": [
         {
           "area": "Temple of Time Central Mechanical Platform Room Bottom",
-          "requirement": "Dominion_Rod and Can_Use_Senses"
+          "requirement": "'Temple_Poe_Gate_Opened' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -23684,7 +23686,7 @@
       "Locations": {
         "Snowpeak Ruins Lobby West Armor Chest": "Can_Break_Armor",
         "Snowpeak Ruins Lobby East Armor Chest": "Can_Break_Armor",
-        "Snowpeak Ruins Lobby Armor Poe": "Can_Break_Armor and Can_Use_Senses",
+        "Snowpeak Ruins Lobby Armor Poe": "'Snowpeak_Lobby_Armor_Broken' and Can_Use_Senses",
         "Snowpeak Ruins Lobby Poe": "Can_Use_Senses"
       },
       "Exits": {
@@ -23694,7 +23696,9 @@
         "Snowpeak Ruins East Door Interior": "Can_Open_Doors",
         "Snowpeak Ruins West Door Interior": "Can_Open_Doors"
       },
-      "Events": {}
+      "Events": {
+        "Snowpeak Lobby Armor Broken": "Can_Break_Armor"
+      }
     },
     {
       "Name": "Snowpeak Ruins Entrance Near Caged Freezard Room",
@@ -24064,14 +24068,16 @@
       "Name": "Snowpeak Ruins Second Floor Mini Freezard Room",
       "Region": "Snowpeak Ruins",
       "Locations": {
-        "Snowpeak Ruins Ice Room Poe": "Can_Break_Ice and Can_Use_Senses"
+        "Snowpeak Ruins Ice Room Poe": "'Snowpeak_Poe_Ice_Broken' and Can_Use_Senses"
       },
       "Exits": {
         "Snowpeak Ruins Block Puzzle Room Second Floor": "Can_Open_Doors",
         "Snowpeak Ruins Double Freezard Room": "Can_Open_Doors and (count(Snowpeak_Ruins_Small_Key, 4) or Small_Keys == Keysy)",
         "Snowpeak Ruins Entrance Near Second Floor Mini Freezard Room": "Can_Open_Doors"
       },
-      "Events": {}
+      "Events": {
+        "Snowpeak Poe Ice Broken": "Can_Break_Ice"
+      }
     },
     {
       "Name": "Snowpeak Ruins Double Freezard Room",
@@ -24177,13 +24183,15 @@
       "Name": "Temple of Time Central Mechanical Platform Room Bottom",
       "Region": "Temple of Time",
       "Locations": {
-        "Temple of Time Poe Behind Gate": "Dominion_Rod and Can_Use_Senses"
+        "Temple of Time Poe Behind Gate": "'Temple_Poe_Gate_Opened' and Can_Use_Senses"
       },
       "Exits": {
         "Temple of Time Central Mechanical Platform Room Top": "Spinner",
         "Temple of Time Yellow Gates Corridor Near Central Mechnical Platform Room": "Nothing"
       },
-      "Events": {}
+      "Events": {
+        "Temple Poe Gate Opened": "Dominion_Rod"
+      }
     },
     {
       "Name": "Temple of Time Central Mechanical Platform Room Top",
@@ -24431,12 +24439,14 @@
         "Eldin Lantern Cave First Chest": "Can_Break_Webs",
         "Eldin Lantern Cave Lantern Chest": "Lantern",
         "Eldin Lantern Cave Second Chest": "Can_Break_Webs",
-        "Eldin Lantern Cave Poe": "Can_Break_Webs and Can_Use_Senses"
+        "Eldin Lantern Cave Poe": "'Eldin_Cave_Webs_Cleared' and Can_Use_Senses"
       },
       "Exits": {
         "Kakariko Gorge Cave Entrance": "Nothing"
       },
-      "Events": {}
+      "Events": {
+        "Eldin Cave Webs Cleared": "Can_Break_Webs"
+      }
     },
     {
       "Name": "Kakariko Gorge Keese Grotto",
@@ -25784,13 +25794,15 @@
       "Locations": {
         "Sacred Grove Past Owl Statue Chest": "Dominion_Rod",
         "Sacred Grove Female Snail": "Clawshot or Gale_Boomerang",
-        "Sacred Grove Temple of Time Owl Statue Poe": "Dominion_Rod and Can_Use_Senses"
+        "Sacred Grove Temple of Time Owl Statue Poe": "'Sacred_Grove_Poe_Statue_Moved' and Can_Use_Senses"
       },
       "Exits": {
         "Sacred Grove Past Behind Window": "Has_Sword_For_Temple_of_Time",
         "Sacred Grove Upper": "Nothing"
       },
-      "Events": {}
+      "Events": {
+        "Sacred Grove Poe Statue Moved": "Dominion_Rod"
+      }
     },
     {
       "Name": "Sacred Grove Past Behind Window",
@@ -26934,7 +26946,7 @@
         "Flight By Fowl Third Platform Chest": "Can_Talk_to_Humans and 'Can_Farm_Rupees'",
         "Flight By Fowl Fourth Platform Chest": "Can_Talk_to_Humans and 'Can_Farm_Rupees'",
         "Flight By Fowl Fifth Platform Chest": "Can_Talk_to_Humans and 'Can_Farm_Rupees'",
-        "Isle of Riches Poe": "Night and Can_Use_Senses and Can_Talk_to_Humans and 'Can_Farm_Rupees'",
+        "Isle of Riches Poe": "Night and 'Isle_of_Riches_Flight_Purchased' and Can_Use_Senses",
         "Lake Hylia Hint Sign": "Nothing"
       },
       "Exits": {
@@ -26944,7 +26956,8 @@
       },
       "Events": {
         "Can Warp": "Nothing",
-        "Lanayru Province Map Sector": "Nothing"
+        "Lanayru Province Map Sector": "Nothing",
+        "Isle of Riches Flight Purchased": "Can_Talk_to_Humans and 'Can_Farm_Rupees'"
       }
     },
     {
@@ -27689,7 +27702,7 @@
       "Can Warp": true,
       "Locations": {
         "Snowpeak Cave Ice Lantern Chest": "Can_Light_Torches and Ball_and_Chain",
-        "Snowpeak Cave Ice Poe": "Ball_and_Chain and Can_Use_Senses"
+        "Snowpeak Cave Ice Poe": "'Snowpeak_Cave_Ice_Broken' and Can_Use_Senses"
       },
       "Exits": {
         "Snowpeak Summit Upper": "Can_Climb_Vines",
@@ -27697,7 +27710,8 @@
       },
       "Events": {
         "Can Warp": "Nothing",
-        "Snowpeak Province Map Sector": "Nothing"
+        "Snowpeak Province Map Sector": "Nothing",
+        "Snowpeak Cave Ice Broken": "Ball_and_Chain"
       }
     },
     {

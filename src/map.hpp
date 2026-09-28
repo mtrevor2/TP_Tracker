@@ -5,6 +5,7 @@ namespace tracker {
 ModResult initializeMap(Model* model);
 void shutdownMap();
 extern bool mapEnabled;
+extern bool mapAccessibleOnly, minimapAccessibleOnly;
 extern bool mapAvailable;
 extern bool minimapEnabled, minimapAvailable;
 constexpr int checkTypeCount = 10;

@@ -79,6 +79,11 @@ for file in (repo/'src/d/actor').glob('*.cpp'):
 # so the literal DUSK_ITEM_CHECK tag scan above cannot discover his rewards.
 for check in ('Coro Bottle','Coro Gate Key','Coro Lantern'):
  npc_actors.setdefault(check,set()).update(object_names['NPC_KKRI'])
+# These rewards are committed through message/native item helpers.
+for check, profile in (('Shad Dominion Rod','NPC_SHAD'),
+                       ('Charlo Donation Blessing','NPC_PRAYER'),
+                       ('Bulblin Camp Roasted Boar','OBJ_RW')):
+ npc_actors.setdefault(check,set()).update(object_names[profile])
 # Plumm commits his reward dynamically, outside the static tag scan.
 npc_actors.setdefault('Plumm Fruit Balloon Minigame',set()).update(object_names['MYNA2'])
 for check in ('Sacred Grove Pedestal Master Sword','Sacred Grove Pedestal Shadow Crystal'):
@@ -91,17 +96,18 @@ for stage,room_patches in patches.items():
  for room,changes in room_patches.items():
   room=-1 if room=='Stage' else int(room)
   for change in changes:
-   if change['name']!='item':continue
+   if change['name'] not in ('item','htPiece','Obj_key') and not change['name'].startswith('tbox'):continue
    pos=[change['position'][axis] for axis in ('x','y','z')]
    if change['action']=='add':
-    actors.setdefault(stage,[]).append(dict(actor='item',param=change['parameters'],pos=pos,room=room))
+    actors.setdefault(stage,[]).append(dict(actor=change['name'],param=change['parameters'],pos=pos,room=room,angle_x=change.get('angle',{}).get('x',0)))
     continue
    for a in actors.get(stage,[]):
-    if a['actor']!='item' or a['room']!=room or a['param']!=change['parameters']:continue
+    if a['actor']!=change['name'] or a['room']!=room or a['param']!=change['parameters']:continue
     if any(abs(x-y)>0.05 for x,y in zip(a['pos'],pos)):continue
     if change['action']=='delete':a['actor']='deleted'
     else:
      patch=change['patch']
+     a['actor']=patch.get('name',a['actor'])
      a['param']=patch.get('parameters',a['param'])
      if 'position' in patch:a['pos']=[patch['position'].get(axis,a['pos'][i]) for i,axis in enumerate(('x','y','z'))]
 
@@ -143,6 +149,10 @@ for c in cat['checks']:
    if match:candidates.append(dict(stage=stage,room=a['room'],pos=a['pos'],anchor='actor'))
  if c['name']=='Fishing Hole Bottle':
   candidates.append(dict(stage='F_SP127',room=0,pos=bottle_pos,anchor='native fishing catch region'))
+ if c['name']=='Shad Dominion Rod':
+  for point in candidates:
+   anchor=exit_anchor(point['stage'],point['room'])
+   if anchor:point['overworld']=dict(anchor,label="Renado's Sanctuary: Shad")
  # Deduplicate actors repeated in time/event layers.
  unique=[]
  for a in candidates:

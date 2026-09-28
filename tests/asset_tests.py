@@ -176,3 +176,24 @@ for name in ('Iza Helping Hand','Iza Raging Rapids Minigame'):
     assert point['overworld']['room']==0 and point['overworld']['pos']==[-1116.0,400.0,-102956.0],name
 assert 'R_SP127' in checks['Fishing Hole Heart Piece']['stages']
 print('Validated Plumm, both Iza rewards and Fishing Hole map anchors.')
+
+# Scripted rewards and randomizer-reassigned camp chest flags use native points.
+expected = {
+    'Bulblin Camp First Chest Under Tower At Entrance': (4761.640625, 0, 1580.5701904296875),
+    'Bulblin Camp Small Chest in Back of Camp': (2389.04541015625, 260, -1473.38720703125),
+    'Bulblin Camp Roasted Boar': (4785, 260, -3177),
+    'Bulblin Guard Key': (4000, 300, -3500),
+}
+for name, xyz in expected.items():
+    assert len(positions[name]) == 1, name
+    point=positions[name][0]
+    assert point['stage']=='F_SP118' and point['room']==1, name
+    assert all(abs(a-b)<0.01 for a,b in zip(point['pos'],xyz)), name
+    assert 'world_pos' in point, name
+shad=positions['Shad Dominion Rod']
+assert len(shad)==1 and shad[0]['stage']=='R_SP209' and shad[0]['room']==7
+assert shad[0]['overworld']['stage']=='F_SP109' and shad[0]['overworld']['room']==0
+assert all(p['stage']=='F_SP116' and p['room'] in (0,2) for p in positions['Charlo Donation Blessing'])
+assert 'shad_dominion_rod' in checks['Shad Dominion Rod']['aliases']
+assert 'prayer_reward' in checks['Charlo Donation Blessing']['aliases']
+print('Validated Shad, Charlo and all Bulblin Camp item markers.')

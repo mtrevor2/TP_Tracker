@@ -401,7 +401,11 @@ void scan() {
         inventory[name] = known ? highest : -1;
     };
     // IDs from randomizer/src/item_ids.h and verify_item_functions.cpp.
-    tiers("Progressive Sword", {0x3f, 0x28, 0x29, 0x49});
+    inventory["Progressive Sword"] = tracker::progressiveSwordTier(
+        [](int id) { return dComIfGs_isItemFirstBit(static_cast<u8>(id)) != 0; });
+    tracker::stableQuestInventory(inventory,
+        [](int id) { return dComIfGs_isItemFirstBit(static_cast<u8>(id)) != 0; },
+        [](int slot) { return dComIfGs_getItem(slot, true); });
     tiers("Progressive Bow", {0x43, 0x55, 0x56});
     tiers("Progressive Clawshot", {0x44, 0x47});
     tiers("Progressive Fishing Rod", {0x4a, 0x5c});
@@ -419,15 +423,16 @@ void scan() {
     inventory["North Faron Woods Gate Key"] = dComIfGs_isStageSwitch(0x2,0x14) != 0;
     inventory["Gate Keys"] = dComIfGs_isEventBit(0x810) != 0;
     for (int i=0;i<3;++i) inventory["Bomb Bag"] += dComIfGs_getItem(SLOT_15+i,false)!=0xff;
-    inventory["Goron Mines Key Shard"] = 0;
-    for (int id : {0xf9,0xfa,0xfb}) inventory["Goron Mines Key Shard"] += checkItemGet(id,-1)>0;
+    inventory["Goron Mines Key Shard"] = tracker::goronKeyShards(
+        [](int id) { return dComIfGs_isItemFirstBit(static_cast<u8>(id)) != 0; },
+        dComIfGs_isDungeonItemBossKey(0x11) != 0);
     tiers("Progressive Wallet", {0x35, 0x36});
     tiers("Progressive Hidden Skill", {0xe1, 0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7});
     inventory["Poe Soul"] = dComIfGs_getPohSpiritNum();
     inventory["Faron Twilight Tear"] = dComIfGs_getLightDropNum(0);
     inventory["Eldin Twilight Tear"] = dComIfGs_getLightDropNum(1);
     inventory["Lanayru Twilight Tear"] = dComIfGs_getLightDropNum(2);
-    model.countedItems = {"Poe Soul", "Faron Twilight Tear", "Eldin Twilight Tear", "Lanayru Twilight Tear"};
+    model.countedItems = {"Goron Mines Key Shard", "Poe Soul", "Faron Twilight Tear", "Eldin Twilight Tear", "Lanayru Twilight Tear"};
     inventory["Heart Count"] = dComIfGs_getMaxLife() / 5;
     inventory["Empty Bottle"] = 0;
     for (int i = 0; i < 4; ++i) inventory["Empty Bottle"] += dComIfGs_getItem(SLOT_11 + i, true) != 0xff;
@@ -531,7 +536,7 @@ void onDialogueDraw(ModContext*, void* args, void*, void*) {
     if (!reference) return;
     const int page=reference->mPageNum;
     if (page<0 || page>=16) return;
-    const auto text=tracker::hintPlainText(reference->mText);
+    const auto text=tracker::hintPlainText(std::string_view(reference->mText, sizeof(reference->mText)));
     if (text.empty() || text.size()>2048) return;
     auto& pages=hintNotes[name];
     if (!pages.is_object()) pages=Json::object();
@@ -541,9 +546,11 @@ void onDialogueDraw(ModContext*, void* args, void*, void*) {
     if (text.size()<=pages.value(key,std::string{}).size()) return;
     const auto previous=pages;
     pages[key]=text;
-    if (journalText().size()>SAVE_BLOB_BUDGET_BYTES-1024) {
+    try {
+        if (journalText().size()>SAVE_BLOB_BUDGET_BYTES-1024) { pages=previous; return; }
+    } catch (const Json::exception&) {
         pages=previous;
-        return;
+        return; // Never let malformed dialogue disable the mod or replace saved notes.
     }
     journal.insert(name); model.obtained.insert(name); model.skipped.erase(name);
     notebookDirty=true; ++revision;
@@ -1040,6 +1047,14 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     control.kind=UI_CONTROL_TOGGLE; control.label=tracker::minimapAvailable ? "Minimap check dots" : "Minimap hook unavailable on this build"; control.get=miniGet; control.set=miniSet;
     result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
     if (result!=MOD_OK) return result;
+    for (int surface=0;surface<2;++surface) {
+        control=UI_CONTROL_DESC_INIT; control.kind=UI_CONTROL_TOGGLE;
+        control.label=surface ? "Minimap: Show Accessible Only" : "Map: Show Accessible Only";
+        control.get=typeGet; control.set=typeSet;
+        control.user_data=surface ? &tracker::minimapAccessibleOnly : &tracker::mapAccessibleOnly;
+        result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
+        if(result!=MOD_OK) return result;
+    }
     static const char* types[]={"Treasure chests","NPC / event rewards","Golden bugs","Poe souls","Golden wolves","Shop items","Owl statues","Grotto checks","Freestanding Rupees","Hidden Rupees"};
     for (int surface=0;surface<2;++surface) for (int i=0;i<tracker::checkTypeCount;++i) {
         std::string label=std::string(surface ? "Minimap: " : "Map: ")+types[i];

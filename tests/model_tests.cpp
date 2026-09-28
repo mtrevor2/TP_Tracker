@@ -414,19 +414,87 @@ int main(int argc, char** argv) {
         lake.inventory["Shadow Crystal"]=0; lake.solve();
         for(const auto* name:{"Lake Lantern Cave First Poe","Lake Lantern Cave Second Poe","Lake Lantern Cave Final Poe"})
             require(lake.accessible.at(name)==Truth::no,"cave Poe bypasses Senses");
-        // Ball and Chain substitutes for the pickup tool, never for area access.
-        int ballBugs=0;
-        for (const auto& check : data.at("checks")) for (const auto& route : check.at("access")) {
-            const auto req=route.at("requirement").get<std::string>();
-            if (std::find(check.at("categories").begin(),check.at("categories").end(),"Golden Bug")==check.at("categories").end() || req.find("Ball_and_Chain")==std::string::npos) continue;
-            warp.inventory["Ball and Chain"]=0;
-            require(warp.evaluate(req,0)==Truth::no,"bug open without pickup tool");
-            warp.inventory["Ball and Chain"]=1;
-            require(warp.evaluate(req,0)==Truth::yes,"Ball and Chain bug pickup not recognized");
-            require(warp.evaluate(req,2)==Truth::no,"wolf can use Ball and Chain");
-            ++ballBugs;
+        // Raised bug locations retain their specific pickup/range requirements.
+        int rangedBugs=0;
+        for(const auto& check:data.at("checks")) {
+            if(std::find(check.at("categories").begin(),check.at("categories").end(),"Golden Bug")==check.at("categories").end()) continue;
+            for(const auto& route:check.at("access")) {
+                const auto req=route.at("requirement").get<std::string>();
+                if(req.find("Clawshot or Gale_Boomerang")==std::string::npos) continue;
+                for(const auto* shuffled:{"Off","On"}) {
+                    warp.settings["Golden Bugs"]=shuffled;
+                    warp.inventory["Ball and Chain"]=1;
+                    require(warp.evaluate(req,0)==Truth::no,"Ball and Chain unlocks a ranged bug");
+                    warp.inventory["Gale Boomerang"]=1;
+                    require(warp.evaluate(req,0)==Truth::yes,"boomerang does not collect ranged bug");
+                    warp.inventory["Gale Boomerang"]=0;
+                }
+                ++rangedBugs;
+            }
         }
-        require(ballBugs==9,"expected nine tool-gated bug pickup routes");
+        require(rangedBugs==9,"ranged bug coverage changed");
+        // Native adapters read ownership, not stage-dependent NPC dialogue queries.
+        std::set<int> firstItems;
+        auto firstItem=[&](int id) { return firstItems.contains(id); };
+        require(progressiveSwordTier(firstItem)==0,"new save has phantom sword");
+        int swordTier=0;
+        for(int id:{0x3f,0x28,0x29,0x49}) {
+            firstItems.insert(id);
+            require(progressiveSwordTier(firstItem)==++swordTier,"received sword tier wrong");
+        }
+        firstItems.clear();
+        require(progressiveSwordTier(firstItem)==0,"sword leaked after save switch");
+        firstItems.insert(0x29);
+        require(progressiveSwordTier(firstItem)==3,"starting Master Sword ignored");
+        firstItems.clear();
+        require(goronKeyShards(firstItem,false)==0,"new save has key shards");
+        for(int id:{0xf9,0xfa,0xfb}) { firstItems.insert(id); require(goronKeyShards(firstItem,false)==id-0xf8,"shard count wrong"); }
+        firstItems={0xfb};
+        require(goronKeyShards(firstItem,false)==3,"full key gives only one shard");
+        firstItems.clear(); require(goronKeyShards(firstItem,true)==3,"boss key not recognized");
+        std::map<std::string,int> persistent;
+        slots.fill(0xff); firstItems={0xf4,0xf5}; slots[6]=0x42;
+        stableQuestInventory(persistent,firstItem,[&](int slot) { return slots.at(slot); });
+        require(persistent.at("Ordon Pumpkin")==1 && persistent.at("Ordon Cheese")==1 && persistent.at("Ball and Chain")==1,"Snowpeak dialogue overrides inventory");
+        firstItems.clear(); slots[6]=0xff;
+        stableQuestInventory(persistent,firstItem,[&](int slot) { return slots.at(slot); });
+        require(persistent.at("Ordon Pumpkin")==0 && persistent.at("Ordon Cheese")==0 && persistent.at("Ball and Chain")==0,"quest inventory leaks across saves");
+        auto minesData=data;
+        for(auto& area:minesData["areas"]) if(area["Name"]=="Root") {
+            area["Exits"]={{"Goron Mines Boss Door Room Near Boss Door","Human_Link"}};
+            area["Events"]={{"Can Refill Arrows","Nothing"}};
+        }
+        Model mines; mines.load(minesData); mines.seedLoaded=true; mines.settings=warp.settings;
+        for(const auto& item:data.at("items")) mines.inventory[item.at("Name")]=0;
+        mines.countedItems.insert("Goron Mines Key Shard");
+        mines.inventory["Progressive Sword"]=2; mines.inventory["Progressive Bow"]=1; mines.inventory["Iron Boots"]=1;
+        for(const auto* mode:{"Own Dungeon","Keysanity","Keysy"}) {
+            mines.settings["Big Keys"]=mode;
+            for(int shards=0;shards<=3;++shards) {
+                mines.inventory["Goron Mines Key Shard"]=shards; mines.solve();
+                require((mines.accessible.at("Goron Mines Fyrus Heart Container")==Truth::yes)==(shards==3 || std::string(mode)=="Keysy"),"Fyrus key mode/count incorrect");
+            }
+        }
+        mines.inventory["Iron Boots"]=0; mines.solve();
+        require(mines.accessible.at("Goron Mines Fyrus Heart Container")!=Truth::yes,"Fyrus ignores Iron Boots");
+        auto eldinData=data;
+        for(auto& area:eldinData["areas"]) if(area["Name"]=="Root") {
+            area["Exits"]={{"Eldin Lantern Cave","Human_Link"}};
+            area["Events"]={{"Can Refill Lantern Oil","Nothing"}};
+        }
+        Model eldin; eldin.load(eldinData); eldin.seedLoaded=true; eldin.settings=warp.settings;
+        for(const auto& item:data.at("items")) eldin.inventory[item.at("Name")]=0;
+        eldin.inventory["Lantern"]=1; eldin.inventory["Shadow Crystal"]=1; eldin.solve();
+        require(eldin.accessible.at("Eldin Lantern Cave Poe")==Truth::yes,"Eldin web action requires human and wolf simultaneously");
+        eldin.inventory["Lantern"]=0; eldin.solve();
+        require(eldin.accessible.at("Eldin Lantern Cave Poe")==Truth::no,"Eldin Poe bypasses webs");
+        eldin.inventory["Ball and Chain"]=1;
+        for(const auto* mode:{"Off","On"}) {
+            eldin.settings["Ball and Chain Webs"]=mode; eldin.solve();
+            require((eldin.accessible.at("Eldin Lantern Cave Poe")==Truth::yes)==(std::string(mode)=="On"),"web trick seed setting ignored");
+        }
+        eldin.inventory["Shadow Crystal"]=0; eldin.solve();
+        require(eldin.accessible.at("Eldin Lantern Cave Poe")!=Truth::yes,"Eldin Poe bypasses wolf access");
         // The async worker must return the same area/event state that produced
         // OPEN/LOCKED, without overwriting notes, skips or the live inventory.
         auto worker=warp; worker.solve();
@@ -491,6 +559,22 @@ int main(int argc, char** argv) {
         require(snow.checkDetails("Snowpeak Ruins Chapel Chest").find("Area access: OPEN")!=std::string::npos,"Chapel area access differs from check state");
         snow.inventory["Snowpeak Ruins Small Key"]=0; snow.inventory["Ordon Cheese"]=0; snow.settings["Small Keys"]="Keysy"; snow.solve();
         require(snow.accessible.at("Snowpeak Ruins Chapel Chest")==Truth::yes,"Keysy Chapel route incorrectly needs keys");
+        snow.inventory["Ordon Pumpkin"]=1; snow.inventory["Ordon Cheese"]=1;
+        snow.inventory["Snowpeak Ruins Small Key"]=4; snow.solve();
+        require(snow.accessible.at("Snowpeak Ruins Lobby Armor Poe")==Truth::yes,"Snowpeak armor and senses require simultaneous forms");
+        require(snow.accessible.at("Snowpeak Ruins Ice Room Poe")==Truth::yes,"Snowpeak ice Poe impossible with required items");
+        snow.inventory["Shadow Crystal"]=0; snow.solve();
+        require(snow.accessible.at("Snowpeak Ruins Lobby Armor Poe")!=Truth::yes,"Snowpeak armor Poe bypasses senses");
+        Model mapFilter;
+        mapFilter.accessible={{"open",Truth::yes},{"locked",Truth::no},{"unknown",Truth::unknown}};
+        for(const auto* name:{"open","locked","unknown","missing"}) {
+            require(passesAccessibilityFilter(mapFilter,name,false),"disabled visibility filter hides checks");
+            require(passesAccessibilityFilter(mapFilter,name,true)==(std::string(name)=="open"),"accessible-only filter includes non-open check");
+        }
+        mapFilter.skipped.insert("open");
+        require(!passesAccessibilityFilter(mapFilter,"open",true),"accessible-only shows skipped check");
+        mapFilter.skipped.clear(); mapFilter.obtained.insert("open");
+        require(!passesAccessibilityFilter(mapFilter,"open",true),"accessible-only shows completed check");
         Model shops; shops.load(data);
         shops.settings=warp.settings; shops.seedLoaded=true;
         for (const auto& item : data.at("items")) shops.inventory[item.at("Name")]=0;
@@ -539,6 +623,19 @@ int main(int argc, char** argv) {
         templeCounts.resetSave();
         require(templeCounts.skipped.empty(),"skips leak across save slots");
         require(hintPlainText("\x1b" "CC[ff0000ff]A hint\x1b" "GC[ffffffff]\nSecond line")=="A hint\nSecond line","hint formatting leaks into notes");
+        // US game's Golden Bug sex glyphs are raw B2/B3, not UTF-8.
+        require(hintPlainText("A \xb2 Beetle")=="A Male Beetle","male native bug glyph lost");
+        require(hintPlainText("A \xb3 Beetle")=="A Female Beetle","female native bug glyph lost");
+        require(hintPlainText("\x81\x89 Beetle")=="Male Beetle","Japanese male glyph lost");
+        const std::string unsafeHint="A \xb3 Beetle \xff \xf0\x9f";
+        for(size_t length=0;length<=unsafeHint.size();++length) {
+            auto safe=hintPlainText(std::string_view(unsafeHint.data(),length));
+            Json notebook={{"Ordon Hint Sign",{{"0",safe}}}};
+            require(Json::parse(notebook.dump())==notebook,"partial hint cannot round-trip as JSON");
+        }
+        require(hintPlainText("Caf\xc3\xa9")=="Caf\xc3\xa9","valid UTF-8 lost");
+        const char boundedHint[4]={'t','e','s','t'};
+        require(hintPlainText(std::string_view(boundedHint,sizeof(boundedHint)))=="test","unterminated buffer overread");
         require(hintPlainText("safe\x1b" "CC[broken")=="safe","malformed formatting overread");
         std::ifstream signsFile(std::filesystem::path(argv[1]).parent_path()/"hint_signs.json");
         Json signs=Json::parse(signsFile);

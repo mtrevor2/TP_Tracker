@@ -2,6 +2,13 @@
 #include "model.hpp"
 
 namespace tracker {
+inline bool passesAccessibilityFilter(const Model& state, const std::string& name, bool accessibleOnly) {
+    if(!accessibleOnly) return true;
+    const auto found=state.accessible.find(name);
+    return found!=state.accessible.end() && found->second==Truth::yes &&
+        !state.obtained.contains(name) && !state.skipped.contains(name);
+}
+
 // An explicit entrance is authoritative even when its interior uses an F_
 // stage name (Iza's boat course). Never draw non-local placeholder coordinates.
 inline const Json* worldMapAnchor(const Json& point) {

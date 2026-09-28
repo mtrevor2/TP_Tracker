@@ -28,9 +28,30 @@ inline std::string hintPlainText(std::string_view text) {
                 if (end==std::string_view::npos) break;
                 i=end+1;
             }
-        } else {
-            if (c>=32 || c=='\n' || c=='\t') result+=text[i];
+        } else if(c<0x80) {
+            if(c>=32 || c=='\n' || c=='\t') result+=text[i];
             ++i;
+        } else {
+            // Native message glyphs are not UTF-8. d_msg_class.cpp emits
+            // 0xB2/0xB3 for bug sexes (0x8189/0x818A in Japanese).
+            if(c==0xb2 || c==0xb3) {
+                result+=(c==0xb2 ? "Male" : "Female"); ++i; continue;
+            }
+            if(c==0x81 && i+1<text.size() &&
+               (static_cast<unsigned char>(text[i+1])==0x89 || static_cast<unsigned char>(text[i+1])==0x8a)) {
+                result+=(static_cast<unsigned char>(text[i+1])==0x89 ? "Male" : "Female"); i+=2; continue;
+            }
+            // Preserve valid UTF-8, but never persist malformed/truncated bytes.
+            size_t n=c>=0xc2 && c<=0xdf ? 2 : c>=0xe0 && c<=0xef ? 3 : c>=0xf0 && c<=0xf4 ? 4 : 0;
+            bool valid=n && i+n<=text.size();
+            for(size_t j=1;valid && j<n;++j) {
+                const auto b=static_cast<unsigned char>(text[i+j]);
+                valid=b>=0x80 && b<=0xbf;
+                if(j==1) valid=valid && !(c==0xe0 && b<0xa0) && !(c==0xed && b>=0xa0) &&
+                    !(c==0xf0 && b<0x90) && !(c==0xf4 && b>=0x90);
+            }
+            if(valid) { result.append(text.substr(i,n)); i+=n; }
+            else { result+="?"; ++i; }
         }
     }
     return trim(result);

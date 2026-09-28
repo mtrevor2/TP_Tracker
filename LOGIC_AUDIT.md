@@ -2,6 +2,22 @@
 
 The authoritative reference is this checkout's Randomizer, rather than a generic vanilla walkthrough. The wiki's List of Randomizer Checks explicitly says it is not a definitive logic-based list: https://wiki.tprandomizer.com/index.php?title=List_of_Randomizer_Checks .
 
+## 0.4.35 native ownership, mixed forms, hint encoding and marker audit
+
+`randomizer/src/item.cpp::check_item_get` intentionally returns false for Pumpkin/Cheese inside Snowpeak, swaps Ball and Chain ownership for the Darkhammer pickup switch, and masks shields/Hawkeye at shops. Those queries support game dialogue and are unsuitable as inventory truth. Tracker overrides now read the first-item flags (Pumpkin 0xF4, Cheese 0xF5, Ordon Shield 0x2A, Hylian Shield 0x2C, Hawkeye 0x3E) or Ball and Chain SLOT_6/0x42. Sword ownership uses first-item flags set by `exec_item_get`, including starting inventory (`session.cpp`), instead of collect/equip bits which `dComIfGs_setSelectEquipSword` can set independently. This hardens the reported new-save symptom; no affected seed was supplied to reproduce that symptom.
+
+The full Goron big key grants only the third shard flag, so summing distinct shard flags can return 1 instead of 3. The adapter now recognizes the highest shard or boss-key flag, and registers the item as countable. Regressions cover 0..3 shards, full keys, Own Dungeon/Keysanity/Keysy, and required Fyrus combat items.
+
+Poe routes such as `Can_Break_Webs and Can_Use_Senses` are impossible in a single form. Seven explicit local-obstacle events now separate clearing webs/ice/armor, moving statues or purchasing Flight by Fowl as human from subsequently collecting the Poe as wolf. The solver still has to reach the area in each form and satisfy the original obstacle/trick setting. Lake cave's existing equivalent remains unchanged. Snowpeak keys, Pumpkin/Cheese routes and boss access retain the upstream requirements.
+
+The nine unconditional Ball and Chain substitutions for ranged bugs were removed. The current randomizer's per-location rules are authoritative. The supplied lunarsoap5 tracker was read for logic comparison only; none of its coordinates were used. The wiki's Ball and Chain Pickup trick establishes pickup collision, not reachability of every raised bug: https://wiki.tprandomizer.com/index.php?title=Glitches_and_Tricks#Ball_and_Chain_Pickup . Ground-level bug routes remain available normally.
+
+`d_msg_class.cpp` defines US male/female glyph bytes as B2/B3 (Japanese 8189/818A). These are not UTF-8 and previously reached nlohmann JSON dump unconverted. Notebook conversion now translates the glyphs, preserves valid UTF-8, replaces unsupported bytes, bounds the render-buffer view and rolls back on serialization failure. Partial pages, raw native glyphs and JSON round-trips are tested. This establishes a concrete tracker-side failure path consistent with the Ordon hint-sign report, but does not prove the origin of that player's crash without their log/save.
+
+Shad/Charlo/roasted boar are mapped through NPC_SHAD, NPC_PRAYER and OBJ_RW respectively. Camp chest IDs are changed to 31/30 by `object_patches.yaml`; applying chest/item/key patches before matching restores those markers and the guard key. The same correction resolves an added Flight by Fowl reward and separates its chest positions. Shad's basement uses its actual external sanctuary return spawn. No web-tracker coordinates, invented positions or item-placement spoilers are used.
+
+Independent map/minimap filters share one tested OPEN-only predicate, applied to native/static positions, interior groups and dungeon arena counts; empty temple groups are hidden too. Existing seed/category filtering remains in force. Native game icons are outside this overlay's control. All modifications read game inventory/flags; only tracker notes/preferences/journal are mutable. No claim is made that every seed or shuffled entrance route is now solved; existing Sky Book private-count and entrance-shuffle limitations remain.
+
 ## 0.4.34 missing river minigame markers
 
 Plumm is a dynamic `item_check_commit("plumm_minigame_reward", ...)` in `d_a_npc_myna2.cpp`, missed by the static DUSK_ITEM_CHECK actor scan. Lake Hylia has ambiguous stage membership, so the catalogue now explicitly maps this check to F_SP115. Its myna2 actor in room 0 supplies the real position.

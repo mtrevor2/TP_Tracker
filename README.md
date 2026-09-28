@@ -1,4 +1,15 @@
-# TPTracker 0.4.34
+# TPTracker 0.4.35
+
+## 0.4.35 access, inventory and missing-marker fixes
+
+- Restores Shad's Dominion Rod reward, Charlo's donation reward, and Bulblin Camp's two chests, roasted boar and guard-key markers using native actor positions and randomizer patches. Shad also appears at the sanctuary entrance on the overworld map.
+- Reads Pumpkin, Cheese and Ball and Chain from persistent ownership data, avoiding the randomizer's location-dependent NPC dialogue queries. Shops no longer temporarily hide owned shields/Hawkeye from the tracker. Sword tiers use actual item-receipt flags instead of equip flags.
+- Corrects Goron Mines' three-shard/full-key counting and multi-form Poe requirements in Eldin Lantern Cave, Snowpeak and other affected locations. Required equipment, routes, keys and seed trick settings still apply.
+- Removes the broad Ball and Chain shortcut for nine ranged Golden Bug pickups; their individual generator requirements now apply.
+- Converts the game's Golden Bug sex glyphs before saving hint notes, with bounded reads and protection against malformed text. Fixes a reproducible invalid-UTF-8 serialization path; the reported player's exact crash still needs an affected save/log for confirmation.
+- Adds independent **Map: Show Accessible Only** and **Minimap: Show Accessible Only** toggles in TPTracker's options. They hide locked/unknown and completed/skipped tracker markers, including empty temple/arena groups. Defaults remain off; category/seed filters still apply. Native game icons are unaffected.
+
+Automated inventory, key-mode, Poe-form, bug, hint-text and asset tests cover these changes. The affected seed was unavailable, so the precise new-save sword symptom and live marker layout have not been reproduced on that save. Equipment and keys are not bypassed merely because a check was reported locked.
 
 ## 0.4.34 river minigames and Fishing Hole markers
 

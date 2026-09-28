@@ -84,6 +84,22 @@ for area in world:
         for name in area['Locations']:
             if name.endswith(' Poe'):
                 area['Locations'][name] = "'Lake_Cave_Boulders_Cleared' and Can_Use_Senses"
+    # Clear obstacles as human before changing to wolf for the Poe. These
+    # persistent local actions must not require two forms simultaneously.
+    poe_obstacles = {
+        'Eldin Lantern Cave Poe': ('Eldin Cave Webs Cleared', 'Can_Break_Webs'),
+        'Snowpeak Ruins Lobby Armor Poe': ('Snowpeak Lobby Armor Broken', 'Can_Break_Armor'),
+        'Snowpeak Ruins Ice Room Poe': ('Snowpeak Poe Ice Broken', 'Can_Break_Ice'),
+        'Snowpeak Cave Ice Poe': ('Snowpeak Cave Ice Broken', 'Ball_and_Chain'),
+        'Temple of Time Poe Behind Gate': ('Temple Poe Gate Opened', 'Dominion_Rod'),
+        'Sacred Grove Temple of Time Owl Statue Poe': ('Sacred Grove Poe Statue Moved', 'Dominion_Rod'),
+        'Isle of Riches Poe': ('Isle of Riches Flight Purchased', "Can_Talk_to_Humans and 'Can_Farm_Rupees'"),
+    }
+    for name, (event, obstacle) in poe_obstacles.items():
+        if name in (area.get('Locations') or {}):
+            events[event] = obstacle
+            night = 'Night and ' if name == 'Isle of Riches Poe' else ''
+            area['Locations'][name] = night + "'" + event.replace(' ', '_') + "' and Can_Use_Senses"
     for name, requirement in (area.get('Locations') or {}).items():
         access.setdefault(name, []).append({'area': area['Name'], 'requirement': str(requirement)})
 checks = []
@@ -99,13 +115,8 @@ for location in yaml.safe_load((data / 'locations.yaml').read_text(encoding='utf
     if location['Name'].startswith('Kakariko Village Malo Mart ') or location['Name'] == 'Barnes Bomb Bag':
         for route in access.get(location['Name'], []):
             route['requirement'] = route['requirement'].replace("'Can_Farm_Lots_of_Rupees'", 'Nothing')
-    # Randomized bug rewards are freestanding pickups. The Ball and Chain can
-    # collect these directly; preserve area access and additional prerequisites.
-    # https://wiki.tprandomizer.com/index.php?title=Glitches_and_Tricks#Ball_and_Chain_Pickup
-    if 'Golden Bug' in categories:
-        for route in access.get(location['Name'], []):
-            route['requirement'] = route['requirement'].replace(
-                'Clawshot or Gale_Boomerang', 'Clawshot or Gale_Boomerang or Ball_and_Chain')
+    # Keep the generator's per-location pickup requirements. A blanket Ball and
+    # Chain substitution incorrectly grants high/out-of-reach bug checks.
     if 'Warp Portal' in categories:
         continue
     flags, stage_names = [], set()
@@ -155,6 +166,8 @@ for location in yaml.safe_load((data / 'locations.yaml').read_text(encoding='utf
     if location['Name'] == 'Fishing Hole Heart Piece':
         stage_names.add('R_SP127')
     native_rewards = {
+        'Shad Dominion Rod': 'shad_dominion_rod',
+        'Charlo Donation Blessing': 'prayer_reward',
         'Plumm Fruit Balloon Minigame': 'plumm_minigame_reward',
         'Iza Helping Hand': 'iza_reward_1',
         'Iza Raging Rapids Minigame': 'iza_reward_2',

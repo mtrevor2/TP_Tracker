@@ -28,16 +28,18 @@ DEFINE_HOOK_SYMBOL("dMeterMap_c::draw", void(dMeterMap_c*), TrackerMiniDraw);
 DEFINE_HOOK(static_cast<void (J2DPicture::*)(f32,f32,f32,f32,bool,bool,bool)>(&J2DPicture::draw), TrackerMiniPicture);
 namespace tracker {
 bool mapEnabled = true;
+bool mapAccessibleOnly = false, minimapAccessibleOnly = false;
 bool mapAvailable = false;
 bool minimapEnabled = true, minimapAvailable = false;
 bool mapTypes[checkTypeCount] = {true,true,true,true,true,true,true,true,true,true};
 bool minimapTypes[checkTypeCount] = {true,true,true,true,true,true,true,true,true,true};
 namespace {
 Model* state = nullptr;
-bool trackerMapCheck(const Json& check) {
+bool trackerMapCheck(const Json& check, bool accessibleOnly) {
     const auto& categories=check.at("categories");
     // The native game already draws Tears of Light / Twilit Bugs.
     return std::find(categories.begin(),categories.end(),"Twilit Insect")==categories.end()
+        && passesAccessibilityFilter(*state,check.at("name").get<std::string>(),accessibleOnly)
         && state->enabled(check) && !state->skipped.contains(check.at("name").get<std::string>());
 }
 bool isRupeeCheck(const Json& check) {
@@ -57,12 +59,12 @@ struct Temple { std::string name,stage; int room; float x,z; };
 std::vector<Temple> temples;
 struct ArenaEntrance { std::string stage; int room; float x,y,z; std::vector<size_t> checks; };
 std::vector<ArenaEntrance> arenaEntrances;
-std::pair<int,int> arenaCounts(const ArenaEntrance& arena,const bool* types) {
+std::pair<int,int> arenaCounts(const ArenaEntrance& arena,const bool* types,bool accessibleOnly) {
     int remaining=0,available=0;
     for(auto index:arena.checks) {
         const auto& check=state->catalogue.at("checks")[index];
         const std::string name=check.at("name");
-        if(!trackerMapCheck(check) || !types[checkType(check)] || state->obtained.contains(name)) continue;
+        if(!trackerMapCheck(check,accessibleOnly) || !types[checkType(check)] || state->obtained.contains(name)) continue;
         ++remaining;
         const auto access=state->accessible.find(name);
         if(access!=state->accessible.end() && access->second==Truth::yes) ++available;
@@ -153,7 +155,7 @@ void draw(ModContext*, void* args, void*, void*) {
             int total = 0, available = 0;
             bool hasChecks=false;
             for (const auto& check : state->catalogue.at("checks")) {
-                if (dungeonCheck(check) || !trackerMapCheck(check) || !mapTypes[checkType(check)]) continue;
+                if (dungeonCheck(check) || !trackerMapCheck(check,mapAccessibleOnly) || !mapTypes[checkType(check)]) continue;
                 bool belongs = false;
                 // Count atlas markers (including exterior entrances), or native
                 // chest records. Unmapped hint/sign entries have no visible dot.
@@ -212,7 +214,7 @@ void draw(ModContext*, void* args, void*, void*) {
                 if (entries != flagIndex.end()) for (size_t index : entries->second) {
                     const auto& check = state->catalogue.at("checks")[index];
                     const std::string name = check.at("name");
-                    if (dungeonCheck(check) || !trackerMapCheck(check) || !mapTypes[checkType(check)] || drawn.contains(name)) continue;
+                    if (dungeonCheck(check) || !trackerMapCheck(check,mapAccessibleOnly) || !mapTypes[checkType(check)] || drawn.contains(name)) continue;
                     const auto& cats = check.at("categories");
                     bool tear = std::find(cats.begin(), cats.end(), "Twilit Insect") != cats.end();
                     if (tear != (group == 4)) continue;
@@ -273,7 +275,7 @@ void draw(ModContext*, void* args, void*, void*) {
     for (const auto& p : worldPositions) {
         const auto& check = state->catalogue.at("checks")[p.check];
         const std::string name = check.at("name");
-        if (dungeonCheck(check) || drawn.contains(name) || !trackerMapCheck(check) || !mapTypes[checkType(check)]) continue;
+        if (dungeonCheck(check) || drawn.contains(name) || !trackerMapCheck(check,mapAccessibleOnly) || !mapTypes[checkType(check)]) continue;
         auto* stage = region->getMenuFmapStageDataTop(); int stageNo=0;
         while (stage && p.stage!=stage->getStageName()) { stage=stage->getNextData(); ++stageNo; }
         if (!stage || p.room<0 || p.room>=64 || !active->isRoomCheck(stageNo,p.room)) continue;
@@ -363,6 +365,7 @@ void draw(ModContext*, void* args, void*, void*) {
         x+=back->mTransX; y+=back->mTransZ;
         if (!std::isfinite(x)||!std::isfinite(y)||x<left+16||y<top+28||x>right-16||y>bottom-16) continue;
         const int available=state->availableDungeonChecks(temple.name,mapTypes);
+        if(mapAccessibleOnly && !available) continue;
         const auto art=iconTextures.find(available ? "TempleAvailable" : "Temple");
         graf->setup2D();
         if(available==0) arenaDot(graf,x,y,0,255,false);
@@ -432,7 +435,7 @@ void drawDungeon(ModContext*,void* args,void*,void*) {
         if(drawn.contains(index) || !rend->isDrawRoomIcon(room,stay)) return;
         const auto& check=state->catalogue.at("checks")[index];
         const std::string name=check.at("name");
-        if(!state->matchesScene(check) || !trackerMapCheck(check) || !mapTypes[checkType(check)] || state->obtained.contains(name)) return;
+        if(!state->matchesScene(check) || !trackerMapCheck(check,mapAccessibleOnly) || !mapTypes[checkType(check)] || state->obtained.contains(name)) return;
         const auto alpha=floorAlpha(pos.y,room);
         if(!alpha) return;
         float x,y; if(!project(pos,x,y)) return;
@@ -469,7 +472,7 @@ void drawDungeon(ModContext*,void* args,void*,void*) {
     }
     for(const auto& arena:arenaEntrances) {
         if(arena.stage!=state->stage || !rend->isDrawRoomIcon(arena.room,stay)) continue;
-        const auto [remaining,available]=arenaCounts(arena,mapTypes);
+        const auto [remaining,available]=arenaCounts(arena,mapTypes,mapAccessibleOnly);
         const auto alpha=floorAlpha(arena.y,arena.room);
         if(!remaining || !alpha) continue;
         BE(Vec) pos=Vec{arena.x,arena.y,arena.z}; dMapInfo_n::correctionOriginPos(static_cast<s8>(arena.room),&pos);
@@ -500,7 +503,7 @@ void drawMini(ModContext*,void* args,void*,void*) {
                 const auto& check = state->catalogue.at("checks")[index];
                 if (!state->matchesScene(check)) continue;
                 const std::string name = check.at("name");
-                if (!trackerMapCheck(check) || !minimapTypes[checkType(check)] || state->obtained.contains(name) || drawn.contains(index)) continue;
+                if (!trackerMapCheck(check,minimapAccessibleOnly) || !minimapTypes[checkType(check)] || state->obtained.contains(name) || drawn.contains(index)) continue;
                 const auto& stages = check.at("stages");
                 if (!stages.empty() && std::find(stages.begin(),stages.end(),state->stage)==stages.end()) continue;
                 const auto& cats = check.at("categories");
@@ -523,7 +526,7 @@ void drawMini(ModContext*,void* args,void*,void*) {
         if (p.stage!=state->stage || drawn.contains(p.check) || !map->isDrawRoomIcon(p.room,map->getStayRoomNo())) continue;
         const auto& check=state->catalogue.at("checks")[p.check];const std::string name=check.at("name");
         if (!state->matchesScene(check)) continue;
-        if (!trackerMapCheck(check)||!minimapTypes[checkType(check)]||state->obtained.contains(name)) continue;
+        if (!trackerMapCheck(check,minimapAccessibleOnly)||!minimapTypes[checkType(check)]||state->obtained.contains(name)) continue;
         // Outdoor NPC spawn heights can differ from their grounded runtime height.
         // Their reward belongs to the visible outdoor room, not a spawn-height floor.
         const auto& categories=check.at("categories");
@@ -546,7 +549,7 @@ void drawMini(ModContext*,void* args,void*,void*) {
             !map->isDrawRoomIcon(p.room,map->getStayRoomNo())) continue;
         const auto& check=state->catalogue.at("checks")[p.check];
         const std::string name=check.at("name");
-        if (dungeonCheck(check) || !trackerMapCheck(check) || !minimapTypes[checkType(check)] || state->obtained.contains(name)) continue;
+        if (dungeonCheck(check) || !trackerMapCheck(check,minimapAccessibleOnly) || !minimapTypes[checkType(check)] || state->obtained.contains(name)) continue;
         float x=left+(0.5f+mirror*(p.x-map->mPosX)/map->field_0x8)*miniRect.w;
         float y=top+(0.5f+(p.z-map->mPosZ)/map->field_0xc)*miniRect.h;
         if (!std::isfinite(x)||!std::isfinite(y)||x<left+3||y<top+3||x>left+miniRect.w-3||y>top+miniRect.h-3) continue;
@@ -564,7 +567,7 @@ void drawMini(ModContext*,void* args,void*,void*) {
     for(const auto& arena:arenaEntrances) {
         if(arena.stage!=state->stage || !map->isDrawRoomIcon(arena.room,map->getStayRoomNo()) ||
            !map->isRenderingFloor(dMapInfo_c::calcFloorNo(arena.y,true,arena.room))) continue;
-        const auto [remaining,available]=arenaCounts(arena,minimapTypes);
+        const auto [remaining,available]=arenaCounts(arena,minimapTypes,minimapAccessibleOnly);
         if(!remaining) continue;
         BE(Vec) pos=Vec{arena.x,arena.y,arena.z}; dMapInfo_n::correctionOriginPos(static_cast<s8>(arena.room),&pos);
         float x=left+(0.5f+mirror*(pos.x-map->mPosX)/map->field_0x8)*miniRect.w;
