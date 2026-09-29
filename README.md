@@ -1,4 +1,10 @@
-# TPTracker 0.4.35
+# TPTracker 0.4.36
+
+## 0.4.36 mirrored overworld map alignment
+
+Fixes tracker icons moving in the opposite direction from the map while panning at close zoom with Dusklight's Mirror Mode enabled. Tracker markers now use the same final horizontal mirroring as the native map. Rupees, chests, NPCs, interior groups, temple entrance counts and region summaries share the corrected transform. Cursor labels and viewport clipping use the matching translated screen coordinates.
+
+Projection regression tests compare marker positions against the map texture across both orientations, zoom levels, horizontal/vertical panning and different viewport sizes. The affected player's Mirror Mode setting is unconfirmed and their live session has not been replayed here. Players can use Dusklight's existing Mirror Mode setting; the tracker follows the map's chosen orientation automatically.
 
 ## 0.4.35 access, inventory and missing-marker fixes
 

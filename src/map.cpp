@@ -1,11 +1,13 @@
 #include "map.hpp"
 #include "map_positions.hpp"
+#include "map_projection.hpp"
 #include <mods/svc/hook.hpp>
 #include "d/d_com_inf_game.h"
 #include "d/d_menu_fmap.h"
 #include "d/d_menu_dmap.h"
 #include "d/d_menu_dmap_map.h"
 #include "d/d_meter_map.h"
+#include "d/d_meter2_info.h"
 #include "d/d_map.h"
 #include "d/d_menu_fmap2D.h"
 #include "d/d_map_path_fmap.h"
@@ -25,7 +27,7 @@ DEFINE_HOOK_SYMBOL("dMenu_Fmap2DBack_c::draw", void(dMenu_Fmap2DBack_c*), Tracke
 
 DEFINE_HOOK_SYMBOL("dMenuMapCommon_c::drawIcon", void(dMenuMapCommon_c*,f32,f32,f32,f32), TrackerDungeonIcons);
 DEFINE_HOOK_SYMBOL("dMeterMap_c::draw", void(dMeterMap_c*), TrackerMiniDraw);
-DEFINE_HOOK(static_cast<void (J2DPicture::*)(f32,f32,f32,f32,bool,bool,bool)>(&J2DPicture::draw), TrackerMiniPicture);
+DEFINE_HOOK(static_cast<void (J2DPicture::*)(f32,f32,f32,f32,bool,bool,bool)>(&J2DPicture::draw), TrackerMapPicture);
 namespace tracker {
 bool mapEnabled = true;
 bool mapAccessibleOnly = false, minimapAccessibleOnly = false;
@@ -85,10 +87,26 @@ void arenaDot(J2DGrafContext* graf,float x,float y,int available,u8 alpha,bool s
 }
 std::map<std::string,std::set<std::string>> exteriorStages;
 dMeterMap_c* drawingMeter=nullptr;
+dMenu_Fmap2DBack_c* drawingFieldMap=nullptr;
+bool fieldMapMirrored=false;
+HookAction beforeFieldMap(ModContext*,void* args,void*,void*) {
+    drawingFieldMap=mods::arg<dMenu_Fmap2DBack_c*>(args,0);
+    // Native map state is a fallback when debug options hide region artwork.
+    auto* meter=dMeter2Info_getMeterMapClass();
+    fieldMapMirrored=meter && meter->mMap && meter->mMap->previousMirror;
+    return HOOK_CONTINUE;
+}
 struct MiniRect { float x,y,w,h; bool valid=false; } miniRect;
 HookAction beforeMini(ModContext*,void* args,void*,void*) { drawingMeter=mods::arg<dMeterMap_c*>(args,0);miniRect.valid=false; return HOOK_CONTINUE; }
-void captureMiniRect(ModContext*,void* args,void*,void*) {
+void captureMapPicture(ModContext*,void* args,void*,void*) {
     auto* picture=mods::arg<J2DPicture*>(args,0);
+    // regionTextureDraw passes the live Mirror Mode flag to its background
+    // pictures. Reuse it each frame instead of reading private host settings
+    // or retaining an orientation from an earlier map/session.
+    if (drawingFieldMap && picture) {
+        for (auto* area : drawingFieldMap->mpAreaTex)
+            if (picture==area) { fieldMapMirrored=mods::arg<bool>(args,5); break; }
+    }
     if (!drawingMeter || picture!=drawingMeter->mMapJ2DPicture) return;
     miniRect={mods::arg<float>(args,1),mods::arg<float>(args,2),mods::arg<float>(args,3),mods::arg<float>(args,4),true};
 }
@@ -115,6 +133,7 @@ std::string iconName(const Json& check, Truth access) {
 std::map<std::pair<int,int>, std::vector<size_t>> flagIndex;
 void draw(ModContext*, void* args, void*, void*) {
     auto* back = mods::arg<dMenu_Fmap2DBack_c*>(args, 0);
+    drawingFieldMap=nullptr;
     // The game sets this in the constructor and clears it in the destructor.
     // _delete() is empty and cannot safely be used as a lifetime hook.
     auto* active = dMenu_Fmap_c::MyClass;
@@ -139,7 +158,9 @@ void draw(ModContext*, void* args, void*, void*) {
     if (!doneTexture.empty()) completedChest.emplace(reinterpret_cast<ResTIMG*>(doneTexture.data()));
     std::optional<J2DPicture> heart;
     bool triedHeart = false;
-    const float left = back->getMapScissorAreaLX(), top = back->getMapScissorAreaLY();
+    const FieldMapTransform projection{back->mTransX,back->mTransZ,back->field_0x11dc,fieldMapMirrored};
+    const auto cursor=projection.screen(back->getArrowPos2DX(),back->getArrowPos2DY());
+    const float left = back->mTransX+back->getMapScissorAreaLX(), top = back->mTransZ+back->getMapScissorAreaLY();
     const float right = left + back->getMapScissorAreaSizeRealX();
     const float bottom = top + back->getMapScissorAreaSizeRealY();
     if (process == dMenu_Fmap_c::PROC_ALL_MAP) {
@@ -181,8 +202,9 @@ void draw(ModContext*, void* args, void*, void*) {
                 if (!state->obtained.contains(name) && a != state->accessible.end() && a->second == Truth::yes) ++available;
             }
             if (!hasChecks) continue;
-            float x = back->mRegionMinMapX[r] + back->field_0xf0c[r] + back->mRegionMapSizeX[r]*back->mZoom*0.5f + back->mTransX;
-            float y = back->mRegionMinMapY[r] + back->field_0xf2c[r] + back->mRegionMapSizeY[r]*back->mZoom*0.5f + back->mTransZ;
+            const auto [x,y]=projection.screen(
+                back->mRegionMinMapX[r]+back->field_0xf0c[r]+back->mRegionMapSizeX[r]*back->mZoom*0.5f,
+                back->mRegionMinMapY[r]+back->field_0xf2c[r]+back->mRegionMapSizeY[r]*back->mZoom*0.5f);
             if (!std::isfinite(x) || !std::isfinite(y)) continue;
             fill(x-27,y-12,66,21,JUtility::TColor(20,18,12,220));
             J2DPrint label(mDoExt_getMesgFont(),JUtility::TColor(110,245,140,255),JUtility::TColor(0,0,0,255));
@@ -220,9 +242,7 @@ void draw(ModContext*, void* args, void*, void*) {
                     if (tear != (group == 4)) continue;
                     const auto& stages = check.at("stages");
                     if (!stages.empty() && std::find(stages.begin(), stages.end(), iter.mpStageData->getStageName()) == stages.end()) continue;
-                    float x = 0, y = 0;
-                    back->calcAllMapPos2D(wx-back->mStageTransX, wz-back->mStageTransZ, &x, &y);
-                    x += back->mTransX; y += back->mTransZ;
+                    const auto [x,y]=projection.world(*back,wx,wz);
                     if (!std::isfinite(x) || !std::isfinite(y) || x < left+10 || x > right-10 || y < top+10 || y > bottom-10) continue;
                     drawn.insert(name);
                     bool done = state->obtained.contains(name);
@@ -257,7 +277,7 @@ void draw(ModContext*, void* args, void*, void*) {
                         picture->setBlackWhite(black, white);
                     }
                     }
-                    const float dx = x-back->getArrowPos2DX(), dy = y-back->getArrowPos2DY();
+                    const float dx = x-cursor.x, dy = y-cursor.y;
                     const float distance = dx*dx+dy*dy;
                     if (distance < closest) {
                         closest = distance; hoverDone = done; hoverColor = color;
@@ -283,9 +303,9 @@ void draw(ModContext*, void* args, void*, void*) {
         if (done && !p.entrance) continue;
         auto found=state->accessible.find(name); Truth access=found==state->accessible.end()?Truth::unknown:found->second;
         JUtility::TColor color=done ? JUtility::TColor(150,150,150,255) : access==Truth::yes ? JUtility::TColor(110,250,135,255) : access==Truth::no ? JUtility::TColor(255,180,170,255) : JUtility::TColor(240,205,100,255);
-        float x=0,y=0;
-        back->calcAllMapPos2D(p.x+region->getRegionOffsetX()+stage->getOffsetX()-back->mStageTransX,p.z+region->getRegionOffsetZ()+stage->getOffsetZ()-back->mStageTransZ,&x,&y);
-        x+=back->mTransX; y+=back->mTransZ;
+        const auto [x,y]=projection.world(*back,
+            p.x+region->getRegionOffsetX()+stage->getOffsetX(),
+            p.z+region->getRegionOffsetZ()+stage->getOffsetZ());
         if (!std::isfinite(x)||!std::isfinite(y)||x<left+14||y<top+14||x>right-14||y>bottom-14) continue;
         if (p.entrance) {
             auto& group=interiors[p.stage+":"+p.label];
@@ -314,7 +334,7 @@ void draw(ModContext*, void* args, void*, void*) {
             }
         }
         drawn.insert(name);
-        float dx=x-back->getArrowPos2DX(),dy=y-back->getArrowPos2DY(),distance=dx*dx+dy*dy;
+        float dx=x-cursor.x,dy=y-cursor.y,distance=dx*dx+dy*dy;
         if (distance<closest) {
             closest=distance;hoverDone=done;hoverColor=color;
             hovered=std::string(done?"[DONE] ":access==Truth::yes?"[OPEN] ":access==Truth::no?"[LOCKED] ":"[UNKNOWN] ")+name;
@@ -343,7 +363,7 @@ void draw(ModContext*, void* args, void*, void*) {
             picture.draw(x-12,y-16,24,24,false,false,false);
         }
         // Interior counts belong in the selected marker's hover tooltip only.
-        float dx=x-back->getArrowPos2DX(),dy=y-back->getArrowPos2DY(),distance=dx*dx+dy*dy;
+        float dx=x-cursor.x,dy=y-cursor.y,distance=dx*dx+dy*dy;
         if (distance<closest) {
             closest=distance;hoverDone=done;hoverColor=color;
             if (remaining==1) {
@@ -359,10 +379,9 @@ void draw(ModContext*, void* args, void*, void*) {
         auto* stage=region->getMenuFmapStageDataTop(); int stageNo=0;
         while (stage && temple.stage!=stage->getStageName()) { stage=stage->getNextData(); ++stageNo; }
         if (!stage || !active->isRoomCheck(stageNo,temple.room)) continue;
-        float x=0,y=0;
-        back->calcAllMapPos2D(temple.x+region->getRegionOffsetX()+stage->getOffsetX()-back->mStageTransX,
-                             temple.z+region->getRegionOffsetZ()+stage->getOffsetZ()-back->mStageTransZ,&x,&y);
-        x+=back->mTransX; y+=back->mTransZ;
+        const auto [x,y]=projection.world(*back,
+            temple.x+region->getRegionOffsetX()+stage->getOffsetX(),
+            temple.z+region->getRegionOffsetZ()+stage->getOffsetZ());
         if (!std::isfinite(x)||!std::isfinite(y)||x<left+16||y<top+28||x>right-16||y>bottom-16) continue;
         const int available=state->availableDungeonChecks(temple.name,mapTypes);
         if(mapAccessibleOnly && !available) continue;
@@ -380,7 +399,7 @@ void draw(ModContext*, void* args, void*, void*) {
             J2DPrint count(mDoExt_getMesgFont(),JUtility::TColor(255,240,130,255),JUtility::TColor(0,0,0,255));
             count.setFontSize(10,12); count.print(x-width/2,y-19,255,"%s",label.c_str());
         }
-        const float dx=x-back->getArrowPos2DX(),dy=y-back->getArrowPos2DY(),distance=dx*dx+dy*dy;
+        const float dx=x-cursor.x,dy=y-cursor.y,distance=dx*dx+dy*dy;
         if (distance<closest) {
             closest=distance; hoverDone=false;
             hoverColor=available ? JUtility::TColor(255,240,130,255) : JUtility::TColor(190,190,190,255);
@@ -667,17 +686,18 @@ ModResult initializeMap(Model* model) {
     exteriorStages.clear();
     for (const auto& p : worldPositions) exteriorStages[model->catalogue.at("checks")[p.check].at("name").get<std::string>()].insert(p.stage);
     const auto miniBefore=mods::hook::add_pre<TrackerMiniDraw>(beforeMini);
-    const auto miniPicture=mods::hook::add_post<TrackerMiniPicture>(captureMiniRect);
+    const auto mapPicture=mods::hook::add_post<TrackerMapPicture>(captureMapPicture);
     const auto miniAfter=mods::hook::add_post<TrackerMiniDraw>(drawMini);
-    minimapAvailable=miniBefore==MOD_OK && miniPicture==MOD_OK && miniAfter==MOD_OK;
+    minimapAvailable=miniBefore==MOD_OK && mapPicture==MOD_OK && miniAfter==MOD_OK;
     if (!minimapAvailable) minimapEnabled=false;
     const auto dungeonResult=mods::hook::add_post<TrackerDungeonIcons>(drawDungeon);
     if(dungeonResult!=MOD_OK) return dungeonResult;
-    auto result = mods::hook::add_post<TrackerMapBackDraw>(draw);
-    mapAvailable = result == MOD_OK;
+    const auto mapBefore=mods::hook::add_pre<TrackerMapBackDraw>(beforeFieldMap);
+    const auto mapAfter=mods::hook::add_post<TrackerMapBackDraw>(draw);
+    mapAvailable = mapBefore==MOD_OK && mapAfter==MOD_OK && mapPicture==MOD_OK;
     if (!mapAvailable) shutdownMap();
-    return result;
+    return mapBefore!=MOD_OK ? mapBefore : mapAfter!=MOD_OK ? mapAfter : mapPicture;
 }
-void shutdownMap() { state = nullptr; mapAvailable = false; flagIndex.clear(); chestTexture.clear(); doneTexture.clear(); iconTextures.clear(); localPositions.clear(); worldPositions.clear(); temples.clear(); arenaEntrances.clear(); exteriorStages.clear(); drawingMeter=nullptr; minimapAvailable=false; }
+void shutdownMap() { state = nullptr; mapAvailable = false; flagIndex.clear(); chestTexture.clear(); doneTexture.clear(); iconTextures.clear(); localPositions.clear(); worldPositions.clear(); temples.clear(); arenaEntrances.clear(); exteriorStages.clear(); drawingMeter=nullptr; drawingFieldMap=nullptr; fieldMapMirrored=false; minimapAvailable=false; }
 }
 
