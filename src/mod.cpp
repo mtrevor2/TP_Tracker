@@ -4,6 +4,7 @@
 #include "check_guides.hpp"
 #include "seed.hpp"
 #include "map.hpp"
+#include "preferences.hpp"
 #include "mods/svc/host.h"
 #include "mods/service.hpp"
 #include "mods/svc/hook.hpp"
@@ -104,7 +105,8 @@ SaveObserverHandle saveObserver = 0;
 bool dirty = true, allChecks = false, hideCompleted = false;
 bool engineDirty = false;
 bool seedRefreshPending = false;
-int statusFilter = 0;
+int statusFilters[2]{};
+tracker::PreferenceStore preferences;
 uint64_t revision = 1, renderedRevision = 0;
 void previousPage(ModContext*,void*) { if (checkPage) { --checkPage; ++revision; } }
 void nextPage(ModContext*,void*) { if (checkPage+1<totalPages) { ++checkPage; ++revision; } }
@@ -637,7 +639,7 @@ std::string checksRml() {
         auto state = model.accessible.contains(name) ? model.accessible.at(name) : Truth::unknown;
         bool skipped=!complete && model.skipped.contains(name);
         int filterState = complete ? 3 : skipped ? 5 : state == Truth::yes ? 1 : state == Truth::no ? 2 : 4;
-        if (statusFilter != 0 && statusFilter != filterState) continue;
+        if (statusFilters[allChecks] != 0 && statusFilters[allChecks] != filterState) continue;
         ++shown;
 
         const char* css = complete ? "done" : skipped ? "skipped" : state == Truth::yes ? "open" : state == Truth::no ? "locked" : "unknown";
@@ -720,17 +722,21 @@ ModResult updateTab(ModContext*, void*, ModError*) {
     renderedRevision = revision;
     return MOD_OK;
 }
-void statusGet(ModContext*, void*, UiControlValue* v) { v->int_value = statusFilter; }
-void statusSet(ModContext*, void*, const UiControlValue* v) { checkPage = 0; statusFilter = std::clamp<int>(static_cast<int>(v->int_value), 0, 5); ++revision; }
+template<class T,class V>
+void savePreference(T& target,const V& value) {
+    const auto result=preferences.set(target,value);
+    if(result!=MOD_OK) mods::log::warn("TPTracker: could not save filter preference ({})",static_cast<int>(result));
+}
+void statusGet(ModContext*, void*, UiControlValue* v) { v->int_value = statusFilters[allChecks]; }
+void statusSet(ModContext*, void*, const UiControlValue* v) { checkPage = 0; savePreference(statusFilters[allChecks],v->int_value); ++revision; }
 void sortGet(ModContext*, void*, UiControlValue* v) { v->int_value=areaSort; }
 void sortSet(ModContext*, void*, const UiControlValue* v) {
-    areaSort=std::clamp<int>(static_cast<int>(v->int_value),0,1);
+    savePreference(areaSort,v->int_value);
     checkPage=0; stickRow=-1; ++revision;
 }
 ModResult buildTab(ModContext*, UiWindowHandle, UiElementHandle left, UiElementHandle right, void* data, ModError*) {
     allChecks = data != nullptr;
     notesTab=false; notesElement=0;
-    statusFilter = 0; // Start with all statuses rather than inheriting the other tab's filter.
     checkPage = 0; totalPages=1; visibleRows=0; restorePageFocus=false; pageControl=0;
     stickRow=-1; stickNavigation={};
     inventoryElement = checksElement = countElement = 0;
@@ -1001,15 +1007,15 @@ void pickSeed(ModContext*, void*) {
     if (svc_file->pick_file(mod_ctx, &options, filePicked, nullptr) != MOD_OK) status = "Could not open the file picker.";
 }
 void searchGet(ModContext*, void*, UiControlValue* value) { value->string_value = search.c_str(); }
-void searchSet(ModContext*, void*, const UiControlValue* value) { search = value->string_value ? value->string_value : ""; ++revision; }
+void searchSet(ModContext*, void*, const UiControlValue* value) { savePreference(search,std::string(value->string_value ? value->string_value : "")); ++revision; }
 void hideGet(ModContext*, void*, UiControlValue* value) { value->bool_value = hideCompleted; }
-void hideSet(ModContext*, void*, const UiControlValue* value) { hideCompleted = value->bool_value; ++revision; }
+void hideSet(ModContext*, void*, const UiControlValue* value) { savePreference(hideCompleted,value->bool_value); ++revision; }
 void mapGet(ModContext*, void*, UiControlValue* value) { value->bool_value = tracker::mapAvailable && tracker::mapEnabled; }
-void mapSet(ModContext*, void*, const UiControlValue* value) { tracker::mapEnabled = tracker::mapAvailable && value->bool_value; }
-void miniGet(ModContext*,void*,UiControlValue* v) { v->bool_value=tracker::minimapEnabled; }
-void miniSet(ModContext*,void*,const UiControlValue* v) { tracker::minimapEnabled=tracker::minimapAvailable && v->bool_value; }
+void mapSet(ModContext*, void*, const UiControlValue* value) { if(tracker::mapAvailable) savePreference(tracker::mapEnabled,value->bool_value); }
+void miniGet(ModContext*,void*,UiControlValue* v) { v->bool_value=tracker::minimapAvailable && tracker::minimapEnabled; }
+void miniSet(ModContext*,void*,const UiControlValue* v) { if(tracker::minimapAvailable) savePreference(tracker::minimapEnabled,v->bool_value); }
 void typeGet(ModContext*,void* ptr,UiControlValue* v) { v->bool_value=*static_cast<bool*>(ptr); }
-void typeSet(ModContext*,void* ptr,const UiControlValue* v) { *static_cast<bool*>(ptr)=v->bool_value; }
+void typeSet(ModContext*,void* ptr,const UiControlValue* v) { savePreference(*static_cast<bool*>(ptr),v->bool_value); }
 ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     settingsStatus = 0;
     UiControlDesc control = UI_CONTROL_DESC_INIT;
@@ -1066,7 +1072,7 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     result = svc_ui->pane_add_text(mod_ctx, pane, status.c_str(), &settingsStatus);
     if (result != MOD_OK) return result;
     return svc_ui->pane_add_text(mod_ctx, pane,
-        "Native RmlUi tracker. The current SDK window captures game input and cannot detach onto another monitor. Seed settings are stored per save slot.", nullptr);
+        "Native RmlUi tracker. The current SDK window captures game input and cannot detach onto another monitor. Filters are remembered across restarts. Seed settings are stored per save slot.", nullptr);
 }
 ModResult updateSettings(ModContext*, void*, ModError*) {
     for (int device=0;device<2;++device) {
@@ -1084,6 +1090,12 @@ DEFINE_HOOK(&dMsgObject_c::_draw, HintDialogueDraw);
 
 extern "C" {
 MOD_EXPORT ModResult mod_initialize(ModError* error) {
+    preferences.initialize(svc_config,mod_ctx);
+    const auto preferenceResult=tracker::bindTrackerPreferences(preferences,{
+        hideCompleted,tracker::mapEnabled,tracker::minimapEnabled,
+        tracker::mapAccessibleOnly,tracker::minimapAccessibleOnly,
+        tracker::mapTypes,tracker::minimapTypes,statusFilters,areaSort,search});
+    if(preferenceResult!=MOD_OK) return mods::set_error(error,preferenceResult,"TPTracker filter preferences could not be restored");
     ResourceBuffer buffer = RESOURCE_BUFFER_INIT;
     if (svc_resource->load(mod_ctx, "catalogue.json", &buffer) != MOD_OK)
         return mods::set_error(error, MOD_ERROR, "TPTracker catalogue is missing");

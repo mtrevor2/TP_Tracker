@@ -1,6 +1,6 @@
 # TPTracker requirements and installation
 
-These requirements apply to TPTracker 0.4.36.
+These requirements apply to TPTracker 0.4.37.
 
 ## Required
 
@@ -14,7 +14,7 @@ The single multiplatform `.dusk` includes Windows x64, Linux x64/ARM64, macOS In
 
 ## Install or update
 
-1. Extract the ZIP and install `TPTracker-0.4.36-multiplatform.dusk` through Dusklight's mod installation workflow, or place it in Dusklight's `mods` directory.
+1. Extract the ZIP and install `TPTracker-0.4.37-multiplatform.dusk` through Dusklight's mod installation workflow, or place it in Dusklight's `mods` directory.
 2. Keep only one active TPTracker package; move the older version outside the `mods` directory before enabling the update.
 3. Restart Dusklight and enable TPTracker in its Mods menu. Assign a keyboard/controller shortcut in TPTracker's options if desired.
 
@@ -36,3 +36,5 @@ The 0.4.35 regression checks also cover river minigame area membership, independ
 Accessible-only visibility is configured independently for map and minimap under TPTracker options. It affects tracker markers and uses OPEN status; UNKNOWN is hidden when enabled.
 
 The 0.4.36 projection tests cover normal/Mirror Mode map alignment, zoom and panning, translated viewports and cursor hover alignment.
+
+The 0.4.37 filter preferences persist through Dusklight config independently of game saves. Choose your preferences once after updating from older versions, which did not store them.

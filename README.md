@@ -1,4 +1,10 @@
-# TPTracker 0.4.36
+# TPTracker 0.4.37
+
+## 0.4.37 persistent filters
+
+Tracker preferences now use Dusklight's saved configuration and survive application restarts. This includes independent Map/Minimap Show Accessible Only options, every marker category (including both rupee types), map/minimap visibility, Hide completed checks, search text and sorting. Current Area and All Checks remember their own status filters across tab changes and restarts.
+
+Preferences are global to the tracker installation and do not require saving the game. Existing defaults apply until a player changes an option; older versions did not save these choices, so they must be selected once after updating. Automated tests cover all 29 preferences, restart restoration, independent surfaces/tabs, invalid saved values and write failures.
 
 ## 0.4.36 mirrored overworld map alignment
 
