@@ -46,6 +46,7 @@ tracker::Model model;
 tracker::CheckGuides checkGuides;
 UiWindowHandle window = 0;
 UiWindowHandle detailWindow = 0;
+bool mapDetail=false, mapDetailClosing=false;
 UiElementHandle detailText = 0, detailButton = 0;
 std::string selectedCheck;
 std::string detailMarkup;
@@ -267,11 +268,10 @@ ModResult buildDetail(ModContext*,UiWindowHandle,UiElementHandle left,UiElementH
     detailRevision=0;
     return updateDetail(nullptr,nullptr,nullptr);
 }
-void detailClosed(ModContext*,UiWindowHandle,void*) { detailWindow=0; detailText=detailButton=0; selectedCheck.clear(); detailMarkup.clear(); detailRevision=0; detailSections.clear(); detailAnchors.clear(); detailBlocks.clear(); detailSectionCount=0; detailScrollRow=0; detailNavigation={}; stickNavigation={}; }
-void inspectCheck(ModContext*, void* data) {
-    stickRow=static_cast<int>(reinterpret_cast<uintptr_t>(data));
-    if (stickRow<0 || static_cast<size_t>(stickRow)>=visibleNames.size() || detailWindow) return;
-    selectedCheck=visibleNames[stickRow];
+void detailClosed(ModContext*,UiWindowHandle,void*) { mapDetail=mapDetailClosing=false; detailWindow=0; detailText=detailButton=0; selectedCheck.clear(); detailMarkup.clear(); detailRevision=0; detailSections.clear(); detailAnchors.clear(); detailBlocks.clear(); detailSectionCount=0; detailScrollRow=0; detailNavigation={}; stickNavigation={}; }
+bool openCheckDetails(const std::string& name) {
+    if(detailWindow || !model.aliases.contains(name)) return false;
+    selectedCheck=name;
     UiTabDesc tab=UI_TAB_DESC_INIT; tab.title="Check details"; tab.build=buildDetail; tab.update=updateDetail;
     UiWindowDesc desc=UI_WINDOW_DESC_INIT; desc.tabs=&tab; desc.tab_count=1; desc.on_closed=detailClosed;
     desc.rcss=R"(
@@ -296,6 +296,29 @@ window content pane div { display: block; margin-bottom: 8dp; }
 .tp-note { display: block; font-size: 15dp; color: #c5baa0; margin-top: 8dp; margin-bottom: 14dp; }
 )";
     if(svc_ui->window_push(mod_ctx,&desc,&detailWindow)!=MOD_OK) detailClosed(nullptr,0,nullptr);
+    return detailWindow!=0;
+}
+void inspectCheck(ModContext*, void* data) {
+    stickRow=static_cast<int>(reinterpret_cast<uintptr_t>(data));
+    if(stickRow>=0 && static_cast<size_t>(stickRow)<visibleNames.size()) openCheckDetails(visibleNames[stickRow]);
+}
+bool inspectMapCheck(const std::string& name) {
+    // Push only Check Details. With no tracker window underneath, the host's
+    // normal B/Esc close returns directly to the in-game map in one press.
+    bool visible=true;
+    if(window || detailWindow || capturingDevice>=0 ||
+       svc_ui->is_any_document_visible(mod_ctx,&visible)!=MOD_OK || visible) return false;
+    shortcutHeld=true;
+    mapDetail=openCheckDetails(name);
+    return mapDetail;
+}
+bool closeMapCheck() {
+    if(!mapDetail || !detailWindow) return false;
+    if(!mapDetailClosing) {
+        mapDetailClosing=true;
+        svc_ui->window_close(mod_ctx,detailWindow);
+    }
+    return true;
 }
 
 void backupCard() {
@@ -615,7 +638,7 @@ std::string checksRml() {
     std::string rml = "<div class='tp-title'>" + std::string(allChecks ? "All Checks" : "Current Area") + "</div>";
     if (!allChecks && model.catalogue.contains("stage_labels"))
         rml += "<div class='tp-note'>" + tracker::escape(model.catalogue.at("stage_labels").value(model.stage, model.stage)) + "</div>";
-    rml += "<div class='tp-note'>OPEN / green · LOCKED / red · UNKNOWN / amber · DONE / gray · SKIPPED / purple</div>";
+    rml += "<div class='tp-note'>OPEN / green Ãƒâ€šÃ‚Â· LOCKED / red Ãƒâ€šÃ‚Â· UNKNOWN / amber Ãƒâ€šÃ‚Â· DONE / gray Ãƒâ€šÃ‚Â· SKIPPED / purple</div>";
     rml += "<div class='tp-note'>Select a check to view its requirements. Use Skip or Undo in its details window. Skipped checks are hidden on both maps.</div>";
     if (!model.seedLoaded) rml += "<div class='tp-note'>Load a seed log to evaluate logic.</div>";
     else if (logicRequested || logicJob.valid()) rml += "<div class='tp-note'>Updating reachability...</div>";
@@ -976,6 +999,10 @@ void pollShortcut() {
     if (key!=previousKeyboard || pad!=previousController) {
         previousKeyboard=key; previousController=pad; shortcutHeld=true;
     }
+    // Reserve the map chord's buttons while inspecting a map; a custom RT or
+    // A tracker shortcut must not open a parent window underneath the details.
+    const bool reservedMapButton=(pad==1 || pad==16 || pad==100);
+    if(mapDetail || (tracker::mapInspectionActive() && reservedMapButton && !tracker::shortcutDown(static_cast<int>(key),0))) { shortcutHeld=down; return; }
     if (down && !shortcutHeld) {
         UiControlValue value{}; value.bool_value=!window; toggleSet(mod_ctx,nullptr,&value);
     }
@@ -1135,6 +1162,7 @@ MOD_EXPORT ModResult mod_initialize(ModError* error) {
     else mods::log::info("TPTracker: native map draw hook installed");
     mods::log::info("TPTracker: minimap hooks {}", tracker::minimapAvailable ? "installed" : "unavailable");
     result = tracker::initializeInput();
+    tracker::setMapCheckHandler(inspectMapCheck,closeMapCheck);
     if (result != MOD_OK) return mods::set_error(error, result, "TPTracker input event hook failed");
     restore();
     for (auto entry : {std::pair{"tracker-keyboard", &keyboardBinding}, std::pair{"tracker-controller", &controllerBinding}}) {

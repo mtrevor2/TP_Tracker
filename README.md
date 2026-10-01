@@ -1,4 +1,12 @@
-# TPTracker 0.4.37
+# TPTracker 0.4.38
+
+## 0.4.38 check details from map icons
+
+At the closest in-game map zoom, hover an individual tracker check icon and left-click, or hold RT/R2 and press the controller's south face button (Xbox A, PlayStation Cross, or the equivalent button). This opens the same Check Details view with requirements, collection guide and Skip/Undo. When opened this way, one B/Back or Esc press closes the entire tracker view and returns to the map, even from the right-hand guide column.
+
+A small upper-left map hint shows **Check Info** with mouse/controller button badges. Overworld selection uses the native map cursor; temple maps have a small center reticle to pan icons beneath. Mouse clicks follow the rendered icons across panning, Mirror Mode, window sizes, high DPI and letterboxing. Mouse-camera capture is released while inspecting the close map. Hidden, filtered, completed and skipped markers cannot be clicked. Counts representing several checks remain summaries; a group with one remaining check can open that check.
+
+Automated checks cover click/chord activation, same-controller input, held-button suppression, one-step dismissal dispatch, cleared hit targets, mirrored geometry and DPI/letterbox mapping. Native controller/UI behavior still needs live gameplay validation.
 
 ## 0.4.37 persistent filters
 

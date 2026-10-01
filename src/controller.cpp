@@ -15,6 +15,9 @@ std::array<bool,SDL_SCANCODE_COUNT> keys{};
 struct Pad { std::array<bool,SDL_GAMEPAD_BUTTON_COUNT> buttons{}; std::array<int,SDL_GAMEPAD_AXIS_COUNT> axes{}; };
 std::map<SDL_JoystickID,Pad> pads;
 bool focused=true;
+bool mouseValid=false, mouseActive=false, mouseHeld=false;
+float mouseX=0,mouseY=0;
+MapActionHandler mapActionHandler=nullptr;
 constexpr int buttons[]={-1,0,1,2,3,9,10,4,6,7,8,11,12,13,14};
 int scan(int b) {
  if(b>=512) return b-512;
@@ -42,24 +45,51 @@ int scan(int b) {
 }
 #ifndef TPTRACKER_INPUT_TESTS
 HookAction eventHook(ModContext*,void* args,void*,void*) {
- if(const auto* e=mods::arg<const SDL_Event*>(args,0)) processInput(*e);
+ if(const auto* e=mods::arg<const SDL_Event*>(args,0); e && processInput(*e)) return HOOK_SKIP_ORIGINAL;
  return HOOK_CONTINUE;
 }
 #endif
 }
-void resetInput() { keys.fill(false); pads.clear(); }
-void processInput(const SDL_Event& e) {
+void setMapActionHandler(MapActionHandler handler) { mapActionHandler=handler; }
+void resetInput() { keys.fill(false); pads.clear(); mouseValid=mouseActive=mouseHeld=false; }
+bool readMousePosition(float& x,float& y) { x=mouseX; y=mouseY; return focused && mouseValid && mouseActive; }
+bool processInput(const SDL_Event& e) {
  if(e.type==SDL_EVENT_WINDOW_FOCUS_LOST) { focused=false; resetInput(); }
  else if(e.type==SDL_EVENT_WINDOW_FOCUS_GAINED) focused=true;
  else if(e.type==SDL_EVENT_GAMEPAD_REMOVED) pads.erase(e.gdevice.which);
  else if(focused) {
   if(e.type==SDL_EVENT_KEY_DOWN || e.type==SDL_EVENT_KEY_UP) {
    if(e.key.scancode>0 && e.key.scancode<SDL_SCANCODE_COUNT) keys[e.key.scancode]=e.type==SDL_EVENT_KEY_DOWN;
+   if(e.type==SDL_EVENT_KEY_DOWN && !e.key.repeat && e.key.scancode==SDL_SCANCODE_ESCAPE && mapActionHandler)
+    return mapActionHandler(MapAction::Dismiss,0,0);
   } else if(e.type==SDL_EVENT_GAMEPAD_BUTTON_DOWN || e.type==SDL_EVENT_GAMEPAD_BUTTON_UP) {
-   if(e.gbutton.button<SDL_GAMEPAD_BUTTON_COUNT) pads[e.gbutton.which].buttons[e.gbutton.button]=e.type==SDL_EVENT_GAMEPAD_BUTTON_DOWN;
-  } else if(e.type==SDL_EVENT_GAMEPAD_AXIS_MOTION && e.gaxis.axis<SDL_GAMEPAD_AXIS_COUNT)
+   mouseActive=false;
+   if(e.gbutton.button<SDL_GAMEPAD_BUTTON_COUNT) {
+    auto& pad=pads[e.gbutton.which];
+    const bool pressed=e.type==SDL_EVENT_GAMEPAD_BUTTON_DOWN;
+    const bool edge=pressed && !pad.buttons[e.gbutton.button];
+    pad.buttons[e.gbutton.button]=pressed;
+    if(edge && e.gbutton.button==SDL_GAMEPAD_BUTTON_EAST && mapActionHandler && mapActionHandler(MapAction::Dismiss,0,0)) return true;
+    // Both halves must belong to this controller. Press confirm while holding
+    // RT/R2; holding confirm while moving over a marker never opens anything.
+    if(edge && e.gbutton.button==SDL_GAMEPAD_BUTTON_SOUTH && pad.axes[SDL_GAMEPAD_AXIS_RIGHT_TRIGGER]>12000 && mapActionHandler)
+     return mapActionHandler(MapAction::ControllerConfirm,0,0);
+   }
+  } else if(e.type==SDL_EVENT_GAMEPAD_AXIS_MOTION && e.gaxis.axis<SDL_GAMEPAD_AXIS_COUNT) {
    pads[e.gaxis.which].axes[e.gaxis.axis]=e.gaxis.value;
+   if(std::abs(e.gaxis.value)>12000) mouseActive=false;
+  } else if(e.type==SDL_EVENT_MOUSE_MOTION) {
+   mouseX=e.motion.x; mouseY=e.motion.y; mouseValid=mouseActive=true;
+  } else if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN || e.type==SDL_EVENT_MOUSE_BUTTON_UP) {
+   mouseX=e.button.x; mouseY=e.button.y; mouseValid=mouseActive=true;
+   if(e.button.button==SDL_BUTTON_LEFT) {
+    const bool pressed=e.type==SDL_EVENT_MOUSE_BUTTON_DOWN;
+    const bool edge=pressed && !mouseHeld; mouseHeld=pressed;
+    if(edge && mapActionHandler) return mapActionHandler(MapAction::MouseClick,mouseX,mouseY);
+   }
+  } else if(e.type==SDL_EVENT_WINDOW_MOUSE_LEAVE) mouseValid=false;
  }
+ return false;
 }
 #ifndef TPTRACKER_INPUT_TESTS
 ModResult initializeInput() { resetInput(); focused=true; return mods::hook::add_pre<TrackerInputEvent>(eventHook); }

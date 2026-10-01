@@ -1,6 +1,11 @@
 #include "map.hpp"
 #include "map_positions.hpp"
 #include "map_projection.hpp"
+#include "map_interaction.hpp"
+#include "controller.hpp"
+#include <mods/svc/ui.h>
+#include <aurora/aurora.h>
+#include <chrono>
 #include <mods/svc/hook.hpp>
 #include "d/d_com_inf_game.h"
 #include "d/d_menu_fmap.h"
@@ -12,6 +17,7 @@
 #include "d/d_menu_fmap2D.h"
 #include "d/d_map_path_fmap.h"
 #include "m_Do/m_Do_ext.h"
+#include "m_Do/m_Do_graphic.h"
 #include <JSystem/J2DGraph/J2DPicture.h>
 #include <JSystem/J2DGraph/J2DPrint.h>
 #include <JSystem/J2DGraph/J2DGrafContext.h>
@@ -21,8 +27,11 @@
 #include <optional>
 #include <mods/svc/resource.h>
 extern const ResourceService* svc_resource;
+extern const UiService* svc_ui;
 extern "C" ModContext* mod_ctx;
 
+DEFINE_HOOK_SYMBOL("src/dusk/mouse.cpp#dusk::mouse::should_capture_mouse", bool(SDL_Window*), TrackerMapMouseCapture);
+DEFINE_HOOK_SYMBOL("src/dusk/mouse.cpp#dusk::mouse::should_show_cursor", bool(bool), TrackerMapMouseCursor);
 DEFINE_HOOK_SYMBOL("dMenu_Fmap2DBack_c::draw", void(dMenu_Fmap2DBack_c*), TrackerMapBackDraw);
 
 DEFINE_HOOK_SYMBOL("dMenuMapCommon_c::drawIcon", void(dMenuMapCommon_c*,f32,f32,f32,f32), TrackerDungeonIcons);
@@ -37,6 +46,79 @@ bool mapTypes[checkTypeCount] = {true,true,true,true,true,true,true,true,true,tr
 bool minimapTypes[checkTypeCount] = {true,true,true,true,true,true,true,true,true,true};
 namespace {
 Model* state = nullptr;
+MapCheckHandler checkHandler=nullptr;
+bool (*closeCheckHandler)()=nullptr;
+MapHitTargets mapHits;
+const void* hitOwner=nullptr;
+bool hitDungeon=false;
+MapScreenPoint mapCursor{};
+std::chrono::steady_clock::time_point hitTime{};
+using WindowSizeFn=AuroraWindowSize (*)();
+WindowSizeFn windowSize=nullptr;
+bool inspectionContext() {
+    if(!mapEnabled || !state || !hitOwner || std::chrono::steady_clock::now()-hitTime>std::chrono::milliseconds(250)) return false;
+    if(hitDungeon) {
+        auto* map=dMenu_Dmap_c::myclass;
+        return map && map==hitOwner && map->m_process==1 && map->mMapCtrl && map->mMapCtrl->isEndZoomIn();
+    }
+    auto* map=dMenu_Fmap_c::MyClass;
+    return map && map==hitOwner && map->mProcess==dMenu_Fmap_c::PROC_SPOT_MAP;
+}
+HookAction mapMouseCapture(ModContext*,void*,void* result,void*) {
+    if(!inspectionContext()) return HOOK_CONTINUE;
+    *static_cast<bool*>(result)=false;
+    return HOOK_SKIP_ORIGINAL;
+}
+HookAction mapMouseCursor(ModContext*,void*,void* result,void*) {
+    float x=0,y=0;
+    if(!inspectionContext() || !readMousePosition(x,y)) return HOOK_CONTINUE;
+    *static_cast<bool*>(result)=true;
+    return HOOK_SKIP_ORIGINAL;
+}
+std::optional<MapScreenPoint> mousePoint(float x,float y) {
+    if(!windowSize) return {};
+    const auto size=windowSize();
+    return mapMousePoint(x,y,float(size.width),float(size.height),size.native_fb_width,size.native_fb_height,size.fb_width,size.fb_height,
+        {mDoGph_gInf_c::getMinXF(),mDoGph_gInf_c::getMinYF(),mDoGph_gInf_c::getMinXF()+mDoGph_gInf_c::getWidthF(),mDoGph_gInf_c::getMinYF()+mDoGph_gInf_c::getHeightF()});
+}
+std::optional<MapScreenPoint> hoverPoint() {
+    float x=0,y=0;
+    if(readMousePosition(x,y)) return mousePoint(x,y);
+    return mapCursor;
+}
+bool inspectFromMap(MapAction action,float x,float y) {
+    if(action==MapAction::Dismiss) return closeCheckHandler && closeCheckHandler();
+    if(!inspectionContext() || !checkHandler) return false;
+    bool visible=true;
+    if(svc_ui->is_any_document_visible(mod_ctx,&visible)!=MOD_OK || visible) return false;
+    auto point=action==MapAction::MouseClick ? mousePoint(x,y) : std::optional<MapScreenPoint>(mapCursor);
+    const auto name=point ? mapHits.hit(*point) : std::string{};
+    if(name.empty() || state->obtained.contains(name) || state->skipped.contains(name)) return false;
+    return checkHandler(name);
+}
+void inspectionHint(J2DGrafContext* graf,float left,float top) {
+    bool visible=true;
+    if(!inspectionContext() || svc_ui->is_any_document_visible(mod_ctx,&visible)!=MOD_OK || visible) return;
+    auto* font=mDoExt_getMesgFont(); if(!font) return;
+    const auto point=hoverPoint();
+    const bool selected=point && !mapHits.hit(*point).empty();
+    auto fill=[&](float x,float y,float w,float h,JUtility::TColor color) { graf->setup2D(); J2DFillBox(x,y,w,h,color); };
+    float mouseX=0,mouseY=0;
+    const bool mouse=readMousePosition(mouseX,mouseY);
+    const float width=mouse ? 138.f : 181.f;
+    fill(left,top,width,22,JUtility::TColor(20,18,12,220));
+    fill(left+5,top+4,mouse ? 56.f : 32.f,14,JUtility::TColor(75,72,53,240));
+    if(!mouse) fill(left+49,top+4,49,14,JUtility::TColor(75,72,53,240));
+    const JUtility::TColor ink=selected ? JUtility::TColor(255,234,132,255) : JUtility::TColor(220,215,195,255);
+    J2DPrint text(font,ink,ink); text.setFontSize(8,10);
+    text.print(left+8,top+14,255,mouse ? "Left click" : "RT/R2");
+    if(!mouse) { text.print(left+40,top+14,255,"+"); text.print(left+52,top+14,255,"A/Cross"); }
+    text.print(left+(mouse ? 70 : 107),top+14,255,"Check Info");
+    // The hint itself is not a check and must not click through to an icon.
+    mapHits.add(left+width/2,top+11,width/2,11,"");
+    graf->setup2D();
+}
+
 bool trackerMapCheck(const Json& check, bool accessibleOnly) {
     const auto& categories=check.at("categories");
     // The native game already draws Tears of Light / Twilit Bugs.
@@ -134,6 +216,7 @@ std::map<std::pair<int,int>, std::vector<size_t>> flagIndex;
 void draw(ModContext*, void* args, void*, void*) {
     auto* back = mods::arg<dMenu_Fmap2DBack_c*>(args, 0);
     drawingFieldMap=nullptr;
+    hitOwner=nullptr; mapHits.clear();
     // The game sets this in the constructor and clears it in the destructor.
     // _delete() is empty and cannot safely be used as a lifetime hook.
     auto* active = dMenu_Fmap_c::MyClass;
@@ -159,10 +242,16 @@ void draw(ModContext*, void* args, void*, void*) {
     std::optional<J2DPicture> heart;
     bool triedHeart = false;
     const FieldMapTransform projection{back->mTransX,back->mTransZ,back->field_0x11dc,fieldMapMirrored};
-    const auto cursor=projection.screen(back->getArrowPos2DX(),back->getArrowPos2DY());
+    mapCursor=projection.screen(back->getArrowPos2DX(),back->getArrowPos2DY());
+    const auto hoveredPoint=hoverPoint();
+    const auto cursor=hoveredPoint.value_or(MapScreenPoint{-1e6f,-1e6f});
     const float left = back->mTransX+back->getMapScissorAreaLX(), top = back->mTransZ+back->getMapScissorAreaLY();
     const float right = left + back->getMapScissorAreaSizeRealX();
     const float bottom = top + back->getMapScissorAreaSizeRealY();
+    if(process==dMenu_Fmap_c::PROC_SPOT_MAP) {
+        hitOwner=active; hitDungeon=false; hitTime=std::chrono::steady_clock::now();
+        mapHits.clear({left,top,right,bottom});
+    }
     if (process == dMenu_Fmap_c::PROC_ALL_MAP) {
         std::map<std::string,std::set<std::string>> markerStages;
         for (const auto& point : worldPositions)
@@ -277,6 +366,7 @@ void draw(ModContext*, void* args, void*, void*) {
                         picture->setBlackWhite(black, white);
                     }
                     }
+                    if(process==dMenu_Fmap_c::PROC_SPOT_MAP) mapHits.add(x,y,12,12,name);
                     const float dx = x-cursor.x, dy = y-cursor.y;
                     const float distance = dx*dx+dy*dy;
                     if (distance < closest) {
@@ -334,6 +424,7 @@ void draw(ModContext*, void* args, void*, void*) {
             }
         }
         drawn.insert(name);
+        if(process==dMenu_Fmap_c::PROC_SPOT_MAP) mapHits.add(x,y,12,12,name);
         float dx=x-cursor.x,dy=y-cursor.y,distance=dx*dx+dy*dy;
         if (distance<closest) {
             closest=distance;hoverDone=done;hoverColor=color;
@@ -361,6 +452,13 @@ void draw(ModContext*, void* args, void*, void*) {
             J2DPicture picture(reinterpret_cast<ResTIMG*>(art->second.data()));
             if (done) picture.setBlackWhite(JUtility::TColor(0,0,0,0),color);
             picture.draw(x-12,y-16,24,24,false,false,false);
+        }
+        if(process==dMenu_Fmap_c::PROC_SPOT_MAP) {
+            std::string name;
+            if(remaining==1) for(const auto& candidate:group.checks) if(!state->obtained.contains(candidate)) name=candidate;
+            // Counts represent several checks, so never open an arbitrary one.
+            if(remaining>1 || group.label=="Coro") mapHits.add(x,y,3,3,name);
+            else mapHits.add(x,y-4,12,12,name);
         }
         // Interior counts belong in the selected marker's hover tooltip only.
         float dx=x-cursor.x,dy=y-cursor.y,distance=dx*dx+dy*dy;
@@ -399,6 +497,7 @@ void draw(ModContext*, void* args, void*, void*) {
             J2DPrint count(mDoExt_getMesgFont(),JUtility::TColor(255,240,130,255),JUtility::TColor(0,0,0,255));
             count.setFontSize(10,12); count.print(x-width/2,y-19,255,"%s",label.c_str());
         }
+        if(process==dMenu_Fmap_c::PROC_SPOT_MAP) mapHits.add(x,y,16,16,"");
         const float dx=x-cursor.x,dy=y-cursor.y,distance=dx*dx+dy*dy;
         if (distance<closest) {
             closest=distance; hoverDone=false;
@@ -406,6 +505,7 @@ void draw(ModContext*, void* args, void*, void*) {
             hovered=temple.name+" - "+std::to_string(available)+" checks available";
         }
     }
+    inspectionHint(graf,left+12,top+10);
     if (!hovered.empty()) {
         // Wrap instead of letting long location names spill outside the map.
         const auto split = hovered.size() > 48 ? hovered.rfind(' ',48) : std::string::npos;
@@ -429,6 +529,7 @@ void drawDungeon(ModContext*,void* args,void*,void*) {
     auto* active=dMenu_Dmap_c::myclass;
     if(!mapEnabled || !state || !active || !active->mpDrawBg ||
        static_cast<dMenuMapCommon_c*>(active->mpDrawBg)!=common || !active->mMapCtrl) return;
+    hitOwner=nullptr; mapHits.clear();
     auto* ctrl=active->mMapCtrl;
     auto* rend=ctrl->getRendPointer(0);
     auto* graf=dComIfGp_getCurrentGrafPort();
@@ -437,6 +538,12 @@ void drawDungeon(ModContext*,void* args,void*,void*) {
     const float originX=mods::arg<float>(args,1),originY=mods::arg<float>(args,2);
     const float opacity=mods::arg<float>(args,3)*mods::arg<float>(args,4);
     const int stay=dComIfGp_roomControl_getStayNo();
+    const float width=ctrl->field_0x94,height=ctrl->field_0x98;
+    if(ctrl->isEndZoomIn() && active->m_process==1 && opacity>=0.99f) {
+        hitOwner=active; hitDungeon=true; hitTime=std::chrono::steady_clock::now();
+        mapHits.clear({originX,originY,originX+width,originY+height});
+        mapCursor={originX+width/2,originY+height/2};
+    }
     auto floorAlpha=[&](float height,int room) {
         const auto floor=dMapInfo_c::calcFloorNo(height,true,room);
         float blend=0;
@@ -469,6 +576,7 @@ void drawDungeon(ModContext*,void* args,void*,void*) {
             auto color=checkDotColor(access==Truth::yes,isRupeeCheck(check),alpha);
             J2DFillBox(x-2,y-3,4,6,color); J2DFillBox(x-3,y-2,6,4,color);
         }
+        if(hitOwner && alpha>=250) mapHits.add(x,y,8,8,name);
         drawn.insert(index);
     };
     const int save=dStage_stagInfo_GetSaveTbl(info);
@@ -495,7 +603,31 @@ void drawDungeon(ModContext*,void* args,void*,void*) {
         const auto alpha=floorAlpha(arena.y,arena.room);
         if(!remaining || !alpha) continue;
         BE(Vec) pos=Vec{arena.x,arena.y,arena.z}; dMapInfo_n::correctionOriginPos(static_cast<s8>(arena.room),&pos);
-        float x,y; if(project(pos,x,y)) arenaDot(graf,x,y,available,alpha,false);
+        float x,y; if(project(pos,x,y)) {
+            arenaDot(graf,x,y,available,alpha,false);
+            if(hitOwner && alpha>=250) {
+                std::string name;
+                if(remaining==1) for(auto index:arena.checks) {
+                    const auto& check=state->catalogue.at("checks")[index];
+                    const std::string candidate=check.at("name");
+                    if(trackerMapCheck(check,mapAccessibleOnly) && mapTypes[checkType(check)] && !state->obtained.contains(candidate)) name=candidate;
+                }
+                mapHits.add(x,y,5,5,name);
+            }
+        }
+    }
+    if(hitOwner) {
+        float mx=0,my=0;
+        bool visible=true;
+        svc_ui->is_any_document_visible(mod_ctx,&visible);
+        // Temple maps have no free cyan cursor: pan a check under this reticle.
+        if(!visible && !readMousePosition(mx,my)) {
+            graf->setup2D();
+            const JUtility::TColor cyan(70,235,255,255);
+            J2DFillBox(mapCursor.x-12,mapCursor.y-1,7,2,cyan); J2DFillBox(mapCursor.x+5,mapCursor.y-1,7,2,cyan);
+            J2DFillBox(mapCursor.x-1,mapCursor.y-12,2,7,cyan); J2DFillBox(mapCursor.x-1,mapCursor.y+5,2,7,cyan);
+        }
+        inspectionHint(graf,originX+8,originY+8);
     }
     graf->setup2D();
 }
@@ -598,8 +730,17 @@ void drawMini(ModContext*,void* args,void*,void*) {
 }
 
 }
+void setMapCheckHandler(MapCheckHandler handler,bool (*closeHandler)()) { checkHandler=handler; closeCheckHandler=closeHandler; }
+bool mapInspectionActive() { return inspectionContext(); }
 ModResult initializeMap(Model* model) {
     state = model;
+    void* address=nullptr;
+    if(svc_hook->resolve(mod_ctx,"aurora::window::get_window_size",&address,nullptr)==MOD_OK)
+        windowSize=reinterpret_cast<WindowSizeFn>(address);
+    setMapActionHandler(inspectFromMap);
+    // Keep a usable pointer even when the player's mouse-camera option is on.
+    mods::hook::add_pre<TrackerMapMouseCapture>(mapMouseCapture);
+    mods::hook::add_pre<TrackerMapMouseCursor>(mapMouseCursor);
     auto loadTexture = [](const char* name, std::vector<unsigned char>& bytes) {
         ResourceBuffer buffer = RESOURCE_BUFFER_INIT;
         if (svc_resource->load(mod_ctx,name,&buffer) == MOD_OK) {
@@ -698,6 +839,6 @@ ModResult initializeMap(Model* model) {
     if (!mapAvailable) shutdownMap();
     return mapBefore!=MOD_OK ? mapBefore : mapAfter!=MOD_OK ? mapAfter : mapPicture;
 }
-void shutdownMap() { state = nullptr; mapAvailable = false; flagIndex.clear(); chestTexture.clear(); doneTexture.clear(); iconTextures.clear(); localPositions.clear(); worldPositions.clear(); temples.clear(); arenaEntrances.clear(); exteriorStages.clear(); drawingMeter=nullptr; drawingFieldMap=nullptr; fieldMapMirrored=false; minimapAvailable=false; }
+void shutdownMap() { hitOwner=nullptr; mapHits.clear(); checkHandler=nullptr; closeCheckHandler=nullptr; windowSize=nullptr; setMapActionHandler(nullptr); state = nullptr; mapAvailable = false; flagIndex.clear(); chestTexture.clear(); doneTexture.clear(); iconTextures.clear(); localPositions.clear(); worldPositions.clear(); temples.clear(); arenaEntrances.clear(); exteriorStages.clear(); drawingMeter=nullptr; drawingFieldMap=nullptr; fieldMapMirrored=false; minimapAvailable=false; }
 }
 

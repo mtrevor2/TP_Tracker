@@ -1,6 +1,6 @@
 # TPTracker requirements and installation
 
-These requirements apply to TPTracker 0.4.37.
+These requirements apply to TPTracker 0.4.38.
 
 ## Required
 
@@ -14,7 +14,7 @@ The single multiplatform `.dusk` includes Windows x64, Linux x64/ARM64, macOS In
 
 ## Install or update
 
-1. Extract the ZIP and install `TPTracker-0.4.37-multiplatform.dusk` through Dusklight's mod installation workflow, or place it in Dusklight's `mods` directory.
+1. Extract the ZIP and install `TPTracker-0.4.38-multiplatform.dusk` through Dusklight's mod installation workflow, or place it in Dusklight's `mods` directory.
 2. Keep only one active TPTracker package; move the older version outside the `mods` directory before enabling the update.
 3. Restart Dusklight and enable TPTracker in its Mods menu. Assign a keyboard/controller shortcut in TPTracker's options if desired.
 
@@ -37,4 +37,6 @@ Accessible-only visibility is configured independently for map and minimap under
 
 The 0.4.36 projection tests cover normal/Mirror Mode map alignment, zoom and panning, translated viewports and cursor hover alignment.
 
-The 0.4.37 filter preferences persist through Dusklight config independently of game saves. Choose your preferences once after updating from older versions, which did not store them.
+The 0.4.38 filter preferences persist through Dusklight config independently of game saves. Choose your preferences once after updating from older versions, which did not store them.
+
+Closest-zoom map inspection: left-click a visible individual check icon, or hold RT/R2 and press A/Cross (south face button) over it. One B/Back or Esc closes map-opened details. Temple maps use the center reticle for controller selection. Count markers containing multiple checks remain summaries.
