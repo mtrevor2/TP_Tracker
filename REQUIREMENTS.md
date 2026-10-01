@@ -1,6 +1,6 @@
 # TPTracker requirements and installation
 
-These requirements apply to TPTracker 0.4.38.
+These requirements apply to TPTracker 0.4.39.
 
 ## Required
 
@@ -14,7 +14,7 @@ The single multiplatform `.dusk` includes Windows x64, Linux x64/ARM64, macOS In
 
 ## Install or update
 
-1. Extract the ZIP and install `TPTracker-0.4.38-multiplatform.dusk` through Dusklight's mod installation workflow, or place it in Dusklight's `mods` directory.
+1. Extract the ZIP and install `TPTracker-0.4.39-multiplatform.dusk` through Dusklight's mod installation workflow, or place it in Dusklight's `mods` directory.
 2. Keep only one active TPTracker package; move the older version outside the `mods` directory before enabling the update.
 3. Restart Dusklight and enable TPTracker in its Mods menu. Assign a keyboard/controller shortcut in TPTracker's options if desired.
 

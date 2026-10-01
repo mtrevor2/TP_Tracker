@@ -505,7 +505,8 @@ void draw(ModContext*, void* args, void*, void*) {
             hovered=temple.name+" - "+std::to_string(available)+" checks available";
         }
     }
-    inspectionHint(graf,left+12,top+10);
+    // Leave room for the native location-name banner above the map.
+    inspectionHint(graf,left+12,top+48);
     if (!hovered.empty()) {
         // Wrap instead of letting long location names spill outside the map.
         const auto split = hovered.size() > 48 ? hovered.rfind(' ',48) : std::string::npos;

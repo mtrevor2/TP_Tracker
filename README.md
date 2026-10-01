@@ -1,4 +1,8 @@
-# TPTracker 0.4.38
+# TPTracker 0.4.39
+
+## 0.4.39 map hint placement
+
+Moves the close-zoom overworld map’s **Check Info** hint down below the native location-name banner, keeping its mouse/controller instructions readable.
 
 ## 0.4.38 check details from map icons
 
