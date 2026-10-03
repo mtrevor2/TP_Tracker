@@ -102,12 +102,13 @@ for name, resource in expected_icons.items():
 import re, math
 arenas=json.loads((root/'res/arena_entrances.json').read_text())
 expected={stage for check in checks.values() for stage in check['stages'] if re.fullmatch(r'D_MN\d+[A-Z]',stage)}
+expected.add('D_MN04B')
 assert {a['arena'] for a in arenas}==expected
-assert len(arenas)==len(expected)
+assert len({(a['arena'],a['room'],tuple(a['pos'])) for a in arenas})==len(arenas)
 for arena in arenas:
     assert arena['stage']==arena['arena'][:-1]
     assert 0 <= arena['room'] < 64 and all(math.isfinite(v) for v in arena['pos'])
-    assert set(arena['checks'])=={c['name'] for c in checks.values() if arena['arena'] in c['stages']}
+    assert set(arena['checks'])==({'Goron Mines Dangoro Chest'} if arena['arena']=='D_MN04B' else {c['name'] for c in checks.values() if arena['arena'] in c['stages']})
 darkhammer=next(a for a in arenas if a['arena']=='D_MN11B')
 blizzeta=next(a for a in arenas if a['arena']=='D_MN11A')
 assert set(darkhammer['checks'])=={'Snowpeak Ruins Ball and Chain','Snowpeak Ruins Chest After Darkhammer'}
@@ -197,3 +198,20 @@ assert all(p['stage']=='F_SP116' and p['room'] in (0,2) for p in positions['Char
 assert 'shad_dominion_rod' in checks['Shad Dominion Rod']['aliases']
 assert 'prayer_reward' in checks['Charlo Donation Blessing']['aliases']
 print('Validated Shad, Charlo and all Bulblin Camp item markers.')
+
+# Lakebed approach is the submerged tunnel, not the unrelated restart ledge.
+toad=[a for a in arenas if a['arena']=='D_MN01B']
+assert len(toad)==2 and all(a['room']==9 for a in toad)
+assert any(a['pos'][1]<-1300 and a['pos'][2]==-4280 for a in toad)
+assert any(a['pos']==[11170,-100,-4350] for a in toad)
+assert {a['room'] for a in arenas if a['arena']=='D_MN04B'}=={9,11}
+# Stone milestones never replace actual reward-completion flags.
+stone_stages={'Ordon Spring Golden Wolf':'F_SP110','West Hyrule Field Golden Wolf':'F_SP126',
+              'Outside South Castle Town Golden Wolf':'F_SP108','Gerudo Desert Golden Wolf':'F_SP115',
+              'Kakariko Graveyard Golden Wolf':'F_SP114','North Castle Town Golden Wolf':'F_SP128'}
+for name,stage in stone_stages.items():
+    assert checks[name]['map_hide_event'] not in [f['flag'] for f in checks[name]['flags']]
+    assert len(positions[name])==1 and positions[name][0]['stage']==stage
+    assert positions[name][0]['anchor']=='howling stone' and 'world_pos' in positions[name][0]
+assert 'map_hide_event' not in checks['Faron Woods Golden Wolf']
+print('Validated Lakebed/Dangoro approaches and six independent howling milestones.')

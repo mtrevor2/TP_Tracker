@@ -648,6 +648,55 @@ int main(int argc, char** argv) {
             require(hintSignAt(signs,"wrong_stage",sign.at("room"),p[0],p[1],p[2]).empty(),"hint matched wrong stage");
             require(hintSignAt(signs,stage,999,p[0],p[1],p[2]).empty(),"hint matched wrong room");
         }
+        // Read stored event bytes: dialogue hooks intentionally lie in Castle
+        // Town, Goron Mines and Snowpeak; those queries are not tracker state.
+        std::array<unsigned char,256> eventBytes{};
+        auto rawEvent=[&](unsigned flag) { return persistentEventBit([&](unsigned index) { return eventBytes[index]; },flag); };
+        require(!rawEvent(0x810) && !rawEvent(0x701),"unset saved events read as true");
+        eventBytes[8]=0x10; eventBytes[7]=1; eventBytes[0x3a]=8;
+        require(rawEvent(0x810) && rawEvent(0x701) && rawEvent(0x3a08),"persistent event mask/index incorrect");
+        require(!rawEvent(0x804) && !rawEvent(0x3a04),"neighbor event leaked");
+        Model city; city.load(data);
+        std::ifstream cityFixture(std::filesystem::path(argv[1]).parent_path().parent_path()/"tests/fixtures/city-settings.json");
+        city.loadSeed(std::string((std::istreambuf_iterator<char>(cityFixture)),{}));
+        for(const auto& item:data.at("items")) {
+            const std::string name=item.at("Name"); city.inventory[name]=city.inventoryMaximum(name); city.countedItems.insert(name);
+        }
+        city.inventory["Progressive Sky Book"]=0; city.inventory["Sky Cannon Repaired"]=0; city.inventory["Heart Count"]=20;
+        city.solve();
+        for(const auto& [name,access]:city.accessible) if(name.starts_with("City in the Sky") && access!=Truth::yes)
+            throw std::runtime_error("City check inaccessible with required items: "+name);
+        city.settings["City Does Not Require Filled Skybook"]="Off"; city.solve();
+        require(city.accessible.at("City in the Sky Underwater West Chest")!=Truth::yes,"City bypasses unfilled book/cannon");
+        city.inventory["Sky Cannon Repaired"]=1; city.solve();
+        require(city.accessible.at("City in the Sky Underwater West Chest")==Truth::yes,"repaired cannon does not unlock City");
+        city.inventory["Sky Cannon Repaired"]=0; city.inventory["Progressive Sky Book"]=7; city.solve();
+        require(city.accessible.at("City in the Sky Underwater West Chest")==Truth::yes,"full Sky Book route regressed");
+        city.inventory["Progressive Clawshot"]=0; city.solve();
+        require(city.accessible.at("City in the Sky Underwater West Chest")!=Truth::yes,"City no longer requires Clawshot");
+        city.inventory["Progressive Clawshot"]=2; city.inventory["Shadow Crystal"]=0; city.solve();
+        require(city.accessible.at("City in the Sky Garden Island Poe")!=Truth::yes,"Poe accessible without wolf form");
+        // Rutela follows real Gate Keys/Keysy independently of the current stage.
+        city.inventory["Shadow Crystal"]=1;
+        for(const char* stage:{"F_SP116","F_SP111","D_MN07","R_SP209"}) {
+            city.stage=stage; city.settings["Small Keys"]="Own Dungeon";
+            city.inventory["Gate Keys"]=0; city.solve();
+            require(city.accessible.at("Rutelas Blessing")!=Truth::yes,"Rutela falsely open without keys");
+            city.inventory["Gate Keys"]=1; city.solve();
+            require(city.accessible.at("Rutelas Blessing")==Truth::yes,"Rutela access depends on stage");
+            city.inventory["Gate Keys"]=0; city.settings["Small Keys"]="Keysy"; city.solve();
+            require(city.accessible.at("Rutelas Blessing")==Truth::yes,"Rutela Keysy route blocked");
+        }
+        // Howling hides only the marker. The actual wolf reward remains selectable.
+        for(const auto& check:data.at("checks")) if(check.contains("map_hide_event")) {
+            const std::string name=check.at("name");
+            require(markerMilestoneVisible(city,name),"unhowled stone marker hidden");
+            city.mapHidden.insert(name);
+            require(!markerMilestoneVisible(city,name) && !city.obtained.contains(name),"howl marks reward done");
+            require(city.checkDetails(name).find("DONE") == std::string::npos,"uncollected wolf listed as done");
+            require(city.give(name) && city.obtained.contains(name),"wolf reward did not complete");
+        }
+        city.resetSave(); require(city.mapHidden.empty(),"howling milestones leaked to new save");
         require(escape("<note>&") == "&lt;note&gt;&amp;","notes must escape markup");
         std::vector<std::string> notes;
         require(!addPersonalNote(notes," \n "),"blank note accepted");

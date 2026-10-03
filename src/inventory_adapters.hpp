@@ -4,6 +4,11 @@
 #include <string>
 
 namespace tracker {
+template<class ReadByte>
+bool persistentEventBit(ReadByte read, unsigned flag) {
+    return flag <= 0xffff && (read(flag >> 8) & (flag & 0xff)) != 0;
+}
+
 // First-item flags are set by execItemGet, including starting items. Equipment
 // flags can also be set by a forced equip and do not prove a reward was received.
 template<class ReadFirst>

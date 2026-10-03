@@ -9,6 +9,10 @@ inline bool passesAccessibilityFilter(const Model& state, const std::string& nam
         !state.obtained.contains(name) && !state.skipped.contains(name);
 }
 
+inline bool markerMilestoneVisible(const Model& state, const std::string& name) {
+    return !state.mapHidden.contains(name);
+}
+
 // An explicit entrance is authoritative even when its interior uses an F_
 // stage name (Iza's boat course). Never draw non-local placeholder coordinates.
 inline const Json* worldMapAnchor(const Json& point) {

@@ -39,6 +39,7 @@ DEFINE_HOOK_SYMBOL("dMeterMap_c::draw", void(dMeterMap_c*), TrackerMiniDraw);
 DEFINE_HOOK(static_cast<void (J2DPicture::*)(f32,f32,f32,f32,bool,bool,bool)>(&J2DPicture::draw), TrackerMapPicture);
 namespace tracker {
 bool mapEnabled = true;
+bool showCheckInfoHint = true;
 bool mapAccessibleOnly = false, minimapAccessibleOnly = false;
 bool mapAvailable = false;
 bool minimapEnabled = true, minimapAvailable = false;
@@ -97,6 +98,7 @@ bool inspectFromMap(MapAction action,float x,float y) {
     return checkHandler(name);
 }
 void inspectionHint(J2DGrafContext* graf,float left,float top) {
+    if(!showCheckInfoHint) return;
     bool visible=true;
     if(!inspectionContext() || svc_ui->is_any_document_visible(mod_ctx,&visible)!=MOD_OK || visible) return;
     auto* font=mDoExt_getMesgFont(); if(!font) return;
@@ -124,7 +126,8 @@ bool trackerMapCheck(const Json& check, bool accessibleOnly) {
     // The native game already draws Tears of Light / Twilit Bugs.
     return std::find(categories.begin(),categories.end(),"Twilit Insect")==categories.end()
         && passesAccessibilityFilter(*state,check.at("name").get<std::string>(),accessibleOnly)
-        && state->enabled(check) && !state->skipped.contains(check.at("name").get<std::string>());
+        && state->enabled(check) && !state->skipped.contains(check.at("name").get<std::string>())
+        && markerMilestoneVisible(*state,check.at("name").get<std::string>());
 }
 bool isRupeeCheck(const Json& check) {
     const int type=checkType(check);

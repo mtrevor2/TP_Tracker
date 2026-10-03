@@ -49,6 +49,17 @@ for entrance in yaml.safe_load((data / 'entrance_shuffle_data.yaml').read_text(e
                     if scene not in grotto_scenes.setdefault(destination, []):
                         grotto_scenes[destination].append(scene)
 for area in world:
+    # Reach island as human, then transform to collect the Poe. Ropes are
+    # already entered as wolf; the ledge chests require climbing after that.
+    if area['Name'] == 'City in the Sky West Garden Middle':
+        area.setdefault('Events', {})['City Garden Poe Island Reached'] = 'Double_Clawshots'
+        area['Locations']['City in the Sky Garden Island Poe'] = "'City_Garden_Poe_Island_Reached' and Can_Defeat_Poe"
+    if area['Name'] == 'City in the Sky Outside Central Tower Ropes':
+        for name in ('City in the Sky Central Outside Ledge Chest', 'City in the Sky Central Outside Poe Island Chest'):
+            area['Locations'][name] = 'Can_Climb_Vines'
+    if area['Name'] == 'Lake Hylia':
+        area['Exits']['City in the Sky Entrance'] = ('Clawshot and (City_Does_Not_Require_Filled_Skybook == On '
+            'or Sky_Cannon_Repaired or count(Progressive_Sky_Book, 7))')
     # The generator's four-key worst-case route is too strict for a live save.
     # This one door needs one unspent key, or its persistent unlocked flag.
     # Retain the generator route for Keysy/all-keys and every unrelated gate.
@@ -184,6 +195,18 @@ for location in yaml.safe_load((data / 'locations.yaml').read_text(encoding='utf
                    'group': next((c for c in location.get('Categories', []) if isinstance(c, str) and c not in
                        {'Overworld', 'Dungeon', 'ARC', 'DZX', 'Npc', 'Golden Bug', 'Poe', 'Shop', 'Hint'}), 'Other'),
                    'aliases': aliases})
+# Howling milestones hide map markers only. Reward flags above remain the
+# sole completion proof. Faron's introductory wolf has no howling stone.
+stone_flags = {
+    'Ordon Spring Golden Wolf': 0x3a80,
+    'West Hyrule Field Golden Wolf': 0x3a40,
+    'Outside South Castle Town Golden Wolf': 0x3a20,
+    'Gerudo Desert Golden Wolf': 0x3a10,
+    'Kakariko Graveyard Golden Wolf': 0x3a08,
+    'North Castle Town Golden Wolf': 0x3a04,
+}
+for check in checks:
+    if check['name'] in stone_flags: check['map_hide_event'] = stone_flags[check['name']]
 items = [x for x in yaml.safe_load((data / 'items.yaml').read_text(encoding='utf-8'))
          if x.get('Importance') == 'Major' and isinstance(x.get('Id'), int) and x['Id'] < 256]
 result = {'version': 1, 'source': 'mods/randomizer/generator/data', 'checks': checks,

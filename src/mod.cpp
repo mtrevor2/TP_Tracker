@@ -369,6 +369,7 @@ void restore(bool autoSeed = true) {
         tracker::loadSelectedSeed(model, std::filesystem::u8path(dataPath).parent_path(), seedError)) {
         status = "Seed: " + model.seed + " (selected save)";
     } else {
+        if (!seedError.empty()) mods::log::warn("TPTracker: selected save seed metadata unavailable: {}. Preserve the card, its .mods folder and the matching randomizer seed folder together.",seedError);
         status = model.seedLoaded ? "Seed: " + model.seed : "Load this save's anti-spoiler log in F1. Automatic seed lookup needs a saved randomizer slot.";
     }
     dirty = true;
@@ -379,10 +380,14 @@ void onSaveLoaded(ModContext*, uint32_t, void*) { restore(); }
 void onNewSave(ModContext*, uint32_t, void*) { restore(false); }
 void onSaveWritten(ModContext*, uint32_t, void*) { seedRefreshPending = true; }
 
+bool savedEvent(unsigned flag) {
+    const auto* bytes=static_cast<const u8*>(dComIfGs_getPEventBit());
+    return tracker::persistentEventBit([&](unsigned index) { return bytes[index]; },flag);
+}
 bool flagObtained(const Json& flag) {
     const int id = flag.at("flag").get<int>();
     const auto kind = flag.at("kind").get<std::string>();
-    if (kind == "event") return dComIfGs_isEventBit(static_cast<u16>(id));
+    if (kind == "event") return savedEvent(static_cast<unsigned>(id));
     const int save = flag.at("save").get<int>();
     if (kind == "chest") return id < 64 && dComIfGs_isStageTbox(save, id);
     if (kind == "switch") return id < 128 && dComIfGs_isStageSwitch(save, id);
@@ -436,17 +441,20 @@ void scan() {
     tiers("Progressive Fishing Rod", {0x4a, 0x5c});
     // The engine's COPY_ROD_2 query returns -1. The randomizer restores it by
     // setting this event, rather than installing another inventory-slot item.
-    inventory["Progressive Dominion Rod"] = checkItemGet(0x46, -1) > 0 ? (dComIfGs_isEventBit(0x2580) ? 2 : 1) : 0;
+    inventory["Progressive Dominion Rod"] = checkItemGet(0x46, -1) > 0 ? (savedEvent(0x2580) ? 2 : 1) : 0;
     inventory["Aurus Memo"] = tracker::aurusMemoOwned(
         [](int slot) { return dComIfGs_getItem(slot, false); },
-        [](int event) { return dComIfGs_isEventBit(static_cast<u16>(event)) != 0; });
+        [](int event) { return savedEvent(static_cast<unsigned>(event)); });
     inventory["Forest Temple Second Monkey Door Unlocked"] = tracker::forestSecondMonkeyDoorUnlocked(
         [](int save, int flag) { return dComIfGs_isStageSwitch(save, flag) != 0; });
     inventory["Bomb Bag"] = 0;
     // Custom randomizer keys unlock persistent switches, not the current room's key counter.
     inventory["Faron Woods Coro Key"] = dComIfGs_isStageSwitch(0x2,0x0c) != 0;
     inventory["North Faron Woods Gate Key"] = dComIfGs_isStageSwitch(0x2,0x14) != 0;
-    inventory["Gate Keys"] = dComIfGs_isEventBit(0x810) != 0;
+    inventory["Gate Keys"] = savedEvent(0x810);
+    // Repaired cannon is durable proof of City access, including a completed
+    // randomized Sky Book (whose final item does not replace the slot item).
+    inventory["Sky Cannon Repaired"] = savedEvent(0x3b08);
     for (int i=0;i<3;++i) inventory["Bomb Bag"] += dComIfGs_getItem(SLOT_15+i,false)!=0xff;
     inventory["Goron Mines Key Shard"] = tracker::goronKeyShards(
         [](int id) { return dComIfGs_isItemFirstBit(static_cast<u8>(id)) != 0; },
@@ -484,8 +492,11 @@ void scan() {
         model.countedItems.insert(small);
         inventory[std::string(key.name) + (key.save == 0x14 ? " Bedroom Key" : " Big Key")] = dComIfGs_isDungeonItemBossKey(key.save) != 0;
     }
+    std::set<std::string> hiddenMarkers;
     auto completed = journal;
     for (const auto& check : model.catalogue.at("checks")) {
+        if (check.contains("map_hide_event") && savedEvent(check.at("map_hide_event").get<unsigned>()))
+            hiddenMarkers.insert(check.at("name").get<std::string>());
         for (const auto& flag : check.at("flags"))
             if (flagObtained(flag)) { completed.insert(check.at("name").get<std::string>()); break; }
         // Only vanilla bugs can be correlated with inventory; a shuffled bug item
@@ -498,7 +509,8 @@ void scan() {
             }
         }
     }
-    changed = changed || inventory != model.inventory || completed != model.obtained;
+    changed = changed || inventory != model.inventory || completed != model.obtained || hiddenMarkers != model.mapHidden;
+    model.mapHidden=std::move(hiddenMarkers);
     model.inventory = std::move(inventory);
     model.obtained = std::move(completed);
     bool unskipped=false;
@@ -1088,6 +1100,11 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
         result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
         if(result!=MOD_OK) return result;
     }
+    control=UI_CONTROL_DESC_INIT; control.kind=UI_CONTROL_TOGGLE;
+    control.label="Map: Show Check Info hint";
+    control.get=typeGet; control.set=typeSet; control.user_data=&tracker::showCheckInfoHint;
+    result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
+    if(result!=MOD_OK) return result;
     static const char* types[]={"Treasure chests","NPC / event rewards","Golden bugs","Poe souls","Golden wolves","Shop items","Owl statues","Grotto checks","Freestanding Rupees","Hidden Rupees"};
     for (int surface=0;surface<2;++surface) for (int i=0;i<tracker::checkTypeCount;++i) {
         std::string label=std::string(surface ? "Minimap: " : "Map: ")+types[i];
@@ -1120,7 +1137,7 @@ MOD_EXPORT ModResult mod_initialize(ModError* error) {
     preferences.initialize(svc_config,mod_ctx);
     const auto preferenceResult=tracker::bindTrackerPreferences(preferences,{
         hideCompleted,tracker::mapEnabled,tracker::minimapEnabled,
-        tracker::mapAccessibleOnly,tracker::minimapAccessibleOnly,
+        tracker::mapAccessibleOnly,tracker::minimapAccessibleOnly,tracker::showCheckInfoHint,
         tracker::mapTypes,tracker::minimapTypes,statusFilters,areaSort,search});
     if(preferenceResult!=MOD_OK) return mods::set_error(error,preferenceResult,"TPTracker filter preferences could not be restored");
     ResourceBuffer buffer = RESOURCE_BUFFER_INIT;

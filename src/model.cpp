@@ -168,7 +168,7 @@ void Model::loadSeed(const std::string& text) {
             shuffled = true;
 }
 void Model::resetSave() {
-    skipped.clear();
+    skipped.clear(); mapHidden.clear();
     inventory.clear(); countedItems.clear(); obtained.clear(); accessible.clear(); events.clear(); reached.clear();
     seed.clear(); settings = Json::object(); entrances = Json::object(); seedLoaded = false; shuffled = false; entrancesComplete = false;
     stage.clear(); room = -1; layer = -1;

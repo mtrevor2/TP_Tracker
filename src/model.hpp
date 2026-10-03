@@ -37,6 +37,7 @@ struct Model {
     std::set<std::string> countedItems;
     std::set<std::string> obtained;
     std::set<std::string> skipped;
+    std::set<std::string> mapHidden; // Milestone markers, independent of reward completion.
     std::map<std::string, Truth> accessible;
     std::map<std::string, Truth> events;
     std::map<std::string, std::array<Truth, 5>> reached;

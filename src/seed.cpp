@@ -9,9 +9,9 @@ namespace tracker {
 namespace {
 std::string read(const std::filesystem::path& path) {
     std::ifstream in(path, std::ios::binary | std::ios::ate);
-    if (!in || in.tellg() < 0 || in.tellg() > 2 * 1024 * 1024) throw std::runtime_error("Seed metadata unavailable");
+    if (!in || in.tellg() < 0 || in.tellg() > 2 * 1024 * 1024) throw std::runtime_error("Seed metadata unavailable: " + path.generic_string());
     std::string text(static_cast<size_t>(in.tellg()), '\0');
-    in.seekg(0); if (!in.read(text.data(), text.size())) throw std::runtime_error("Incomplete seed metadata");
+    in.seekg(0); if (!in.read(text.data(), text.size())) throw std::runtime_error("Incomplete seed metadata: " + path.generic_string());
     return text;
 }
 std::string decode(const std::string& value) {

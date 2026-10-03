@@ -46,11 +46,11 @@ ConfigService config=[] {
     return s;
 }();
 struct Settings {
-    bool hide=false,map=false,mini=false,mapAccess=false,miniAccess=false;
+    bool hide=false,map=false,mini=false,mapAccess=false,miniAccess=false,hint=false;
     bool mapTypes[10]{},miniTypes[10]{};
     int statuses[2]{},sort=0;
     std::string search;
-    PreferenceTargets targets() { return {hide,map,mini,mapAccess,miniAccess,mapTypes,miniTypes,statuses,sort,search}; }
+    PreferenceTargets targets() { return {hide,map,mini,mapAccess,miniAccess,hint,mapTypes,miniTypes,statuses,sort,search}; }
 };
 void bind(PreferenceStore& store,Settings& settings) {
     store.initialize(&config,nullptr);
@@ -61,7 +61,7 @@ int main() {
     try {
         Settings first; PreferenceStore store;
         bind(store,first);
-        require(disk.size()==29,"some filter preferences are unregistered");
+        require(disk.size()==30,"some filter preferences are unregistered");
         require(writes==0,"startup overwrote saved preferences with defaults");
         require(first.map && first.mini && !first.hide && !first.mapAccess && !first.miniAccess,"wrong clean-install defaults");
         for(int i=0;i<10;++i) require(first.mapTypes[i] && first.miniTypes[i],"a category is hidden by default");
@@ -78,10 +78,13 @@ int main() {
 
         // Simulate a host restart: only serialized config survives, runtime
         // targets and all handles are recreated. No game save participates.
+        require(first.hint,"map inspection hint should default on");
+        require(store.set(first.hint,false)==MOD_OK,"hint toggle write failed");
         const auto saved=disk.dump();
         live.clear(); disk=Json::parse(saved); writes=0;
         Settings second; PreferenceStore restarted;
         bind(restarted,second);
+        require(!second.hint,"hidden map hint reset after restart");
         require(writes==0,"restoring preferences rewrote host config");
         require(second.hide && !second.map && second.mini,"marker/hide toggles reset after restart");
         require(second.mapAccess && !second.miniAccess,"map/minimap accessibility filters lost independence");

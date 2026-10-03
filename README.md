@@ -1,4 +1,16 @@
-# TPTracker 0.4.39
+# TPTracker 0.4.40
+
+## 0.4.40 persistent access and arena markers
+
+- Gate Keys/Rutela access, collected dungeon rewards and howling milestones now read persistent event bytes. Randomizer NPC/cutscene hooks can deliberately return different answers in Castle Town, Goron Mines or Snowpeak; those temporary answers no longer drive tracker state. This fixes the Fyrus reward returning to map counts outside his arena and Rutela appearing OPEN only in Castle Town without real Gate Keys. Gate Keys or Keysy are still required.
+- City in the Sky recognizes a repaired cannon as durable access proof and retains the seed's Sky Book bypass and Clawshot requirements. Three City checks now model human/wolf actions in sequence instead of requiring both forms simultaneously. Replaying the supplied seed's settings with all required inventory makes all 29 City checks OPEN; the report of the entire temple being locked was not reproduced from the spoiler log alone.
+- Boss/miniboss markers use actual room-return approaches before fallback restart spawns. Lakebed's Deku Toad now appears at its underwater tunnel and upper door. Dangoro's reward chest is counted at both arena approaches even though the chest itself is in the next room. There are 17 entrance anchors covering 15 reward-bearing boss/miniboss arenas; fights without a separate randomized reward do not invent an extra check. Completion, skip, category and accessibility filters remain in effect.
+- The six stone-linked Golden Wolves appear at their corresponding native howling stones. Their markers disappear after howling, while their checklist entries remain unfinished until the wolf reward is obtained. Faron's introductory wolf has no stone and stays at its encounter.
+- **Map: Show Check Info hint** in TPTracker mod settings hides/shows the control hint and persists across restarts. Mouse click and controller inspection bindings still work with the hint hidden.
+
+Validation includes the supplied scalar seed settings (no reward placements), Sky Book bypass/cannon routes, form changes, Gate Keys/Keysy, persistent event masks, wolf milestone separation, 30 saved preferences and regenerated native actor/arena coordinates. Physical controller/gameplay validation on the affected saves is still needed.
+
+The Oct 3 save-failure report has no failure log or affected save attached. The save audit found separate mod namespaces and copy-only tracker backups, but cannot determine the cause or rule out every possible crash. See [CRASH_INVESTIGATION.md](CRASH_INVESTIGATION.md) for evidence and recovery requirements. Missing seed-file diagnostics now include the expected path; no game-save format or randomizer metadata is rewritten.
 
 ## 0.4.39 map hint placement
 

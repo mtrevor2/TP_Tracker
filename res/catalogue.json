@@ -844,7 +844,8 @@
       "group": "Ordona Province",
       "aliases": [
         "golden_wolf:15368"
-      ]
+      ],
+      "map_hide_event": 14976
     },
     {
       "name": "South Faron Woods Twilit Insect in Tunnel 1",
@@ -4328,7 +4329,8 @@
       "group": "Kakariko Graveyard",
       "aliases": [
         "golden_wolf:15744"
-      ]
+      ],
+      "map_hide_event": 14856
     },
     {
       "name": "Kakariko Graveyard Open Poe",
@@ -6405,7 +6407,8 @@
       "group": "Hyrule Field - Lanayru Province",
       "aliases": [
         "golden_wolf:15364"
-      ]
+      ],
+      "map_hide_event": 14912
     },
     {
       "name": "Hyrule Field Amphitheater Owl Statue Chest",
@@ -6794,7 +6797,8 @@
       "group": "Castle Town",
       "aliases": [
         "golden_wolf:15680"
-      ]
+      ],
+      "map_hide_event": 14852
     },
     {
       "name": "Doctors Office Balcony Chest",
@@ -7952,7 +7956,8 @@
       "group": "Hyrule Field - Lanayru Province",
       "aliases": [
         "golden_wolf:15362"
-      ]
+      ],
+      "map_hide_event": 14880
     },
     {
       "name": "Outside South Castle Town Double Clawshot Chasm Chest",
@@ -12524,7 +12529,8 @@
       "group": "Gerudo Desert",
       "aliases": [
         "golden_wolf:15361"
-      ]
+      ],
+      "map_hide_event": 14864
     },
     {
       "name": "Outside Bulblin Camp Poe",
@@ -17572,7 +17578,7 @@
       "access": [
         {
           "area": "City in the Sky West Garden Middle",
-          "requirement": "Double_Clawshots and Can_Defeat_Poe"
+          "requirement": "'City_Garden_Poe_Island_Reached' and Can_Defeat_Poe"
         }
       ],
       "original_item": "Poe Soul",
@@ -17665,7 +17671,7 @@
       "access": [
         {
           "area": "City in the Sky Outside Central Tower Ropes",
-          "requirement": "Can_Use_Tightrope and Can_Climb_Vines"
+          "requirement": "Can_Climb_Vines"
         }
       ],
       "original_item": "Red Rupee",
@@ -17696,7 +17702,7 @@
       "access": [
         {
           "area": "City in the Sky Outside Central Tower Ropes",
-          "requirement": "Can_Use_Tightrope and Can_Climb_Vines"
+          "requirement": "Can_Climb_Vines"
         }
       ],
       "original_item": "Purple Rupee",
@@ -21450,12 +21456,14 @@
       "Locations": {
         "City in the Sky West Garden Corner Chest": "Nothing",
         "City in the Sky West Garden Lone Island Chest": "Double_Clawshots",
-        "City in the Sky Garden Island Poe": "Double_Clawshots and Can_Defeat_Poe"
+        "City in the Sky Garden Island Poe": "'City_Garden_Poe_Island_Reached' and Can_Defeat_Poe"
       },
       "Exits": {
         "City in the Sky West Garden Near Peahat Train North": "Double_Clawshots"
       },
-      "Events": {}
+      "Events": {
+        "City Garden Poe Island Reached": "Double_Clawshots"
+      }
     },
     {
       "Name": "City in the Sky West Garden Near Peahat Train North",
@@ -21533,8 +21541,8 @@
       "Name": "City in the Sky Outside Central Tower Ropes",
       "Region": "City in the Sky",
       "Locations": {
-        "City in the Sky Central Outside Ledge Chest": "Can_Use_Tightrope and Can_Climb_Vines",
-        "City in the Sky Central Outside Poe Island Chest": "Can_Use_Tightrope and Can_Climb_Vines",
+        "City in the Sky Central Outside Ledge Chest": "Can_Climb_Vines",
+        "City in the Sky Central Outside Poe Island Chest": "Can_Climb_Vines",
         "City in the Sky Poe Above Central Fan": "Can_Use_Tightrope and Can_Defeat_Poe"
       },
       "Exits": {
@@ -26850,7 +26858,7 @@
         "Flight by Fowl": "Can_Talk_to_Humans",
         "Lake Hylia Lakebed Temple Entrance": "Zora_Armor and (Lakebed_Does_Not_Require_Water_Bombs == On or (Iron_Boots and Water_Bombs))",
         "Lake Hylia Lanayru Spring": "Nothing",
-        "City in the Sky Entrance": "Clawshot and (City_Does_Not_Require_Filled_Skybook == On or count(Progressive_Sky_Book, 7))",
+        "City in the Sky Entrance": "Clawshot and (City_Does_Not_Require_Filled_Skybook == On or Sky_Cannon_Repaired or count(Progressive_Sky_Book, 7))",
         "Gerudo Desert": "Aurus_Memo",
         "Upper Zoras River": "Can_Howl or Twilight",
         "Kakariko Graveyard Pond": "Impossible",

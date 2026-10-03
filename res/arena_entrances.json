@@ -12,21 +12,35 @@
       "Lakebed Temple Morpheel Heart Container",
       "Lakebed Temple Dungeon Reward"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN01",
     "room": 9,
     "pos": [
-      14998.0,
-      -46.0,
-      -306.0
+      10897.4130859375,
+      -1325.584716796875,
+      -4280.0
     ],
     "arena": "D_MN01B",
     "checks": [
       "Lakebed Temple Deku Toad Chest"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN01",
+    "room": 9,
+    "pos": [
+      11170.0,
+      -100.0,
+      -4350.0
+    ],
+    "arena": "D_MN01B",
+    "checks": [
+      "Lakebed Temple Deku Toad Chest"
+    ],
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN04",
@@ -41,7 +55,35 @@
       "Goron Mines Fyrus Heart Container",
       "Goron Mines Dungeon Reward"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN04",
+    "room": 11,
+    "pos": [
+      8022.99951171875,
+      2490.0,
+      -7170.0
+    ],
+    "arena": "D_MN04B",
+    "checks": [
+      "Goron Mines Dangoro Chest"
+    ],
+    "source": "reciprocal room SCLS and return PLYR spawn"
+  },
+  {
+    "stage": "D_MN04",
+    "room": 9,
+    "pos": [
+      8025.0,
+      2475.0,
+      -14650.0
+    ],
+    "arena": "D_MN04B",
+    "checks": [
+      "Goron Mines Dangoro Chest"
+    ],
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN05",
@@ -56,21 +98,21 @@
       "Forest Temple Diababa Heart Container",
       "Forest Temple Dungeon Reward"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN05",
     "room": 4,
     "pos": [
       0.0,
-      3902.611572265625,
-      -2700.0
+      3897.708251953125,
+      -3075.0
     ],
     "arena": "D_MN05B",
     "checks": [
       "Forest Temple Gale Boomerang"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN06",
@@ -85,21 +127,21 @@
       "Temple of Time Armogohma Heart Container",
       "Temple of Time Dungeon Reward"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN06",
     "room": 7,
     "pos": [
-      2775.0,
-      8150.0,
-      706.25
+      1580.0,
+      8250.0,
+      700.0
     ],
     "arena": "D_MN06B",
     "checks": [
       "Temple of Time Darknut Chest"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN07",
@@ -107,28 +149,28 @@
     "pos": [
       0.0,
       6000.0,
-      -24090.0
+      -23815.0
     ],
     "arena": "D_MN07A",
     "checks": [
       "City in the Sky Argorok Heart Container",
       "City in the Sky Dungeon Reward"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN07",
     "room": 5,
     "pos": [
-      21550.96484375,
+      21980.0,
       -4500.0,
-      -12727.185546875
+      -12730.0
     ],
     "arena": "D_MN07B",
     "checks": [
       "City in the Sky Aeralfos Chest"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN08",
@@ -157,21 +199,21 @@
       "Arbiters Grounds Stallord Heart Container",
       "Arbiters Grounds Dungeon Reward"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN10",
     "room": 11,
     "pos": [
-      -710.0,
+      -700.0,
       -1700.0,
-      -4910.0
+      -5300.0
     ],
     "arena": "D_MN10B",
     "checks": [
       "Arbiters Grounds Death Sword Chest"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN11",
@@ -186,7 +228,7 @@
       "Snowpeak Ruins Blizzeta Heart Container",
       "Snowpeak Ruins Dungeon Reward"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   },
   {
     "stage": "D_MN11",
@@ -194,13 +236,13 @@
     "pos": [
       0.0,
       0.0,
-      -4950.0
+      -5228.0
     ],
     "arena": "D_MN11B",
     "checks": [
       "Snowpeak Ruins Ball and Chain",
       "Snowpeak Ruins Chest After Darkhammer"
     ],
-    "source": "reciprocal SCLS and return PLYR spawn"
+    "source": "reciprocal room SCLS and return PLYR spawn"
   }
 ]

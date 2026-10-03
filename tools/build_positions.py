@@ -153,6 +153,17 @@ for c in cat['checks']:
   for point in candidates:
    anchor=exit_anchor(point['stage'],point['room'])
    if anchor:point['overworld']=dict(anchor,label="Renado's Sanctuary: Shad")
+ stone_params = {'Ordon Spring Golden Wolf': ('F_SP110',0x1d8),
+                 'West Hyrule Field Golden Wolf': ('F_SP126',0x1d9),
+                 'Outside South Castle Town Golden Wolf': ('F_SP108',0x1da),
+                 'Gerudo Desert Golden Wolf': ('F_SP115',0x1db),
+                 'Kakariko Graveyard Golden Wolf': ('F_SP114',0x1dc),
+                 'North Castle Town Golden Wolf': ('F_SP128',0x1dd)}
+ if c['name'] in stone_params:
+  stone_stage,event_index=stone_params[c['name']]
+  candidates=[dict(stage=stone_stage,room=a['room'],pos=a['pos'],anchor='howling stone')
+              for a in actors[stone_stage] if a['actor']=='WdStone' and a['param']>>16==event_index]
+  if not candidates:raise RuntimeError('Missing howling stone: '+c['name'])
  # Deduplicate actors repeated in time/event layers.
  unique=[]
  for a in candidates:
