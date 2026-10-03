@@ -49,6 +49,17 @@ for entrance in yaml.safe_load((data / 'entrance_shuffle_data.yaml').read_text(e
                     if scene not in grotto_scenes.setdefault(destination, []):
                         grotto_scenes[destination].append(scene)
 for area in world:
+    # Runtime seed setup fills Desert's map bit (0x20) when Unlock Map Regions
+    # is On. The upstream graph omits that alternative only for these two
+    # portals, creating a first-visit cycle even with starting portal items.
+    # Also respect actual saved discovery when region unlocking is Off.
+    if area['Name'] == 'Warp Portals':
+        for destination, item in (
+            ('Gerudo Desert Warp Portal', 'Gerudo_Desert_Portal'),
+            ('Mirror Chamber Warp Portal', 'Mirror_Chamber_Portal'),
+        ):
+            area['Exits'][destination] = (f"{item} and (Unlock_Map_Regions == On "
+                "or Desert_Map_Unlocked or 'Desert_Province_Map_Sector')")
     # Reach island as human, then transform to collect the Poe. Ropes are
     # already entered as wolf; the ledge chests require climbing after that.
     if area['Name'] == 'City in the Sky West Garden Middle':

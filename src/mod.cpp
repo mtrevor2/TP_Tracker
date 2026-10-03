@@ -455,6 +455,9 @@ void scan() {
     // Repaired cannon is durable proof of City access, including a completed
     // randomized Sky Book (whose final item does not replace the slot item).
     inventory["Sky Cannon Repaired"] = savedEvent(0x3b08);
+    // Desert is native field-map region 5 (bit 0x20). A previous visit can
+    // keep its warps usable even if the original route is no longer available.
+    inventory["Desert Map Unlocked"] = dComIfGs_isRegionBit(5) != 0;
     for (int i=0;i<3;++i) inventory["Bomb Bag"] += dComIfGs_getItem(SLOT_15+i,false)!=0xff;
     inventory["Goron Mines Key Shard"] = tracker::goronKeyShards(
         [](int id) { return dComIfGs_isItemFirstBit(static_cast<u8>(id)) != 0; },

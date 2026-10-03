@@ -2,6 +2,12 @@
 
 The authoritative reference is this checkout's Randomizer, rather than a generic vanilla walkthrough. The wiki's List of Randomizer Checks explicitly says it is not a definitive logic-based list: https://wiki.tprandomizer.com/index.php?title=List_of_Randomizer_Checks .
 
+## 0.4.40 follow-up: desert and Palace warp access
+
+Randomizer randomizer_context.cpp initializes mMapBits to 0x20 when Unlock Map Regions is On; tools.cpp::setRegionBit applies this to the native saved field map. Desert is region 5 (1 << 5). Nevertheless world/Root.yaml requires the generated Desert Province Map Sector event for both Gerudo Desert and Mirror Chamber portals, unlike the other portals' setting alternatives. This makes these warps depend on first reaching the desert by a different route. The tracker exporter now accepts Unlock Map Regions, actual saved region-5 discovery, or the existing reachable-sector event. Owning the respective portal and satisfying Can Use Warp Portals remain required. The new Desert Map Unlocked inventory fact reads dComIfGs_isRegionBit(5) on each scan; it never writes the save.
+
+A regression reproduces the starting-portal/Shadow-Crystal failure without Auru's Memo, then verifies the two portal routes, missing portals, missing Crystal, region unlock Off, saved discovery and discovery reset. All 20 Palace of Twilight catalogue entries are OPEN with full required inventory and Memo absent. Entrance tests cover Open, four Mirror Shards, three Fused Shadows, and Vanilla/City completion; negative cases preserve small-key doors, the big key, Light Sword and Clawshot, with Keysy alternatives. These are model/runtime-adapter tests rather than replay of a supplied affected save. The user requested that this correction remain version 0.4.40.
+
 ## 0.4.40 event queries, City forms and arena approaches
 
 The native `dSv_event_c::isEventBit` hook in Randomizer `hooks.cpp` returns true for `ZORA_ESCORT_CLEARED` (0x0810) in Castle Town and Renado's room to avoid unwanted dialogue/cutscenes. It returns false for `GORON_MINES_CLEARED` (0x0701) in the main dungeon/Death Mountain interiors, and for `HOWLED_AT_SNOWPEAK_STONE` (0x3A08) in Snowpeak. Those are compatibility answers, not stored collection state. Tracker event reads now use the documented native byte/mask representation read-only, including reward flags and Gate Keys; this preserves the distinction between obtaining Rutela's reward (0x0804) and unlocking access to it (0x0810).

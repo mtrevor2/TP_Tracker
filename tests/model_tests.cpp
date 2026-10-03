@@ -310,6 +310,29 @@ int main(int argc, char** argv) {
         require(warp.accessible.at("Flight By Fowl Second Platform Chest")==Truth::yes,"Lake Hylia warp checks remain inaccessible");
         require(warp.reached.at("Castle Town West")[0]==Truth::yes,"Castle Town warp remains inaccessible");
         require(warp.accessible.at("Lake Hylia Underwater Chest")!=Truth::yes,"warp bypasses local item requirements");
+        // Starting desert warps must not require first visiting the desert via
+        // Auru's Memo. Region unlocking is independent of owning each portal.
+        Model desertWarp=warp;
+        desertWarp.inventory["Desert Map Unlocked"]=0;
+        desertWarp.inventory["Gerudo Desert Portal"]=1;
+        desertWarp.inventory["Mirror Chamber Portal"]=1;
+        desertWarp.solve();
+        require(desertWarp.accessible.at("Gerudo Desert Campfire North Chest")==Truth::yes,"starting desert portal still requires Memo/first desert visit");
+        require(desertWarp.reached.at("Mirror Chamber Upper")[0]==Truth::yes,"starting Mirror Chamber portal remains locked");
+        require(desertWarp.accessible.at("Gerudo Desert Owl Statue Chest")!=Truth::yes,"desert warp bypasses local equipment");
+        desertWarp.inventory["Gerudo Desert Portal"]=0; desertWarp.inventory["Mirror Chamber Portal"]=0; desertWarp.solve();
+        require(desertWarp.reached.at("Gerudo Desert")[0]!=Truth::yes,"unlocked map grants an unowned portal");
+        desertWarp.inventory["Gerudo Desert Portal"]=1; desertWarp.inventory["Mirror Chamber Portal"]=1;
+        desertWarp.inventory["Shadow Crystal"]=0; desertWarp.solve();
+        require(desertWarp.reached.at("Gerudo Desert")[0]!=Truth::yes,"human start warps without Shadow Crystal");
+        desertWarp.inventory["Shadow Crystal"]=1;
+        desertWarp.settings["Unlock Map Regions"]="Off"; desertWarp.solve();
+        require(desertWarp.reached.at("Gerudo Desert")[0]!=Truth::yes,"undiscovered map region bypassed with region unlock off");
+        desertWarp.inventory["Desert Map Unlocked"]=1; desertWarp.solve();
+        require(desertWarp.accessible.at("Gerudo Desert Campfire North Chest")==Truth::yes,"saved desert map discovery ignored");
+        require(desertWarp.reached.at("Mirror Chamber Upper")[0]==Truth::yes,"saved map does not open Mirror Chamber warp");
+        desertWarp.inventory["Desert Map Unlocked"]=0; desertWarp.solve();
+        require(desertWarp.reached.at("Gerudo Desert")[0]!=Truth::yes,"previous desert discovery leaked between snapshots");
         // Native inventory snapshots must follow the randomizer's relocated
         // memo slot and consumed-item event, not vanilla's slot 19 query.
         std::array<int,24> slots; slots.fill(0xff);
@@ -666,6 +689,46 @@ int main(int argc, char** argv) {
         city.solve();
         for(const auto& [name,access]:city.accessible) if(name.starts_with("City in the Sky") && access!=Truth::yes)
             throw std::runtime_error("City check inaccessible with required items: "+name);
+        // Palace access through the starting Mirror Chamber warp, without
+        // using the Memo/cannon route to discover the desert first.
+        Model palace=city;
+        palace.inventory["Aurus Memo"]=0;
+        palace.inventory["Desert Map Unlocked"]=0;
+        palace.solve();
+        int palaceChecks=0;
+        for(const auto& [name,access]:palace.accessible) if(name.starts_with("Palace of Twilight")) {
+            ++palaceChecks;
+            if(access!=Truth::yes) throw std::runtime_error("Palace check inaccessible with required items: "+name);
+        }
+        require(palaceChecks==20,"Palace regression did not cover the dungeon catalogue");
+        palace.inventory["Progressive Mirror Shard"]=3; palace.solve();
+        require(palace.accessible.at("Palace of Twilight Hint Sign")!=Truth::yes,"Palace Mirror Shards mode accepts only three");
+        palace.settings["Palace of Twilight Requirements"]="Open";
+        palace.inventory["Progressive Mirror Shard"]=0; palace.inventory["Progressive Fused Shadow"]=0; palace.solve();
+        require(palace.accessible.at("Palace of Twilight Hint Sign")==Truth::yes,"Open Palace still requires reward pieces");
+        palace.settings["Palace of Twilight Requirements"]="Fused Shadows"; palace.solve();
+        require(palace.accessible.at("Palace of Twilight Hint Sign")!=Truth::yes,"Fused Shadows mode opens without shadows");
+        palace.inventory["Progressive Fused Shadow"]=3; palace.solve();
+        require(palace.accessible.at("Palace of Twilight Hint Sign")==Truth::yes,"Fused Shadows mode remains locked with three");
+        palace.settings["Palace of Twilight Requirements"]="Vanilla"; palace.solve();
+        require(palace.accessible.at("Palace of Twilight Hint Sign")==Truth::yes,"Vanilla Palace cannot follow completable City");
+        palace.settings["City Does Not Require Filled Skybook"]="Off"; palace.solve();
+        require(palace.accessible.at("Palace of Twilight Hint Sign")!=Truth::yes,"Vanilla Palace bypasses City access");
+        palace.settings["Palace of Twilight Requirements"]="Mirror Shards";
+        palace.inventory["Progressive Mirror Shard"]=4;
+        palace.inventory["Palace of Twilight Small Key"]=0; palace.solve();
+        require(palace.accessible.at("Palace of Twilight West Wing First Room Central Chest")==Truth::yes,"entry check incorrectly needs small keys");
+        require(palace.accessible.at("Palace of Twilight Collect Both Sols")!=Truth::yes,"Palace warp bypasses locked key doors");
+        palace.settings["Small Keys"]="Keysy"; palace.solve();
+        require(palace.accessible.at("Palace of Twilight Collect Both Sols")==Truth::yes,"Palace Keysy route regressed");
+        palace.inventory["Palace of Twilight Big Key"]=0; palace.solve();
+        require(palace.accessible.at("Palace of Twilight Zant Heart Container")!=Truth::yes,"Palace warp bypasses big key");
+        palace.settings["Big Keys"]="Keysy"; palace.solve();
+        require(palace.accessible.at("Palace of Twilight Zant Heart Container")==Truth::yes,"Palace big Keysy route regressed");
+        palace.inventory["Progressive Sword"]=2; palace.solve();
+        require(palace.accessible.at("Palace of Twilight Central First Room Chest")!=Truth::yes,"Palace warp bypasses Light Sword");
+        palace.inventory["Progressive Clawshot"]=0; palace.solve();
+        require(palace.accessible.at("Palace of Twilight West Wing Second Room Central Chest")!=Truth::yes,"Palace warp bypasses Clawshot");
         city.settings["City Does Not Require Filled Skybook"]="Off"; city.solve();
         require(city.accessible.at("City in the Sky Underwater West Chest")!=Truth::yes,"City bypasses unfilled book/cannon");
         city.inventory["Sky Cannon Repaired"]=1; city.solve();
