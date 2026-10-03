@@ -62,6 +62,32 @@ int main() {
  float mx=0,my=0; require(readMousePosition(mx,my) && mx==50 && my==50);
  require(button(1,SDL_GAMEPAD_BUTTON_EAST,true)); require(!readMousePosition(mx,my));
  click(50,50,SDL_BUTTON_LEFT,false);
+ // Overworld and temple renderers share these hit targets and the same
+ // optional hint. Both controller event orders and mouse remain available
+ // across visibility changes, including restoring a hidden hint at startup.
+ for(bool showHint:{false,true,false}) {
+  resetInput(); details=false; controllerCursor={50,50};
+  targets.setHint(showHint ? std::optional<MapHitRect>{{0,0,100,20}} : std::nullopt);
+  require(targets.hit(controllerCursor)=="Chest");
+  require(!button(3,SDL_GAMEPAD_BUTTON_SOUTH,true));
+  require(!trigger(4,25000)); // trigger on another controller cannot complete it
+  const int before=opened;
+  require(trigger(3,25000) && opened==before+1); // A/Cross then RT/R2
+  require(!trigger(3,26000) && opened==before+1); // held trigger motion cannot repeat
+  require(button(3,SDL_GAMEPAD_BUTTON_EAST,true) && !details);
+  require(!trigger(3,27000) && opened==before+1); // B dismiss does not rearm a held chord
+  button(3,SDL_GAMEPAD_BUTTON_EAST,false); button(3,SDL_GAMEPAD_BUTTON_SOUTH,false);
+  require(button(3,SDL_GAMEPAD_BUTTON_SOUTH,true)); // RT/R2 then A/Cross
+  require(button(3,SDL_GAMEPAD_BUTTON_EAST,true) && !details);
+  button(3,SDL_GAMEPAD_BUTTON_EAST,false); button(3,SDL_GAMEPAD_BUTTON_SOUTH,false); trigger(3,0);
+  require(click(50,50,SDL_BUTTON_LEFT,true));
+  e={}; e.type=SDL_EVENT_KEY_DOWN; e.key.scancode=SDL_SCANCODE_ESCAPE;
+  require(processInput(e) && !details);
+  click(50,50,SDL_BUTTON_LEFT,false);
+  controllerCursor={90,90}; button(3,SDL_GAMEPAD_BUTTON_SOUTH,true);
+  require(!trigger(3,25000)); // no check under cursor when completing chord
+  controllerCursor={50,50}; require(!trigger(3,26000)); // moving a held chord onto a check is not a press
+ }
  targets.clear(); // closing/zooming out/filtering removes rendered hit regions
  require(!click(50,50,SDL_BUTTON_LEFT,true));
  e={};e.type=SDL_EVENT_WINDOW_FOCUS_LOST;processInput(e);

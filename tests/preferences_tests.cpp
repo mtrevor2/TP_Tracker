@@ -66,6 +66,10 @@ int main() {
         require(first.map && first.mini && !first.hide && !first.mapAccess && !first.miniAccess,"wrong clean-install defaults");
         for(int i=0;i<10;++i) require(first.mapTypes[i] && first.miniTypes[i],"a category is hidden by default");
         require(first.sort==1 && first.statuses[0]==0 && first.statuses[1]==0,"wrong default dropdown values");
+        require(store.set(first.hint,false)==MOD_OK,"hidden hint preference failed");
+        require(first.map && first.mini && !first.mapAccess && !first.miniAccess,"hiding hint changed map availability");
+        require(disk["map-markers"].get<bool>() && disk["minimap-markers"].get<bool>(),"hiding hint disabled saved markers");
+        require(store.set(first.hint,true)==MOD_OK && first.map && first.mini,"showing hint changed map availability");
         require(store.set(first.hide,true)==MOD_OK && store.set(first.map,false)==MOD_OK,"toggle write failed");
         require(store.set(first.mapAccess,true)==MOD_OK && store.set(first.miniAccess,false)==MOD_OK,"accessible-only write failed");
         for(int i=0;i<10;++i) {

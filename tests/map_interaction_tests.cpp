@@ -13,6 +13,10 @@ int main() {
  t.add(220,50,12,12,"Offscreen"); require(t.hit({220,50}).empty());
  t.clear({0,0,200,150}); require(t.hit({50,50}).empty());
  t.add(10,10,8,8,"Behind hint"); t.add(90,10,90,10,""); require(t.hit({10,10}).empty());
+ t.clear({0,0,200,150}); t.add(10,10,8,8,"Behind hint");
+ t.setHint(MapHitRect{0,0,180,20}); require(t.hit({10,10}).empty());
+ t.setHint(std::nullopt); require(t.hit({10,10})=="Behind hint"); // hiding does not clear checks or retain an invisible blocker
+ require(t.targets.size()==1);
  t.clear({0,0,200,150});
  for(bool mirrored:{false,true}) {
   FieldMapTransform map{20,10,100,mirrored};

@@ -13,6 +13,9 @@ namespace tracker {
 namespace {
 std::array<bool,SDL_SCANCODE_COUNT> keys{};
 struct Pad { std::array<bool,SDL_GAMEPAD_BUTTON_COUNT> buttons{}; std::array<int,SDL_GAMEPAD_AXIS_COUNT> axes{}; };
+bool mapChordDown(const Pad& pad) {
+ return pad.buttons[SDL_GAMEPAD_BUTTON_SOUTH] && pad.axes[SDL_GAMEPAD_AXIS_RIGHT_TRIGGER]>12000;
+}
 std::map<SDL_JoystickID,Pad> pads;
 bool focused=true;
 bool mouseValid=false, mouseActive=false, mouseHeld=false;
@@ -68,16 +71,22 @@ bool processInput(const SDL_Event& e) {
     auto& pad=pads[e.gbutton.which];
     const bool pressed=e.type==SDL_EVENT_GAMEPAD_BUTTON_DOWN;
     const bool edge=pressed && !pad.buttons[e.gbutton.button];
+    const bool chordWasDown=mapChordDown(pad);
     pad.buttons[e.gbutton.button]=pressed;
     if(edge && e.gbutton.button==SDL_GAMEPAD_BUTTON_EAST && mapActionHandler && mapActionHandler(MapAction::Dismiss,0,0)) return true;
-    // Both halves must belong to this controller. Press confirm while holding
-    // RT/R2; holding confirm while moving over a marker never opens anything.
-    if(edge && e.gbutton.button==SDL_GAMEPAD_BUTTON_SOUTH && pad.axes[SDL_GAMEPAD_AXIS_RIGHT_TRIGGER]>12000 && mapActionHandler)
+    // Trigger and confirm may arrive in either order. Activate only on the
+    // chord's rising edge, from one controller, never just by moving a held
+    // chord over a marker. This input path does not depend on hint rendering.
+    if(!chordWasDown && mapChordDown(pad) && mapActionHandler)
      return mapActionHandler(MapAction::ControllerConfirm,0,0);
    }
   } else if(e.type==SDL_EVENT_GAMEPAD_AXIS_MOTION && e.gaxis.axis<SDL_GAMEPAD_AXIS_COUNT) {
-   pads[e.gaxis.which].axes[e.gaxis.axis]=e.gaxis.value;
+   auto& pad=pads[e.gaxis.which];
+   const bool chordWasDown=mapChordDown(pad);
+   pad.axes[e.gaxis.axis]=e.gaxis.value;
    if(std::abs(e.gaxis.value)>12000) mouseActive=false;
+   if(!chordWasDown && mapChordDown(pad) && mapActionHandler)
+    return mapActionHandler(MapAction::ControllerConfirm,0,0);
   } else if(e.type==SDL_EVENT_MOUSE_MOTION) {
    mouseX=e.motion.x; mouseY=e.motion.y; mouseValid=mouseActive=true;
   } else if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN || e.type==SDL_EVENT_MOUSE_BUTTON_UP) {

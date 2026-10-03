@@ -19,17 +19,20 @@ struct MapHitTargets {
     struct Target { MapHitRect bounds; std::string name; };
     MapHitRect clip{};
     std::vector<Target> targets;
-    void clear(MapHitRect bounds={}) { clip=bounds; targets.clear(); }
+    // The optional hint can occlude clicks, but never owns the check targets.
+    std::optional<MapHitRect> hint;
+    void clear(MapHitRect bounds={}) { clip=bounds; targets.clear(); hint.reset(); }
+    void setHint(std::optional<MapHitRect> bounds) { hint=bounds; }
     void add(float x,float y,float halfWidth,float halfHeight,const std::string& name) {
         targets.push_back({{x-halfWidth,y-halfHeight,x+halfWidth,y+halfHeight},name});
     }
     std::string hit(MapScreenPoint p) const {
-        if(!clip.contains(p)) return {};
+        if(!clip.contains(p) || (hint && hint->contains(p))) return {};
         float closest=1e30f;
         const Target* best=nullptr;
         for(const auto& target:targets) {
             if(!target.bounds.contains(p)) continue;
-            if(target.name.empty()) return {}; // summary/hint drawn over a check
+            if(target.name.empty()) return {}; // summary drawn over a check
             float dx=p.x-(target.bounds.left+target.bounds.right)*0.5f;
             float dy=p.y-(target.bounds.top+target.bounds.bottom)*0.5f;
             const float distance=dx*dx+dy*dy;

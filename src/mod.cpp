@@ -1105,6 +1105,7 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     }
     control=UI_CONTROL_DESC_INIT; control.kind=UI_CONTROL_TOGGLE;
     control.label="Map: Show Check Info hint";
+    control.help_rml="Show only the control hint. Map check information still opens with left click or RT/R2 + A/Cross when this is off.";
     control.get=typeGet; control.set=typeSet; control.user_data=&tracker::showCheckInfoHint;
     result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
     if(result!=MOD_OK) return result;

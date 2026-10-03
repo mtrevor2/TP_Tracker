@@ -2,6 +2,12 @@
 
 The authoritative reference is this checkout's Randomizer, rather than a generic vanilla walkthrough. The wiki's List of Randomizer Checks explicitly says it is not a definitive logic-based list: https://wiki.tprandomizer.com/index.php?title=List_of_Randomizer_Checks .
 
+## 0.4.40 follow-up: hidden hint and controller inspection
+
+The user reported controller inspection failing on both map types with Map: Show Check Info hint disabled. The previous flag was referenced only by hint drawing, and no direct input-disable assignment was found. A separate confirmed input limitation accepted only a south-button press after the trigger was already down. The handler now detects a rising combined RT/south state on either button or trigger events, so either press order works. Both halves must come from the same controller; repeated held events or moving a held chord onto an icon cannot activate it.
+
+The hint's optional occlusion rectangle is now separate from rendered check targets, and hiding it explicitly clears only that rectangle. Both native map renderers share this selection state. Automated input tests run with the hint hidden, shown, then hidden again, checking both press orders, mouse clicks, empty map space, cross-controller rejection, repeat suppression and one-step B/Esc dismissal. Preference tests verify hiding the hint leaves map/minimap availability enabled and independent. These tests verify input/selection behavior; the user's exact native gameplay failure has not been independently replayed, so the press-order issue is not claimed as a proven cause of the toggle-specific report. Version remains 0.4.40.
+
 ## 0.4.40 follow-up: desert and Palace warp access
 
 Randomizer randomizer_context.cpp initializes mMapBits to 0x20 when Unlock Map Regions is On; tools.cpp::setRegionBit applies this to the native saved field map. Desert is region 5 (1 << 5). Nevertheless world/Root.yaml requires the generated Desert Province Map Sector event for both Gerudo Desert and Mirror Chamber portals, unlike the other portals' setting alternatives. This makes these warps depend on first reaching the desert by a different route. The tracker exporter now accepts Unlock Map Regions, actual saved region-5 discovery, or the existing reachable-sector event. Owning the respective portal and satisfying Can Use Warp Portals remain required. The new Desert Map Unlocked inventory fact reads dComIfGs_isRegionBit(5) on each scan; it never writes the save.

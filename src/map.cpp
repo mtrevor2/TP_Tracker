@@ -98,6 +98,8 @@ bool inspectFromMap(MapAction action,float x,float y) {
     return checkHandler(name);
 }
 void inspectionHint(J2DGrafContext* graf,float left,float top) {
+    // Hide only the optional overlay. Keep every rendered check selectable.
+    mapHits.setHint(std::nullopt);
     if(!showCheckInfoHint) return;
     bool visible=true;
     if(!inspectionContext() || svc_ui->is_any_document_visible(mod_ctx,&visible)!=MOD_OK || visible) return;
@@ -117,7 +119,7 @@ void inspectionHint(J2DGrafContext* graf,float left,float top) {
     if(!mouse) { text.print(left+40,top+14,255,"+"); text.print(left+52,top+14,255,"A/Cross"); }
     text.print(left+(mouse ? 70 : 107),top+14,255,"Check Info");
     // The hint itself is not a check and must not click through to an icon.
-    mapHits.add(left+width/2,top+11,width/2,11,"");
+    mapHits.setHint(MapHitRect{left,top,left+width,top+22});
     graf->setup2D();
 }
 
