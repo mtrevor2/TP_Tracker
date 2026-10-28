@@ -1,14 +1,11 @@
 #include "controller.hpp"
 #include <SDL3/SDL_events.h>
 #ifndef TPTRACKER_INPUT_TESTS
-#include <mods/svc/hook.hpp>
+#include "input_hook.hpp"
 #endif
 #include <array>
 #include <map>
 #include <cstdlib>
-#ifndef TPTRACKER_INPUT_TESTS
-DEFINE_HOOK_SYMBOL("dusk::ui::handle_event", void(const SDL_Event*), TrackerInputEvent);
-#endif
 namespace tracker {
 namespace {
 std::array<bool,SDL_SCANCODE_COUNT> keys{};
@@ -49,12 +46,6 @@ int scan(int b) {
  default:return 0;
  }
 }
-#ifndef TPTRACKER_INPUT_TESTS
-HookAction eventHook(ModContext*,void* args,void*,void*) {
- if(const auto* e=mods::arg<const SDL_Event*>(args,0); e && processInput(*e)) return HOOK_SKIP_ORIGINAL;
- return HOOK_CONTINUE;
-}
-#endif
 }
 void setMapActionHandler(MapActionHandler handler) { mapActionHandler=handler; }
 void resetInput() { keys.fill(false); pads.clear(); mouseValid=mouseHeld=false; mouseActive=true; }
@@ -108,7 +99,7 @@ bool processInput(const SDL_Event& e) {
  return false;
 }
 #ifndef TPTRACKER_INPUT_TESTS
-ModResult initializeInput() { resetInput(); focused=true; return mods::hook::add_pre<TrackerInputEvent>(eventHook); }
+ModResult initializeInput() { resetInput(); focused=true; return mods::hook::add_pre<detail::InputEventHook>(detail::inputEventHook); }
 #endif
 bool readRightStick(int& x,int& y) {
  x=y=0;

@@ -1,4 +1,12 @@
-# TPTracker 0.4.44
+# TPTracker 0.4.45
+
+## 0.4.45 shared input hook crash fix
+
+- Fixes a crash when TPTracker shares Dusklight's input hook with another mod, including enabling TPTracker during gameplay. The hook now matches the host's event-reference signature and reads the shared event correctly instead of interpreting an event code as a pointer. This addresses the reported controller-release crash at address `0x652` with MFB Multiplayer in the call stack.
+- Preserves keyboard/controller shortcuts, gyro hover handling, mouse check inspection, RT/R2 + A/Cross, and B/Esc dismissal. Unconsumed events and post-hooks still reach the host and other mods.
+- Adds regression coverage at the real SDK hook boundary for both hook owners and callback orders, runtime enable/re-enable, and controller/keyboard/mouse events. The full affected-player mod setup still requires in-game validation.
+
+Release package: **TPTracker-0.4.45-multiplatform.dusk**. Includes the 0.4.44 features and existing poster/banner. This fix does not require a new seed or changes to save data.
 
 ## 0.4.44 dungeon totals, map controls and hint markers
 
