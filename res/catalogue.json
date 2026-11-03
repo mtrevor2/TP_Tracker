@@ -5267,7 +5267,7 @@
       "access": [
         {
           "area": "Hidden Village",
-          "requirement": "Night and Can_Talk_to_Animals and Bow and Clawshot and 'Can_Show_Ilia_Ilias_Charm'"
+          "requirement": "Night and 'Hidden_Village_Poe_Rooftop_Reached' and Can_Use_Senses"
         }
       ],
       "original_item": "Poe Soul",
@@ -25271,12 +25271,13 @@
       "Events": {
         "Howl at Hidden Village Howling Stone": "Can_Howl",
         "Can Warp": "Nothing",
-        "Eldin Province Map Sector": "Nothing"
+        "Eldin Province Map Sector": "Nothing",
+        "Hidden Village Poe Rooftop Reached": "Bow and Clawshot and 'Can_Show_Ilia_Ilias_Charm'"
       },
       "Locations": {
         "Cats Hide and Seek Minigame": "Can_Talk_to_Animals and Bow and Clawshot and 'Can_Show_Ilia_Ilias_Charm'",
         "Ilia Charm": "Bow",
-        "Hidden Village Poe": "Night and Can_Talk_to_Animals and Bow and Clawshot and 'Can_Show_Ilia_Ilias_Charm'",
+        "Hidden Village Poe": "Night and 'Hidden_Village_Poe_Rooftop_Reached' and Can_Use_Senses",
         "Hidden Village Hint Sign": "Nothing"
       },
       "Exits": {

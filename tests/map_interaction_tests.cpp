@@ -42,14 +42,42 @@ int main() {
   require(frame.begin(&mapOwner,&mapOwner,dungeon,false,"stage",{},{}));
   require(!frame.owner && frame.targets.targets.empty());
  }
- for(float screenWidth:{608.f,854.f,1120.f}) {
-  MapHitRect screen{0,0,screenWidth,480},map{274,60,600,395};
-  const auto panel=dungeonSummaryBounds(map,screen);
-  require(panel.left>=0 && panel.right<=screen.right && panel.top>=104 && panel.bottom<screen.bottom);
-  require(near(panel.right-panel.left,112) && near(panel.bottom-panel.top,80));
-  if(screenWidth==608) require(panel.left>map.left && panel.right<map.right);
-  else require(panel.left>map.right);
+ auto overlaps=[](MapHitRect a,MapHitRect b) {
+  return a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
+ };
+ // Native 608x448 layout: the title ends at 67, the item starts at 99,
+ // and the highest floor row starts at 65. The compact panel must fit the
+ // gap over the item column, not cover either the floor rows or the map.
+ for(float ratio:{9.f/16,1.f,4.f/3,16.f/10,16.f/9,21.f/9,32.f/9}) {
+  const float w=std::max(608.f,448*ratio),h=std::max(448.f,608/ratio);
+  for(float offset:{-12.f,0.f,12.f}) {
+   const MapHitRect screen{(608-w)/2,(448-h)/2,(608+w)/2,(448+h)/2};
+   const float itemCenter=screen.left+75*w/608;
+   const float mapLeft=screen.left+274*w/608+offset;
+   const MapHitRect map{mapLeft,74,mapLeft+288,371};
+   const MapHitRect title{screen.left,29,screen.right,67};
+   const MapHitRect item{itemCenter-36,99,itemCenter+36,171};
+   const MapHitRect floors{screen.left+137*w/608,65,map.left-12,380};
+   const MapHitRect slot{itemCenter-56,title.bottom+4,itemCenter+56,item.top-4};
+   const auto layout=dungeonSummaryLayout(map,screen,slot);
+   require(layout.has_value());
+   const auto panel=layout->bounds;
+   require(panel.left>=screen.left+8 && panel.right<=screen.right-8 && panel.top>=screen.top+8 && panel.bottom<=screen.bottom-8);
+   require(near(panel.right-panel.left,112) && near(panel.bottom-panel.top,layout->compact ? 24 : 80));
+   require(!overlaps(panel,{map.left-24,map.top-8,map.right+24,map.bottom+8}));
+   require(!overlaps(panel,title) && !overlaps(panel,item) && !overlaps(panel,floors));
+   if(w==608) require(layout->compact);
+  }
  }
+ // Resizing across the exact breakpoint must never put the summary inside
+ // the map or retain the previous frame's panel/hit blocker.
+ for(float right:{719.f,720.f,721.f,719.f}) {
+  const auto layout=dungeonSummaryLayout({274,74,576,371},{0,0,right,448},{19,71,131,95});
+  require(layout && layout->compact==(right<720));
+  require(!overlaps(layout->bounds,{250,66,600,379}));
+ }
+ require(!dungeonSummaryLayout({0,0,100,100},{0,0,100,100},{})); // no safe space: never overlay the map
+ require(!dungeonSummaryLayout({0,0,100,100},{0,0,std::numeric_limits<float>::quiet_NaN(),100},{}));
  MapHitRect game{-123,0,731,480};
  auto center=mapMousePoint(960,540,1920,1080,1920,1080,1920,1080,game);
  require(center && near(center->x,304) && near(center->y,240));

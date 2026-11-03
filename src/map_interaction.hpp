@@ -62,13 +62,32 @@ struct MapInspectionFrame {
     }
 };
 
-// Prefer the screen's right margin; on narrower displays stay inside the map.
-inline MapHitRect dungeonSummaryBounds(MapHitRect map,MapHitRect screen) {
-    constexpr float width=112,height=80,margin=8;
+struct DungeonSummaryLayout {
+    MapHitRect bounds;
+    bool compact;
+};
+// The narrow layout uses the native space below the title and above the item
+// column. Never move the panel into the map when the right gutter disappears.
+inline std::optional<DungeonSummaryLayout> dungeonSummaryLayout(MapHitRect map,MapHitRect screen,MapHitRect compactSlot) {
+    constexpr float width=112,height=80,margin=8,frame=24;
+    auto valid=[](MapHitRect r) {
+        return std::isfinite(r.left) && std::isfinite(r.top) && std::isfinite(r.right) && std::isfinite(r.bottom)
+            && r.right>r.left && r.bottom>r.top;
+    };
+    if(!valid(map) || !valid(screen)) return {};
     const float right=screen.right-margin;
-    const float left=right-map.right>=width+margin ? right-width : map.right-width-margin;
-    const float top=std::clamp(map.top+44,screen.top+104,screen.bottom-height-margin);
-    return {left,top,left+width,top+height};
+    const float minTop=std::max(map.top+44,screen.top+104);
+    const float maxTop=screen.bottom-height-margin;
+    if(right-width>=map.right+frame && minTop<=maxTop)
+        return DungeonSummaryLayout{{right-width,minTop,right,minTop+height},false};
+    compactSlot.left=std::max(compactSlot.left,screen.left+margin);
+    compactSlot.right=std::min({compactSlot.right,screen.right-margin,map.left-frame});
+    compactSlot.top=std::max(compactSlot.top,screen.top+margin);
+    compactSlot.bottom=std::min(compactSlot.bottom,screen.bottom-margin);
+    constexpr float compactHeight=24;
+    if(!valid(compactSlot) || compactSlot.right-compactSlot.left<width || compactSlot.bottom-compactSlot.top<compactHeight) return {};
+    const float left=(compactSlot.left+compactSlot.right-width)/2;
+    return DungeonSummaryLayout{{left,compactSlot.top,left+width,compactSlot.top+compactHeight},true};
 }
 
 // SDL mouse positions use logical window units. Match Aurora's letterboxed

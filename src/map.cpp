@@ -527,27 +527,61 @@ void drawDungeonSummary(J2DGrafContext* graf,MapHitRect map,float opacity) {
     const auto counts=state->dungeonCheckCounts(dungeon);
     const MapHitRect screen{mDoGph_gInf_c::getMinXF(),mDoGph_gInf_c::getMinYF(),
         mDoGph_gInf_c::getMinXF()+mDoGph_gInf_c::getWidthF(),mDoGph_gInf_c::getMinYF()+mDoGph_gInf_c::getHeightF()};
-    const auto box=dungeonSummaryBounds(map,screen);
+    // These panes have already been laid out by the game for the current
+    // viewport/HUD placement. Reserve the gap above the native item column;
+    // unlike the map's interior, it remains clear of floor rows and map icons.
+    auto* active=dMenu_Dmap_c::myclass;
+    auto* base=active && active->mpDrawBg ? active->mpDrawBg->mBaseScreen : nullptr;
+    auto* titlePane=base ? base->search(MULTI_CHAR('title_n')) : nullptr;
+    auto* itemPane=base ? base->search(MULTI_CHAR('map_n')) : nullptr;
+    MapHitRect compactSlot{};
+    if(titlePane && itemPane) {
+        // getGlbBounds omits parent/HUD scaling. Use the matrix actually used
+        // to draw each pane, including widescreen placement and translation.
+        auto paneBounds=[](J2DPane* pane) {
+            const auto& b=pane->getBounds();
+            auto m=pane->getGlbMtx();
+            MapHitRect result{INFINITY,INFINITY,-INFINITY,-INFINITY};
+            for(float x:{b.i.x,b.f.x}) for(float y:{b.i.y,b.f.y}) {
+                const float sx=m[0][0]*x+m[0][1]*y+m[0][3];
+                const float sy=m[1][0]*x+m[1][1]*y+m[1][3];
+                result.left=std::min(result.left,sx); result.right=std::max(result.right,sx);
+                result.top=std::min(result.top,sy); result.bottom=std::max(result.bottom,sy);
+            }
+            return result;
+        };
+        const auto title=paneBounds(titlePane);
+        const auto item=paneBounds(itemPane);
+        const float center=(item.left+item.right)/2;
+        compactSlot={center-56,title.bottom+4,center+56,item.top-4};
+    }
+    const auto layout=dungeonSummaryLayout(map,screen,compactSlot);
+    if(!layout) return;
+    const auto box=layout->bounds;
     // The icon pass is clipped to the map. Temporarily widen it for the side
     // panel and restore it before the native frame and buttons are drawn.
     const auto savedScissor=graf->mScissorBounds;
     graf->scissor(0,0,FB_WIDTH,FB_HEIGHT); graf->setScissor();
     auto fill=[&](float x,float y,float w,float h,JUtility::TColor color) { graf->setup2D(); J2DFillBox(x,y,w,h,color); };
     const JUtility::TColor gold(198,181,112,255),ink(232,226,205,255),green(113,231,141,255);
-    fill(box.left,box.top,112,80,JUtility::TColor(20,18,12,235));
-    fill(box.left,box.top,2,80,gold);
-    J2DPrint title(font,gold,gold); title.setFontSize(9,11);
-    title.print(box.left+8,box.top+17,255,"Dungeon checks");
+    fill(box.left,box.top,box.right-box.left,box.bottom-box.top,JUtility::TColor(20,18,12,235));
+    fill(box.left,box.top,2,box.bottom-box.top,gold);
+    const float accessibleY=box.top+(layout->compact ? 10 : 37);
+    const float remainingY=box.top+(layout->compact ? 22 : 54);
+    if(!layout->compact) {
+        J2DPrint title(font,gold,gold); title.setFontSize(9,11);
+        title.print(box.left+8,box.top+17,255,"Dungeon checks");
+    }
     J2DPrint text(font,ink,ink); text.setFontSize(8,10);
-    text.print(box.left+8,box.top+37,255,"Accessible");
-    text.print(box.left+8,box.top+54,255,"Remaining");
-    text.print(box.left+8,box.top+71,255,"All floors");
+    text.print(box.left+8,accessibleY,255,"Accessible");
+    text.print(box.left+8,remainingY,255,"Remaining");
+    if(!layout->compact) text.print(box.left+8,box.top+71,255,"All floors");
     auto number=[&](int value,float y,JUtility::TColor color) {
         const auto label=std::to_string(value);
-        J2DPrint count(font,color,color); count.setFontSize(10,12);
+        J2DPrint count(font,color,color); count.setFontSize(layout->compact ? 8 : 10,layout->compact ? 10 : 12);
         count.print(box.right-8-label.size()*7,y,255,"%s",label.c_str());
     };
-    number(counts.accessible,box.top+37,green); number(counts.remaining,box.top+54,ink);
+    number(counts.accessible,accessibleY,green); number(counts.remaining,remainingY,ink);
     inspection.targets.panel=box;
     graf->scissor(savedScissor); graf->setScissor(); graf->setup2D();
 }

@@ -1,4 +1,20 @@
-# TPTracker 0.4.45
+# TPTracker 0.4.47
+
+## 0.4.47 responsive dungeon check counts
+
+- The **Dungeon checks** panel stays outside the dungeon map. It keeps the full right-side layout when space permits and uses two compact Accessible/Remaining rows above the native item column on narrower screens.
+- Placement follows the game's rendered pane transforms and current viewport, including resizing and widescreen HUD scaling. The compact layout clears the dungeon title, item icons and floor selector. Both layouts count checks across all floors and use the existing visibility toggle.
+- Automated layout coverage includes 4:3, 16:10, 16:9, 21:9, 32:9, square and portrait viewports, plus resizing at the layout breakpoint. The Hidden Village Poe fix from 0.4.46 is included.
+
+Release package: **TPTracker-0.4.47-multiplatform.dusk**. Native display/device validation remains separate from the automated geometry, input and logic checks.
+
+## 0.4.46 Hidden Village Poe accessibility fix
+
+- Fixes the **Hidden Village Poe** incorrectly staying LOCKED and disappearing from the in-game map and minimap when **Show Accessible Only** is enabled. The logic now allows the human Bow/Clawshot actions before switching to wolf senses at night, instead of requiring both forms simultaneously.
+- Preserves the seed's entrance and transformation rules, Ilia's Charm quest requirement, equipment requirements, map category filters, and collection/skip state. The Poe's existing native marker coordinates are unchanged.
+- Regression tests reproduce the old failure and verify the corrected availability plus missing-item, quest, nighttime and area-access restrictions. Live gameplay with the affected save has not been verified.
+
+Release package: **TPTracker-0.4.46-multiplatform.dusk**. This is a catalogue-only runtime update and retains the validated 0.4.45 native binaries for all seven platforms.
 
 ## 0.4.45 shared input hook crash fix
 
