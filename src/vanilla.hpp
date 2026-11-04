@@ -65,10 +65,24 @@ inline bool vanillaEdgeAllowed(const Model& model,const std::string& from,const 
         return !vanillaCount(model,"Story Eldin Bridge Missing") || vanillaCount(model,"Story Eldin Bridge Restored");
     return true;
 }
+inline std::string vanillaExitRequirement(const Model& model,const std::string& from,
+                                          const std::string& to,const std::string& original) {
+    if(!model.vanilla) return original;
+    const bool returned=vanillaCount(model,"Story Returned From Prison")>0;
+    // The prologue's human sword/slingshot gate is gone after escaping prison.
+    if(returned && ((from=="Ordon Spring" && to=="Ordon Bridge") ||
+                    (from=="Ordon Bridge" && to=="Ordon Spring"))) return "Nothing";
+    // Native wolf routes into Rusl's and Jaggle's houses are absent from the
+    // randomized door graph. They are essential for the first sword/shield.
+    if(returned && from=="Ordon Village" && (to=="Ordon Sword House" || to=="Ordon Shield House Upper Ledge"))
+        return "("+original+") or Wolf_Link";
+    return original;
+}
 inline std::string vanillaCheckRequirement(const Json& check) {
     const std::string name=check.at("name");
     if(name=="Wooden Sword Chest") return "Slingshot";
-    if(name=="Coro Gate Key" || name=="Coro Bottle") return "Story_Can_Complete_Faron_Twilight";
+    if(name=="Coro Lantern") return "Human_Link";
+    if(name=="Coro Gate Key" || name=="Coro Bottle") return "Story_Can_Complete_Faron_Twilight and Human_Link";
     if(name=="Ordon Shield" || name=="Ordon Sword") return "Story_Returned_From_Prison and Wolf_Link";
     if(name=="Wrestling With Bo") return "Story_Epona_Rescued and Story_Can_Complete_Eldin_Twilight";
     if(name=="Barnes Bomb Bag" || name=="Kakariko Village Malo Mart Hawkeye") return "Story_Can_Complete_Goron_Mines";

@@ -17,6 +17,16 @@ int main(int argc,char** argv) {
     require(m.accessible.at("Faron Woods Golden Wolf")==Truth::no,"first skill waits for real light restoration");
     m.inventory["Slingshot"]=1; m.solve();
     require(m.accessible.at("Wooden Sword Chest")==Truth::yes,"wooden sword delivered after slingshot");
+    m.inventory["Progressive Sword"]=1;
+    m.inventory["Story Can Complete Prologue"]=m.inventory["Story Returned From Prison"]=1;
+    m.inventory["Story Faron Vessel"]=1;
+    m.settings["Starting Form"]="Wolf";
+    m.solve();
+    require(m.accessible.at("Ordon Sword")==Truth::yes,"wolf can dig into sword house after prison return");
+    require(m.accessible.at("Ordon Shield")==Truth::yes,"wolf can enter shield house upper ledge");
+    require(m.accessible.at("South Faron Woods Coros House Exterior Twilit Insect")==Truth::yes,"wolf can leave Ordon for Faron twilight");
+    require(m.accessible.at("Coro Lantern")==Truth::no,"Coro cannot give lantern to wolf");
+    m.settings["Starting Form"]="Human";
     // Equipment must not manufacture completed bosses or advance the story.
     for(auto& [name,count]:m.inventory) if(!name.starts_with("Story ")) count=99;
     m.inventory["Story Can Complete Prologue"]=m.inventory["Story Returned From Prison"]=1;

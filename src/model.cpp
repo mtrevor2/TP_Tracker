@@ -537,7 +537,7 @@ void Model::solve() {
                         if (!reached.contains(exit)) continue;
                         if(this->vanilla && !vanillaEdgeAllowed(*this,name,exit)) continue;
                         auto cleared = twilightCleared.at(exit);
-                        auto access = both(reach, evaluate(scalar(requirement), f));
+                        auto access = both(reach, evaluate(vanillaExitRequirement(*this,name,exit,scalar(requirement)), f));
                         if (cleared != Truth::no && f < 4)
                             promote(reached.at(exit)[f], both(access, cleared));
                         if (cleared != Truth::yes)
@@ -551,7 +551,7 @@ void Model::solve() {
                     const auto exit=entranceDestination(name,vanilla);
                     if (!reached.contains(exit) || twilightCleared.at(exit) == Truth::yes) continue;
                     if(this->vanilla && !vanillaEdgeAllowed(*this,name,exit)) continue;
-                    auto access = both(anyForm, evaluate(scalar(requirement), 4));
+                    auto access = both(anyForm, evaluate(vanillaExitRequirement(*this,name,exit,scalar(requirement)), 4));
                     promote(reached.at(exit)[4], both(access, twilightCleared.at(exit) == Truth::no ? Truth::yes : Truth::unknown));
                 }
         }
