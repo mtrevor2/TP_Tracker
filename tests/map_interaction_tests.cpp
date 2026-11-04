@@ -7,21 +7,30 @@ void require(bool v) { if(!v) throw std::runtime_error("map interaction regressi
 bool near(float a,float b) { return std::abs(a-b)<0.01f; }
 int main() {
  MapHitTargets t; t.clear({0,0,200,150}); t.add(50,50,12,12,"Chest"); t.add(90,50,12,12,"Rupee");
- require(t.hit({50,50})=="Chest" && t.hit({90,50})=="Rupee");
+ require(t.hit({50,50})==std::vector<std::string>{"Chest"} && t.hit({90,50})==std::vector<std::string>{"Rupee"});
  require(t.hit({65,50}).empty() && t.hit({50,75}).empty()); // not merely nearby
  t.add(50,50,16,16,""); require(t.hit({50,50}).empty()); // aggregate marker blocks underlying check
  t.add(220,50,12,12,"Offscreen"); require(t.hit({220,50}).empty());
  t.clear({0,0,200,150}); require(t.hit({50,50}).empty());
+ t.addGroup(50,50,12,12,{"Iza Helping Hand","Iza Raging Rapids Minigame"});
+ require(t.hit({50,50})==std::vector<std::string>({"Iza Helping Hand","Iza Raging Rapids Minigame"}));
+ t.add(50,50,12,12,"Iza Helping Hand");
+ require(t.hit({50,50}).size()==2); // duplicate anchors cannot create duplicate tabs
+ t.add(50,50,12,12,"Other overlapping check");
+ require(t.hit({50,50}).size()==3);
+ t.add(90,50,12,12,"Separate check");
+ require(t.hit({90,50})==std::vector<std::string>{"Separate check"});
+ t.clear({0,0,200,150});
  t.add(10,10,8,8,"Behind hint"); t.add(90,10,90,10,""); require(t.hit({10,10}).empty());
  t.clear({0,0,200,150}); t.add(10,10,8,8,"Behind hint");
  t.setHint(MapHitRect{0,0,180,20}); require(t.hit({10,10}).empty());
- t.setHint(std::nullopt); require(t.hit({10,10})=="Behind hint"); // hiding does not clear checks or retain an invisible blocker
+ t.setHint(std::nullopt); require(t.hit({10,10})==std::vector<std::string>{"Behind hint"}); // hiding does not clear checks or retain an invisible blocker
  require(t.targets.size()==1);
  t.clear({0,0,200,150});
  for(bool mirrored:{false,true}) {
   FieldMapTransform map{20,10,100,mirrored};
   auto screen=map.screen(40,30); t.add(screen.x,screen.y,12,12,"Chest");
-  require(t.hit(screen)=="Chest"); t.clear({0,0,200,150});
+  require(t.hit(screen)==std::vector<std::string>{"Chest"}); t.clear({0,0,200,150});
  }
  int mapOwner=0,otherOwner=0;
  MapInspectionFrame frame;
@@ -30,15 +39,15 @@ int main() {
   frame.targets.add(50,50,12,12,"Chest");
   for(bool visible:{true,false,true,false}) {
    frame.targets.setHint(visible ? std::optional<MapHitRect>{{0,0,100,20}} : std::nullopt);
-   require(frame.active(&mapOwner,dungeon,true,"stage") && frame.targets.hit(frame.cursor)=="Chest");
+   require(frame.active(&mapOwner,dungeon,true,"stage") && frame.targets.hit(frame.cursor)==std::vector<std::string>{"Chest"});
    require(!frame.begin(&otherOwner,&mapOwner,!dungeon,false,"other",{},{}));
-   require(frame.active(&mapOwner,dungeon,true,"stage") && frame.targets.hit(frame.cursor)=="Chest");
+   require(frame.active(&mapOwner,dungeon,true,"stage") && frame.targets.hit(frame.cursor)==std::vector<std::string>{"Chest"});
   }
   require(!frame.active(nullptr,dungeon,true,"stage"));
   require(!frame.active(&mapOwner,dungeon,false,"stage"));
   require(!frame.active(&mapOwner,dungeon,true,"different scene"));
   frame.targets.panel=MapHitRect{40,40,60,60}; require(frame.targets.hit({50,50}).empty());
-  frame.targets.panel.reset(); require(frame.targets.hit({50,50})=="Chest");
+  frame.targets.panel.reset(); require(frame.targets.hit({50,50})==std::vector<std::string>{"Chest"});
   require(frame.begin(&mapOwner,&mapOwner,dungeon,false,"stage",{},{}));
   require(!frame.owner && frame.targets.targets.empty());
  }

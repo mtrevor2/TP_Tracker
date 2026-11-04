@@ -4,7 +4,7 @@
 namespace tracker {
 ModResult initializeMap(Model* model);
 void shutdownMap();
-using MapCheckHandler = bool (*)(const std::string&);
+using MapCheckHandler = bool (*)(const std::vector<std::string>&);
 void setMapCheckHandler(MapCheckHandler handler,bool (*closeHandler)());
 bool mapInspectionActive();
 extern bool mapEnabled;

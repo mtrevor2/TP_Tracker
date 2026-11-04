@@ -76,7 +76,7 @@ int main() {
   resetInput(); details=false; controllerCursor={50,50};
   require(!frame.begin(&unrelated,&owner,!dungeon,false,"other",{},{}));
   targets.setHint(showHint ? std::optional<MapHitRect>{{0,0,100,20}} : std::nullopt);
-  require(targets.hit(controllerCursor)=="Chest");
+  require(targets.hit(controllerCursor)==std::vector<std::string>{"Chest"});
   require(!button(3,SDL_GAMEPAD_BUTTON_SOUTH,true));
   require(!trigger(4,25000)); // trigger on another controller cannot complete it
   const int before=opened;
@@ -149,6 +149,31 @@ int main() {
  motion(40,40); require(!readMousePosition(mx,my));
  e={}; e.type=SDL_EVENT_WINDOW_FOCUS_GAINED; processInput(e);
  motion(40,40); require(readMousePosition(mx,my)); // reset cannot strand mouse users
+ setMapActionHandler(nullptr);
+ // Rebinding replaces the default chord and preserves mouse inspection.
+ setMapActionHandler(handle); zoomed=true; dungeon=false; controllerCursor={50,50};
+ frame.begin(&owner,&owner,false,true,"stage",{0,0,100,100},{50,50});
+ targets.addGroup(50,50,12,12,{"First check","Second check"});
+ for(int binding=1;binding<=16;++binding) {
+  resetInput(); details=false; setCheckBindings(0,binding);
+  constexpr int padButtons[]={-1,0,1,2,3,9,10,4,6,7,8,11,12,13,14};
+  bool consumed=binding<15 ? button(12,padButtons[binding],true) : axis(12,binding==15 ? SDL_GAMEPAD_AXIS_LEFT_TRIGGER : SDL_GAMEPAD_AXIS_RIGHT_TRIGGER,24000);
+  require(consumed && details);
+  require(!(binding<15 ? button(12,padButtons[binding],true) : axis(12,binding==15 ? SDL_GAMEPAD_AXIS_LEFT_TRIGGER : SDL_GAMEPAD_AXIS_RIGHT_TRIGGER,25000)));
+  require(checkBindingUses(binding,true));
+ }
+ resetInput(); details=false; setCheckBindings(0,100+SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1);
+ require(button(13,SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1,true) && details);
+ resetInput(); details=false; setCheckBindings(512+SDL_SCANCODE_K,0);
+ require(!trigger(12,25000) && !button(12,SDL_GAMEPAD_BUTTON_SOUTH,true) && !details);
+ e={}; e.type=SDL_EVENT_KEY_DOWN; e.key.scancode=SDL_SCANCODE_K;
+ require(processInput(e) && details); require(!processInput(e));
+ details=false; resetInput(); require(click(50,50,SDL_BUTTON_LEFT,true) && details);
+ resetInput(); details=false; setCheckBindings(0,4);
+ require(!trigger(12,25000) && !button(12,SDL_GAMEPAD_BUTTON_SOUTH,true) && !details);
+ require(button(12,SDL_GAMEPAD_BUTTON_NORTH,true) && details);
+ resetInput(); details=false; setCheckBindings(0,0);
+ require(!trigger(12,25000) && button(12,SDL_GAMEPAD_BUTTON_SOUTH,true) && details);
  setMapActionHandler(nullptr);
  std::cout << "Input and map interaction regression scenarios passed\n";
 }

@@ -14,9 +14,9 @@ struct MapHitRect {
     }
 };
 // Hit regions come from the actual rendered icons, after all visibility filters
-// and mirroring. Empty names occlude individual checks under aggregate markers.
+// and mirroring. A marker can represent an interior, dungeon or coincident checks.
 struct MapHitTargets {
-    struct Target { MapHitRect bounds; std::string name; };
+    struct Target { MapHitRect bounds; std::vector<std::string> names; };
     MapHitRect clip{};
     std::vector<Target> targets;
     // The optional hint can occlude clicks, but never owns the check targets.
@@ -24,21 +24,33 @@ struct MapHitTargets {
     void clear(MapHitRect bounds={}) { clip=bounds; targets.clear(); hint.reset(); panel.reset(); }
     void setHint(std::optional<MapHitRect> bounds) { hint=bounds; }
     void add(float x,float y,float halfWidth,float halfHeight,const std::string& name) {
-        targets.push_back({{x-halfWidth,y-halfHeight,x+halfWidth,y+halfHeight},name});
+        addGroup(x,y,halfWidth,halfHeight,name.empty() ? std::vector<std::string>{} : std::vector<std::string>{name});
     }
-    std::string hit(MapScreenPoint p) const {
+    void addGroup(float x,float y,float halfWidth,float halfHeight,std::vector<std::string> names) {
+        targets.push_back({{x-halfWidth,y-halfHeight,x+halfWidth,y+halfHeight},std::move(names)});
+    }
+    std::vector<std::string> hit(MapScreenPoint p) const {
         if(!clip.contains(p) || (hint && hint->contains(p)) || (panel && panel->contains(p))) return {};
         float closest=1e30f;
         const Target* best=nullptr;
         for(const auto& target:targets) {
             if(!target.bounds.contains(p)) continue;
-            if(target.name.empty()) return {}; // summary drawn over a check
+            if(target.names.empty()) return {};
             float dx=p.x-(target.bounds.left+target.bounds.right)*0.5f;
             float dy=p.y-(target.bounds.top+target.bounds.bottom)*0.5f;
             const float distance=dx*dx+dy*dy;
             if(distance<=closest) { closest=distance; best=&target; }
         }
-        return best ? best->name : std::string{};
+        if(!best) return {};
+        auto names=best->names;
+        for(const auto& target:targets) {
+            if(std::abs(target.bounds.left+target.bounds.right-best->bounds.left-best->bounds.right)>1 ||
+               std::abs(target.bounds.top+target.bounds.bottom-best->bounds.top-best->bounds.bottom)>1) continue;
+            names.insert(names.end(),target.names.begin(),target.names.end());
+        }
+        std::sort(names.begin(),names.end());
+        names.erase(std::unique(names.begin(),names.end()),names.end());
+        return names;
     }
 };
 // Selection belongs to the active map, not the optional hint or a short draw

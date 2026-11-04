@@ -1,4 +1,21 @@
-# TPTracker 0.4.47
+# TPTracker 0.4.49
+
+## 0.4.49 Check Info controls and Normal Play
+
+- **Mods > TPTracker** now has separate Check Info keyboard and controller bindings. Assign a key, controller button, or trigger to replace RT/R2 + A/Cross. Mouse click always remains available. Clear both Check Info bindings to restore the default combination.
+- Interior, temple, boss-arena and coincident check markers open the same Check Details window with a tab for each included check. The native tab bar supports controller navigation and horizontal mouse-wheel scrolling for long groups.
+- The top-left Check Info banner is removed. At the closest overworld-map zoom, the bottom description box shows **Click icon to open Check Info** to the right of the check name. The existing hint visibility preference still applies.
+- The kingdom overview no longer displays floating available/total check boxes. The dungeon-map summary retains its existing visibility setting.
+- Choosing normal **Play** enables tracking without a randomizer log. Native inventory and saved story milestones control availability, including twilight, dungeon completion, the Master Sword sequence, hidden skills and later quests. Native collection adapters avoid repurposed randomizer flags. Repeatable loose rupees, refillable shop stock and randomizer-only rewards are excluded from Normal Play.
+- Every package build stages a versioned copy in the repository's **dist** folder. Local builds use **TPTracker-0.4.49-windows-amd64.dusk** on Windows; the combined release uses **TPTracker-0.4.49-multiplatform.dusk** only after all seven native platforms are present. `python tools/stage_package.py <package.dusk>` validates and stages downloaded builds as well.
+
+Includes the Crests guest setup below. Automated checks cover input reassignment, stacked targets, native story gates and collection adapters. A complete native playthrough and physical controller validation are still needed.
+
+## 0.4.48 Crests of Courage guest setup
+
+When Crests of Courage has transferred the host's `seed.dat`, open **TPTracker → Current Area** or **All Checks**. If the active save still needs seed settings, **Choose log** opens a file picker. Ask the host for `<seed name> Anti-Spoiler Log.txt`. You can select it directly from Downloads. TPTracker checks the seed hash inside the log against the selected save slot before applying settings. A mismatch shows both seed names and leaves **Choose log** available to retry.
+
+For a new randomizer slot, save in-game once so TPTracker can identify its seed. After importing, save in-game to keep the settings with that slot. TPTracker reads shuffled entrance routes from the matching `seed.dat`. The anti-spoiler log supplies settings without revealing reward placements.
 
 ## 0.4.47 responsive dungeon check counts
 

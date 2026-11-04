@@ -18,9 +18,15 @@ if(NOT TPTRACKER_TESTS_ONLY)
         add_subdirectory("${DUSKLIGHT_SOURCE_DIR}/sdk" dusklight-sdk EXCLUDE_FROM_ALL)
     endif()
     add_mod(TP_Randomizer_Tracker FEATURES game fmt
-        SOURCES src/mod.cpp src/model.cpp src/seed.cpp src/map.cpp src/controller.cpp MOD_JSON mod.json RES_DIR res)
+        SOURCES src/mod.cpp src/model.cpp src/seed.cpp src/seed_files.cpp src/map.cpp src/controller.cpp MOD_JSON mod.json RES_DIR res)
     target_include_directories(TP_Randomizer_Tracker PRIVATE "${DUSKLIGHT_SOURCE_DIR}/extern/aurora/include")
     target_include_directories(TP_Randomizer_Tracker PRIVATE "${tptracker_sdl_SOURCE_DIR}/include")
+    find_package(Python3 REQUIRED COMPONENTS Interpreter)
+    add_custom_command(TARGET TP_Randomizer_Tracker_package POST_BUILD
+        COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/stage_package.py"
+            "${DUSK_MODS_OUTPUT_DIR}/TP_Randomizer_Tracker.dusk"
+        COMMENT "Staging versioned TPTracker package in dist"
+        VERBATIM)
     if(APPLE AND CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
         # The SDK's Intel stub omits LC_UUID, which the new Apple linker rejects.
         target_link_options(TP_Randomizer_Tracker PRIVATE "LINKER:-ld_classic")
@@ -28,7 +34,10 @@ if(NOT TPTRACKER_TESTS_ONLY)
 endif()
 include(CTest)
 if(BUILD_TESTING)
-    add_executable(tptracker_seed_tests tests/seed_tests.cpp src/model.cpp)
+    add_executable(tptracker_vanilla_tests tests/vanilla_tests.cpp src/model.cpp)
+    target_include_directories(tptracker_vanilla_tests PRIVATE src)
+    add_test(NAME tptracker_vanilla COMMAND tptracker_vanilla_tests "${CMAKE_CURRENT_SOURCE_DIR}/res/catalogue.json")
+    add_executable(tptracker_seed_tests tests/seed_tests.cpp src/model.cpp src/seed_files.cpp)
     target_include_directories(tptracker_seed_tests PRIVATE src)
     add_test(NAME tptracker_seed COMMAND tptracker_seed_tests "${CMAKE_CURRENT_SOURCE_DIR}/res/catalogue.json")
     add_executable(tptracker_map_interaction_tests tests/map_interaction_tests.cpp)

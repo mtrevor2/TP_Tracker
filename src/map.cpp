@@ -88,35 +88,10 @@ bool inspectFromMap(MapAction action,float x,float y) {
     if(!inspectionContext() || !checkHandler) return false;
     bool visible=true;
     if(svc_ui->is_any_document_visible(mod_ctx,&visible)!=MOD_OK || visible) return false;
-    auto point=action==MapAction::MouseClick ? mousePoint(x,y) : std::optional<MapScreenPoint>(inspection.cursor);
-    const auto name=point ? inspection.targets.hit(*point) : std::string{};
-    if(name.empty() || state->obtained.contains(name) || state->skipped.contains(name)) return false;
-    return checkHandler(name);
-}
-std::optional<MapHitRect> inspectionHint(J2DGrafContext* graf,float left,float top,const MapHitTargets& targets) {
-    // Rendering is read-only: it cannot clear targets, change ownership or
-    // disable input. Visibility controls only the returned overlay rectangle.
-    if(!showCheckInfoHint) return {};
-    bool visible=true;
-    if(!inspectionContext() || svc_ui->is_any_document_visible(mod_ctx,&visible)!=MOD_OK || visible) return {};
-    auto* font=mDoExt_getMesgFont(); if(!font) return {};
-    const auto point=hoverPoint();
-    const bool selected=point && !targets.hit(*point).empty();
-    auto fill=[&](float x,float y,float w,float h,JUtility::TColor color) { graf->setup2D(); J2DFillBox(x,y,w,h,color); };
-    float mouseX=0,mouseY=0;
-    const bool mouse=readMousePosition(mouseX,mouseY);
-    const float width=mouse ? 138.f : 181.f;
-    fill(left,top,width,22,JUtility::TColor(20,18,12,220));
-    fill(left+5,top+4,mouse ? 56.f : 32.f,14,JUtility::TColor(75,72,53,240));
-    if(!mouse) fill(left+49,top+4,49,14,JUtility::TColor(75,72,53,240));
-    const JUtility::TColor ink=selected ? JUtility::TColor(255,234,132,255) : JUtility::TColor(220,215,195,255);
-    J2DPrint text(font,ink,ink); text.setFontSize(8,10);
-    text.print(left+8,top+14,255,mouse ? "Left click" : "RT/R2");
-    if(!mouse) { text.print(left+40,top+14,255,"+"); text.print(left+52,top+14,255,"A/Cross"); }
-    text.print(left+(mouse ? 70 : 107),top+14,255,"Check Info");
-    // The hint itself is not a check and must not click through to an icon.
-    graf->setup2D();
-    return MapHitRect{left,top,left+width,top+22};
+    auto point=action==MapAction::MouseClick ? mousePoint(x,y) :
+               action==MapAction::KeyboardConfirm ? hoverPoint() : std::optional<MapScreenPoint>(inspection.cursor);
+    auto names=point ? inspection.targets.hit(*point) : std::vector<std::string>{};
+    return !names.empty() && checkHandler(names);
 }
 
 bool trackerMapCheck(const Json& check, bool accessibleOnly) {
@@ -246,55 +221,7 @@ void draw(ModContext*, void* args, void*, void*) {
     const float bottom = top + back->getMapScissorAreaSizeRealY();
     inspection.begin(active,dMenu_Fmap_c::MyClass,false,process==dMenu_Fmap_c::PROC_SPOT_MAP,
                      state->stage,{left,top,right,bottom},inspection.cursor);
-    if (process == dMenu_Fmap_c::PROC_ALL_MAP) {
-        std::map<std::string,std::set<std::string>> markerStages;
-        for (const auto& point : worldPositions)
-            markerStages[state->catalogue.at("checks")[point.check].at("name").get<std::string>()].insert(point.stage);
-        for (int r = 0; r < 8; ++r) {
-            auto* data = active->mpRegionData[r];
-            if (!data) continue;
-            std::set<std::string> stages;
-            for (auto* stage = data->getMenuFmapStageDataTop(); stage; stage = stage->getNextData())
-                stages.insert(stage->getStageName());
-            int total = 0, available = 0;
-            bool hasChecks=false;
-            for (const auto& check : state->catalogue.at("checks")) {
-                if (dungeonCheck(check) || !trackerMapCheck(check,mapAccessibleOnly) || !mapTypes[checkType(check)]) continue;
-                bool belongs = false;
-                // Count atlas markers (including exterior entrances), or native
-                // chest records. Unmapped hint/sign entries have no visible dot.
-                const auto marker=markerStages.find(check.at("name").get<std::string>());
-                if (marker!=markerStages.end()) for (const auto& stage : marker->second)
-                    belongs |= stages.contains(stage);
-                if (!belongs) for (const auto& flag : check.at("flags")) {
-                    if (flag.value("kind",std::string{})!="chest") continue;
-                    for (const auto& stage : check.at("stages")) belongs |= stages.contains(stage.get<std::string>());
-                }
-                if (!belongs) {
-                    const std::string checkName=check.at("name");
-                    auto points=exteriorStages.find(checkName);
-                    if (points!=exteriorStages.end()) for (const auto& stage : points->second)
-                        if (stages.contains(stage)) { belongs=true;break; }
-                }
-                if (!belongs) continue;
-                const std::string name = check.at("name");
-                hasChecks=true;
-                if (state->obtained.contains(name)) continue;
-                ++total;
-                auto a = state->accessible.find(name);
-                if (!state->obtained.contains(name) && a != state->accessible.end() && a->second == Truth::yes) ++available;
-            }
-            if (!hasChecks) continue;
-            const auto [x,y]=projection.screen(
-                back->mRegionMinMapX[r]+back->field_0xf0c[r]+back->mRegionMapSizeX[r]*back->mZoom*0.5f,
-                back->mRegionMinMapY[r]+back->field_0xf2c[r]+back->mRegionMapSizeY[r]*back->mZoom*0.5f);
-            if (!std::isfinite(x) || !std::isfinite(y)) continue;
-            fill(x-27,y-12,66,21,JUtility::TColor(20,18,12,220));
-            J2DPrint label(mDoExt_getMesgFont(),JUtility::TColor(110,245,140,255),JUtility::TColor(0,0,0,255));
-            label.setFontSize(11,14); label.print(x-24,y+3,255,"%d / %d",available,total);
-        }
-        return;
-    }
+    if (process == dMenu_Fmap_c::PROC_ALL_MAP) return;
     std::string hovered;
     bool hoverDone = false;
     JUtility::TColor hoverColor(255,255,255,255);
@@ -448,11 +375,10 @@ void draw(ModContext*, void* args, void*, void*) {
             picture.draw(x-12,y-16,24,24,false,false,false);
         }
         if(process==dMenu_Fmap_c::PROC_SPOT_MAP) {
-            std::string name;
-            if(remaining==1) for(const auto& candidate:group.checks) if(!state->obtained.contains(candidate)) name=candidate;
-            // Counts represent several checks, so never open an arbitrary one.
-            if(remaining>1 || group.label=="Coro") inspection.targets.add(x,y,3,3,name);
-            else inspection.targets.add(x,y-4,12,12,name);
+            std::vector<std::string> names;
+            for(const auto& candidate:group.checks) names.push_back(candidate);
+            if(remaining>1 || group.label=="Coro") inspection.targets.addGroup(x,y,6,6,std::move(names));
+            else inspection.targets.addGroup(x,y-4,12,12,std::move(names));
         }
         // Interior counts belong in the selected marker's hover tooltip only.
         float dx=x-cursor.x,dy=y-cursor.y,distance=dx*dx+dy*dy;
@@ -491,7 +417,17 @@ void draw(ModContext*, void* args, void*, void*) {
             J2DPrint count(mDoExt_getMesgFont(),JUtility::TColor(255,240,130,255),JUtility::TColor(0,0,0,255));
             count.setFontSize(10,12); count.print(x-width/2,y-19,255,"%s",label.c_str());
         }
-        if(process==dMenu_Fmap_c::PROC_SPOT_MAP) inspection.targets.add(x,y,16,16,"");
+        if(process==dMenu_Fmap_c::PROC_SPOT_MAP) {
+            std::vector<std::string> names;
+            for(const auto& check:state->catalogue.at("checks")) {
+                const auto& categories=check.at("categories");
+                const std::string name=check.at("name");
+                if(std::find(categories.begin(),categories.end(),temple.name)!=categories.end() &&
+                   trackerMapCheck(check,mapAccessibleOnly) && mapTypes[checkType(check)])
+                    names.push_back(name);
+            }
+            inspection.targets.addGroup(x,y,16,16,std::move(names));
+        }
         const float dx=x-cursor.x,dy=y-cursor.y,distance=dx*dx+dy*dy;
         if (distance<closest) {
             closest=distance; hoverDone=false;
@@ -499,22 +435,24 @@ void draw(ModContext*, void* args, void*, void*) {
             hovered=temple.name+" - "+std::to_string(available)+" checks available";
         }
     }
-    // Leave room for the native location-name banner above the map.
-    inspection.targets.setHint(inspectionHint(graf,left+12,top+48,inspection.targets));
+
     if (!hovered.empty()) {
-        // Wrap instead of letting long location names spill outside the map.
-        const auto split = hovered.size() > 48 ? hovered.rfind(' ',48) : std::string::npos;
-        std::string first = split == std::string::npos ? hovered : hovered.substr(0,split);
-        std::string second = split == std::string::npos ? "" : hovered.substr(split+1);
-        fill(left+12,bottom-66,right-left-24,58,JUtility::TColor(20,18,12,235));
+        const MapHitRect box{left+12,bottom-66,right-12,bottom-8};
+        fill(box.left,box.top,box.right-box.left,box.bottom-box.top,JUtility::TColor(20,18,12,235));
+        const bool hint=showCheckInfoHint && process==dMenu_Fmap_c::PROC_SPOT_MAP && !hoverDone;
+        const float hintWidth=hint ? 165.f : 0.f;
+        const float nameWidth=box.right-box.left-16-hintWidth;
+        // Reserve a right-hand column for the hint and wrap the check label inside its own column.
         J2DPrint text(mDoExt_getMesgFont(),hoverColor,hoverColor);
-        text.setFontSize(13,16);
-        text.print(left+20,bottom-43,255,"%s",first.c_str());
-        text.print(left+20,bottom-23,255,"%s",second.c_str());
-        if (hoverDone) {
-            fill(left+20,bottom-49,std::min<float>(first.size()*7,right-left-40),1,hoverColor);
-            if (!second.empty()) fill(left+20,bottom-29,std::min<float>(second.size()*7,right-left-40),1,hoverColor);
+        const float fontSize=std::min(13.f,std::max(7.f,2*nameWidth/std::max<size_t>(1,hovered.size())));
+        text.setFontSize(fontSize,16);
+        text.printReturn(hovered.c_str(),nameWidth,48,HBIND_LEFT,VBIND_TOP,box.left+8,box.top+8,255);
+        if(hint) {
+            const JUtility::TColor ink(235,225,190,255);
+            J2DPrint help(mDoExt_getMesgFont(),ink,ink); help.setFontSize(8,11);
+            help.print(box.right-157,box.top+23,255,"Click icon to open Check Info");
         }
+        if(process==dMenu_Fmap_c::PROC_SPOT_MAP) inspection.targets.setHint(box);
     }
 }
 void drawDungeonSummary(J2DGrafContext* graf,MapHitRect map,float opacity) {
@@ -668,13 +606,13 @@ void drawDungeon(ModContext*,void* args,void*,void*) {
         float x,y; if(project(pos,x,y)) {
             arenaDot(graf,x,y,available,alpha,false);
             if(inspection.owner && alpha>=250) {
-                std::string name;
-                if(remaining==1) for(auto index:arena.checks) {
+                std::vector<std::string> names;
+                for(auto index:arena.checks) {
                     const auto& check=state->catalogue.at("checks")[index];
                     const std::string candidate=check.at("name");
-                    if(trackerMapCheck(check,mapAccessibleOnly) && mapTypes[checkType(check)] && !state->obtained.contains(candidate)) name=candidate;
+                    if(trackerMapCheck(check,mapAccessibleOnly) && mapTypes[checkType(check)]) names.push_back(candidate);
                 }
-                inspection.targets.add(x,y,5,5,name);
+                inspection.targets.addGroup(x,y,6,6,std::move(names));
             }
         }
     }
@@ -689,7 +627,7 @@ void drawDungeon(ModContext*,void* args,void*,void*) {
             J2DFillBox(inspection.cursor.x-12,inspection.cursor.y-1,7,2,cyan); J2DFillBox(inspection.cursor.x+5,inspection.cursor.y-1,7,2,cyan);
             J2DFillBox(inspection.cursor.x-1,inspection.cursor.y-12,2,7,cyan); J2DFillBox(inspection.cursor.x-1,inspection.cursor.y+5,2,7,cyan);
         }
-        inspection.targets.setHint(inspectionHint(graf,originX+8,originY+8,inspection.targets));
+
     }
     drawDungeonSummary(graf,{originX,originY,originX+width,originY+height},opacity);
     graf->setup2D();

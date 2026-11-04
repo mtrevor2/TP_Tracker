@@ -5,9 +5,11 @@ union SDL_Event;
 namespace tracker {
 ModResult initializeInput();
 void resetInput();
-enum class MapAction { MouseClick, ControllerConfirm, Dismiss };
+enum class MapAction { MouseClick, ControllerConfirm, KeyboardConfirm, Dismiss };
 using MapActionHandler = bool (*)(MapAction,float,float);
 void setMapActionHandler(MapActionHandler handler);
+void setCheckBindings(int keyboard, int controller);
+bool checkBindingUses(int binding, bool controller);
 bool processInput(const SDL_Event& event);
 bool readMousePosition(float& x,float& y);
 bool readRightStick(int& x,int& y);
