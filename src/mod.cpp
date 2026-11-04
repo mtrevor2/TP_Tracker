@@ -413,6 +413,7 @@ void refreshSelectedSeed() {
             nextSeedProbe = std::chrono::steady_clock::now() + std::chrono::seconds(2);
             return;
         }
+        needsSeedLog = true;
         needsSeedLog = !tracker::loadSeedFolder(model, folder);
         status = needsSeedLog ? "Seed data found for " + hash + ". Choose the host's matching Anti-Spoiler Log to show reachable checks."
                               : "Seed: " + hash + " (selected save)";

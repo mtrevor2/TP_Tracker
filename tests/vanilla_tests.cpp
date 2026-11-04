@@ -50,6 +50,14 @@ int main(int argc,char** argv) {
     require(m.evaluate("'Howl_at_Death_Mountain_Howling_Stone'")==Truth::no,"howl requires saved event");
     m.inventory["Story Howl at Death Mountain Howling Stone"]=1;
     require(m.evaluate("'Howl_at_Death_Mountain_Howling_Stone'")==Truth::yes,"recorded howl unlocks wolf");
+    m.inventory["Story Can Warp"]=m.inventory["Story Midna Injured"]=1;
+    m.inventory["Shadow Crystal"]=0;
+    require(m.evaluate("Can_Use_Warp_Portals",2)==Truth::no,"injured Midna cannot warp");
+    require(m.evaluate("Can_Midna_Jump",2)==Truth::no,"injured Midna cannot jump");
+    m.inventory["Story Can Complete MDH"]=1;
+    require(m.evaluate("Can_Midna_Jump",2)==Truth::yes,"revived Midna can guide wolf to grove");
+    m.inventory["Shadow Crystal"]=1;
+    require(m.evaluate("Can_Use_Warp_Portals",2)==Truth::yes,"crystal restores warp access");
     std::set<unsigned> flags{0x2120,0x3c10};
     auto event=[&](unsigned f) { return flags.contains(f); };
     auto first=[](int) { return false; }; auto sw=[](int,int) { return false; };

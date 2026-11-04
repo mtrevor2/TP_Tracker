@@ -35,6 +35,8 @@ inline int vanillaCount(const Model& model, const std::string& key) {
 inline std::optional<Truth> vanillaEvent(const Model& model, std::string name) {
     if (!model.vanilla) return {};
     if(name.size()>1 && name.front()=='\'' && name.back()=='\'') name=name.substr(1,name.size()-2);
+    if(name=="Can Warp" && vanillaCount(model,"Story Midna Injured") && !vanillaCount(model,"Shadow Crystal")) return Truth::no;
+    if(name=="Can Midna Jump" && vanillaCount(model,"Story Midna Injured") && !vanillaCount(model,"Story Can Complete MDH")) return Truth::no;
     if(vanillaStoryEvents.contains(name) || name=="Can Complete Faron Twilight" ||
        name=="Can Complete Eldin Twilight" || name=="Can Complete Lanayru Twilight")
         return vanillaCount(model,"Story "+name)>0 ? Truth::yes : Truth::no;
@@ -85,6 +87,7 @@ inline std::string vanillaCheckRequirement(const Json& check) {
     if(name=="Coro Gate Key" || name=="Coro Bottle") return "Story_Can_Complete_Faron_Twilight and Human_Link";
     if(name=="Ordon Shield" || name=="Ordon Sword") return "Story_Returned_From_Prison and Wolf_Link";
     if(name=="Wrestling With Bo") return "Story_Epona_Rescued and Story_Can_Complete_Eldin_Twilight";
+    if(name=="Herding Goats Reward") return "Story_Epona_Rescued";
     if(name=="Barnes Bomb Bag" || name=="Kakariko Village Malo Mart Hawkeye") return "Story_Can_Complete_Goron_Mines";
     if(name=="Auru Gift To Fyer" || name=="Sacred Grove Pedestal Master Sword" || name=="Sacred Grove Pedestal Shadow Crystal") return "Story_Can_Complete_MDH";
     if(name=="Ashei Sketch" || name=="Gift From Ralis") return "Story_Can_Complete_Arbiters_Grounds";
