@@ -1,4 +1,10 @@
-# TPTracker 0.4.49
+# TPTracker 0.4.50
+
+## 0.4.50 Settings section headers
+
+The mod settings page now groups controls under native section headers: **Tracker**, **Open tracker bindings**, **Check Info bindings**, **Seed setup**, **Check filters**, **Map display**, **Map check types**, **Minimap check types**, and **Status and information**. The headings use Dusklight's existing styling and spacing.
+
+Release package: **TPTracker-0.4.50-multiplatform.dusk**, staged in **dist**.
 
 ## 0.4.49 Check Info controls and Normal Play
 

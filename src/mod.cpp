@@ -1364,11 +1364,17 @@ void typeGet(ModContext*,void* ptr,UiControlValue* v) { v->bool_value=*static_ca
 void typeSet(ModContext*,void* ptr,const UiControlValue* v) { savePreference(*static_cast<bool*>(ptr),v->bool_value); }
 ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     settingsStatus = 0;
+    auto result=svc_ui->pane_add_section(mod_ctx,pane,"Tracker");
+    if(result!=MOD_OK) return result;
     UiControlDesc control = UI_CONTROL_DESC_INIT;
     control.kind = UI_CONTROL_TOGGLE; control.label = "TPTracker"; control.get = toggleGet; control.set = toggleSet;
-    auto result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
+    result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
     if (result != MOD_OK) return result;
     for (int device=0;device<4;++device) {
+        if(device%2==0) {
+            result=svc_ui->pane_add_section(mod_ctx,pane,device>=2 ? "Check Info bindings" : "Open tracker bindings");
+            if(result!=MOD_OK) return result;
+        }
         control=UI_CONTROL_DESC_INIT; control.kind=UI_CONTROL_BUTTON;
         const bool controller=device%2!=0;
         control.label=device>=2 ? (controller ? "Check Info controller button" : "Check Info keyboard key")
@@ -1382,6 +1388,8 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
         result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
         if (result!=MOD_OK) return result;
     }
+    result=svc_ui->pane_add_section(mod_ctx,pane,"Seed setup");
+    if(result!=MOD_OK) return result;
     control = UI_CONTROL_DESC_INIT;
     control.kind = UI_CONTROL_BUTTON; control.label = "Load this save's seed log / JSON";
     control.on_pressed = [](ModContext*, void*) { openLogPicker(false); };
@@ -1389,6 +1397,8 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     control.help_rml="Randomizer saves use a matching seed log. Normal Play tracks your save's story progress automatically.";
     result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
     if (result != MOD_OK) return result;
+    result=svc_ui->pane_add_section(mod_ctx,pane,"Check filters");
+    if(result!=MOD_OK) return result;
     control = UI_CONTROL_DESC_INIT;
     control.kind = UI_CONTROL_STRING; control.label = "Filter checks"; control.get = searchGet; control.set = searchSet; control.max_length = 128;
     result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
@@ -1397,6 +1407,8 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     control.kind = UI_CONTROL_TOGGLE; control.label = "Hide completed checks"; control.get = hideGet; control.set = hideSet;
     result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
     if (result != MOD_OK) return result;
+    result=svc_ui->pane_add_section(mod_ctx,pane,"Map display");
+    if(result!=MOD_OK) return result;
     control = UI_CONTROL_DESC_INIT;
     control.kind = UI_CONTROL_TOGGLE; control.label = tracker::mapAvailable ? "Native map check markers" : "Map markers unavailable on this build"; control.get = mapGet; control.set = mapSet;
     result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
@@ -1427,12 +1439,18 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     if(result!=MOD_OK) return result;
     static const char* types[]={"Treasure chests","NPC / event rewards","Golden bugs","Poe souls","Golden wolves","Shop items","Owl statues","Grotto checks","Freestanding Rupees","Hidden Rupees"};
     for (int surface=0;surface<2;++surface) for (int i=0;i<tracker::checkTypeCount;++i) {
+        if(i==0) {
+            result=svc_ui->pane_add_section(mod_ctx,pane,surface ? "Minimap check types" : "Map check types");
+            if(result!=MOD_OK) return result;
+        }
         std::string label=std::string(surface ? "Minimap: " : "Map: ")+types[i];
         control=UI_CONTROL_DESC_INIT; control.kind=UI_CONTROL_TOGGLE; control.label=label.c_str();
         control.get=typeGet; control.set=typeSet; control.user_data=surface ? &tracker::minimapTypes[i] : &tracker::mapTypes[i];
         result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
         if (result!=MOD_OK) return result;
     }
+    result=svc_ui->pane_add_section(mod_ctx,pane,"Status and information");
+    if(result!=MOD_OK) return result;
     result = svc_ui->pane_add_text(mod_ctx, pane, status.c_str(), &settingsStatus);
     if (result != MOD_OK) return result;
     return svc_ui->pane_add_text(mod_ctx, pane,
