@@ -584,6 +584,51 @@ int main(int argc, char** argv) {
         }
         eldin.inventory["Shadow Crystal"]=0; eldin.solve();
         require(eldin.accessible.at("Eldin Lantern Cave Poe")!=Truth::yes,"Eldin Poe bypasses wolf access");
+        // Reach the rooftop as human, then use wolf senses at night. Keep the
+        // quest event and equipment requirements without requiring both forms.
+        auto villageData=data;
+        villageData["areas"]=Json::array();
+        for(const auto& area:data.at("areas")) {
+            const auto name=area.at("Name").get<std::string>();
+            if(name!="Root" && name!="Hidden Village" && name!="Kakariko Renados Sanctuary") continue;
+            auto isolated=area; isolated["Exits"]=Json::object();
+            if(name=="Root") {
+                isolated["Exits"]={{"Hidden Village","Human_Link"},{"Kakariko Renados Sanctuary","Human_Link"}};
+                isolated["Events"]={{"Can Refill Arrows","Nothing"}};
+            }
+            villageData["areas"].push_back(isolated);
+        }
+        Model village; village.load(villageData); village.seedLoaded=true; village.settings=warp.settings;
+        for(const auto& item:data.at("items")) village.inventory[item.at("Name")]=0;
+        for(const auto* item:{"Progressive Bow","Progressive Clawshot","Shadow Crystal","Ilias Charm"}) village.inventory[item]=1;
+        village.solve();
+        const Json* villagePoe=nullptr;
+        for(const auto& check:village.catalogue["checks"])
+            if(check["name"]=="Hidden Village Poe") villagePoe=&check;
+        require(villagePoe && village.accessible.at("Hidden Village Poe")==Truth::yes,"Hidden Village Poe requires human and wolf simultaneously");
+        require(mapCheckVisible(village,*villagePoe,true) && mapCheckVisible(village,*villagePoe,false),"Hidden Village Poe hidden by map accessibility filter");
+        village.skipped.insert("Hidden Village Poe");
+        require(!mapCheckVisible(village,*villagePoe,true) && !mapCheckVisible(village,*villagePoe,false),"skipped Hidden Village Poe remains visible");
+        village.skipped.clear(); village.obtained.insert("Hidden Village Poe");
+        require(!mapCheckVisible(village,*villagePoe,true),"collected Hidden Village Poe counted as available");
+        village.obtained.clear();
+        for(const auto* item:{"Progressive Bow","Progressive Clawshot","Shadow Crystal","Ilias Charm"}) {
+            village.inventory[item]=0; village.solve();
+            require(village.accessible.at("Hidden Village Poe")==Truth::no,"Hidden Village Poe bypasses required equipment/quest");
+            require(!mapCheckVisible(village,*villagePoe,true) && mapCheckVisible(village,*villagePoe,false),"locked Poe map filter incorrect");
+            village.inventory[item]=1;
+        }
+        village.settings["Logic Transform Anywhere"]="Off"; village.solve();
+        require(village.accessible.at("Hidden Village Poe")==Truth::no,"Hidden Village Poe ignores transform setting without a wolf route");
+        village.settings["Logic Transform Anywhere"]="On";
+        for(auto& area:village.catalogue["areas"]) if(area["Name"]=="Root")
+            area["Exits"]["Hidden Village"]="Human_Link and Day";
+        village.solve();
+        require(village.accessible.at("Hidden Village Poe")==Truth::no,"Hidden Village Poe bypasses nighttime requirement");
+        for(auto& area:village.catalogue["areas"]) if(area["Name"]=="Root")
+            area["Exits"]["Hidden Village"]="Impossible";
+        village.solve();
+        require(village.accessible.at("Hidden Village Poe")==Truth::no,"Hidden Village Poe bypasses area access");
         // The async worker must return the same area/event state that produced
         // OPEN/LOCKED, without overwriting notes, skips or the live inventory.
         auto worker=warp; worker.solve();

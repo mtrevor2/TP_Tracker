@@ -1,4 +1,51 @@
-# TPTracker 0.4.45
+# TPTracker 0.4.51
+
+## 0.4.51 Map description spacing
+
+- Check descriptions use the free space between the game's Move/Back prompts and collectible counters. When that space is too narrow, the description moves above the controls.
+- Placement follows the native panes after their current-frame layout, including HUD scaling and window resizing. Longer check names wrap, and **Click icon to open Check Info** retains its separate right-hand column at the closest map zoom.
+- Automated geometry checks cover the reported overlap, narrow and wide aspect ratios, larger control labels, HUD scaling and resizing. Live validation on the affected player's display is still needed.
+
+Release package: **TPTracker-0.4.51-multiplatform.dusk**, staged in **dist**.
+
+## 0.4.50 Settings section headers
+
+The mod settings page now groups controls under native section headers: **Tracker**, **Open tracker bindings**, **Check Info bindings**, **Seed setup**, **Check filters**, **Map display**, **Map check types**, **Minimap check types**, and **Status and information**. The headings use Dusklight's existing styling and spacing.
+
+Release package: **TPTracker-0.4.50-multiplatform.dusk**, staged in **dist**.
+
+## 0.4.49 Check Info controls and Normal Play
+
+- **Mods > TPTracker** now has separate Check Info keyboard and controller bindings. Assign a key, controller button, or trigger to replace RT/R2 + A/Cross. Mouse click always remains available. Clear both Check Info bindings to restore the default combination.
+- Interior, temple, boss-arena and coincident check markers open the same Check Details window with a tab for each included check. The native tab bar supports controller navigation and horizontal mouse-wheel scrolling for long groups.
+- The top-left Check Info banner is removed. At the closest overworld-map zoom, the bottom description box shows **Click icon to open Check Info** to the right of the check name. The existing hint visibility preference still applies.
+- The kingdom overview no longer displays floating available/total check boxes. The dungeon-map summary retains its existing visibility setting.
+- Choosing normal **Play** enables tracking without a randomizer log. Native inventory and saved story milestones control availability, including twilight, dungeon completion, the Master Sword sequence, hidden skills and later quests. Native collection adapters avoid repurposed randomizer flags. Repeatable loose rupees, refillable shop stock and randomizer-only rewards are excluded from Normal Play.
+- Every package build stages a versioned copy in the repository's **dist** folder. Local builds use **TPTracker-0.4.49-windows-amd64.dusk** on Windows; the combined release uses **TPTracker-0.4.49-multiplatform.dusk** only after all seven native platforms are present. `python tools/stage_package.py <package.dusk>` validates and stages downloaded builds as well.
+
+Includes the Crests guest setup below. Automated checks cover input reassignment, stacked targets, native story gates and collection adapters. A complete native playthrough and physical controller validation are still needed.
+
+## 0.4.48 Crests of Courage guest setup
+
+When Crests of Courage has transferred the host's `seed.dat`, open **TPTracker → Current Area** or **All Checks**. If the active save still needs seed settings, **Choose log** opens a file picker. Ask the host for `<seed name> Anti-Spoiler Log.txt`. You can select it directly from Downloads. TPTracker checks the seed hash inside the log against the selected save slot before applying settings. A mismatch shows both seed names and leaves **Choose log** available to retry.
+
+For a new randomizer slot, save in-game once so TPTracker can identify its seed. After importing, save in-game to keep the settings with that slot. TPTracker reads shuffled entrance routes from the matching `seed.dat`. The anti-spoiler log supplies settings without revealing reward placements.
+
+## 0.4.47 responsive dungeon check counts
+
+- The **Dungeon checks** panel stays outside the dungeon map. It keeps the full right-side layout when space permits and uses two compact Accessible/Remaining rows above the native item column on narrower screens.
+- Placement follows the game's rendered pane transforms and current viewport, including resizing and widescreen HUD scaling. The compact layout clears the dungeon title, item icons and floor selector. Both layouts count checks across all floors and use the existing visibility toggle.
+- Automated layout coverage includes 4:3, 16:10, 16:9, 21:9, 32:9, square and portrait viewports, plus resizing at the layout breakpoint. The Hidden Village Poe fix from 0.4.46 is included.
+
+Release package: **TPTracker-0.4.47-multiplatform.dusk**. Native display/device validation remains separate from the automated geometry, input and logic checks.
+
+## 0.4.46 Hidden Village Poe accessibility fix
+
+- Fixes the **Hidden Village Poe** incorrectly staying LOCKED and disappearing from the in-game map and minimap when **Show Accessible Only** is enabled. The logic now allows the human Bow/Clawshot actions before switching to wolf senses at night, instead of requiring both forms simultaneously.
+- Preserves the seed's entrance and transformation rules, Ilia's Charm quest requirement, equipment requirements, map category filters, and collection/skip state. The Poe's existing native marker coordinates are unchanged.
+- Regression tests reproduce the old failure and verify the corrected availability plus missing-item, quest, nighttime and area-access restrictions. Live gameplay with the affected save has not been verified.
+
+Release package: **TPTracker-0.4.46-multiplatform.dusk**. This is a catalogue-only runtime update and retains the validated 0.4.45 native binaries for all seven platforms.
 
 ## 0.4.45 shared input hook crash fix
 

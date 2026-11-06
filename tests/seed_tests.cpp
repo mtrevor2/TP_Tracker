@@ -1,12 +1,58 @@
 #include "model.hpp"
 #include "seed_data.hpp"
+#include "seed.hpp"
 #include "entrance_journal.hpp"
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 using namespace tracker;
 void require(bool value,const char* message) { if(!value) throw std::runtime_error(message); }
 std::string read(const char* path) { std::ifstream in(path); std::ostringstream text; text<<in.rdbuf(); return text.str(); }
+void testGuestSetup(const Json& catalogue, const std::string& native) {
+    namespace fs = std::filesystem;
+    const auto root = fs::temp_directory_path() / ("tptracker-guest-" +
+        std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    require(fs::create_directory(root), "could not create guest fixture");
+    struct Cleanup { fs::path root; ~Cleanup() { std::error_code ec; fs::remove_all(root, ec); } } cleanup{root};
+    const auto sidecar = root / "randomizer.json";
+    std::ofstream(sidecar) << R"({"slots":[{"blobs":{"seed_hash":"U29sbw=="}},{"blobs":{"seed_hash":"SG9zdA=="}}]})";
+    const auto folder = seedFolderForSlot(root, sidecar, 1);
+    require(folder.filename() == "Host" && seedFolderForSlot(root, sidecar, 0).filename() == "Solo",
+            "guest identity did not follow the active slot");
+    fs::create_directories(folder);
+    std::ofstream(folder / "seed.dat") << native;
+    const std::string settings = "\n# Settings\nLogic Rules: All Locations Reachable\nRandomize Overworld Entrances: On\nDecouple Double Door Entrances: On\n";
+    const auto external = root / "Host Anti-Spoiler Log.txt";
+    std::ofstream(external) << "Hash: Solo" << settings;
+    Model guest; guest.load(catalogue);
+    guest.obtained.insert("Wooden Sword Chest");
+    require(!loadSeedFolder(guest, folder), "native file alone reported ready");
+    std::string error;
+    try { importSelectedLog(guest, readSeedMetadata(external), folder); }
+    catch (const std::exception& e) { error = e.what(); }
+    require(error.find("Host") != std::string::npos && error.find("Solo") != std::string::npos &&
+            !guest.seedLoaded && guest.settings.empty() && guest.obtained.contains("Wooden Sword Chest"),
+            "wrong log with the expected filename changed the guest tracker");
+    guest.loadSeed("Hash: Solo" + settings);
+    require(!loadSeedFolder(guest, folder), "journal from a different seed satisfied the guest prompt");
+    std::ofstream(external) << "Hash: Host" << settings;
+    importSelectedLog(guest, readSeedMetadata(external), folder);
+    require(guest.seed == "Host" && guest.entrancesComplete && !guest.entranceTargets.empty() &&
+            guest.itemPlacements.empty() && guest.visitedEntrances.empty() && guest.obtained.size() == 1,
+            "external anti-spoiler log lost native routes, disclosed items or changed progress");
+    Model restored; restored.load(catalogue);
+    restored.loadSeed(Json{{"seed", guest.seed}, {"settings", guest.settings}}.dump());
+    require(loadSeedFolder(restored, folder) && restored.entranceTargets == guest.entranceTargets,
+            "saved guest settings did not restore routes without re-selecting the external log");
+    std::ofstream(folder / external.filename()) << readSeedMetadata(external);
+    restored.resetSave();
+    require(loadSeedFolder(restored, folder) && restored.seed == "Host", "automatic anti-spoiler lookup failed");
+    std::ofstream(folder / "seed.dat") << "formatVersion: 30\n";
+    bool unsupported = false;
+    try { loadSeedFolder(restored, folder); } catch (const std::exception&) { unsupported = true; }
+    require(unsupported, "unsupported native data triggered guest setup");
+}
 int main(int argc,char** argv) { try {
     require(argc>=2,"missing catalogue"); auto data=Json::parse(read(argv[1]));
     Model model; model.load(data);
@@ -76,6 +122,7 @@ int main(int argc,char** argv) { try {
     require(!doubled.entrancesComplete,"duplicate destination labels guessed without native data");
     std::string native="formatVersion: 3\nmEntranceOverrides:\n";
     for(const auto& e:doors) native+="  "+std::to_string(nativeEntranceKey(e))+": "+std::to_string(nativeEntranceKey(e))+"\n";
+    testGuestSetup(repeated, native);
     doubled.loadNativeEntrances(native);
     require(doubled.entrancesComplete && doubled.entranceTargets.size()==6,"native tuples did not resolve every decoupled door");
     for(const auto& e:doors) require(doubled.entranceTargets.at(e.at("id"))==e.at("id").get<std::string>(),"decoupled physical door routed incorrectly");

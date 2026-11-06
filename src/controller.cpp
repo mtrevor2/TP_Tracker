@@ -10,9 +10,7 @@ namespace tracker {
 namespace {
 std::array<bool,SDL_SCANCODE_COUNT> keys{};
 struct Pad { std::array<bool,SDL_GAMEPAD_BUTTON_COUNT> buttons{}; std::array<int,SDL_GAMEPAD_AXIS_COUNT> axes{}; };
-bool mapChordDown(const Pad& pad) {
- return pad.buttons[SDL_GAMEPAD_BUTTON_SOUTH] && pad.axes[SDL_GAMEPAD_AXIS_RIGHT_TRIGGER]>12000;
-}
+int checkKeyboard=0, checkController=0;
 std::map<SDL_JoystickID,Pad> pads;
 bool focused=true;
 // Mouse motion can be Steam Input gyro, indistinguishable from a real mouse.
@@ -46,8 +44,26 @@ int scan(int b) {
  default:return 0;
  }
 }
+bool padBindingDown(const Pad& pad,int binding) {
+ if(binding>0 && binding<15) return pad.buttons[buttons[binding]];
+ if(binding==15) return pad.axes[SDL_GAMEPAD_AXIS_LEFT_TRIGGER]>3855;
+ if(binding==16) return pad.axes[SDL_GAMEPAD_AXIS_RIGHT_TRIGGER]>3855;
+ return binding>=100 && binding<100+SDL_GAMEPAD_BUTTON_COUNT && pad.buttons[binding-100];
+}
+bool mapChordDown(const Pad& pad) {
+ if(checkController) return padBindingDown(pad,checkController);
+ return !checkKeyboard && pad.buttons[SDL_GAMEPAD_BUTTON_SOUTH] && pad.axes[SDL_GAMEPAD_AXIS_RIGHT_TRIGGER]>12000;
+}
 }
 void setMapActionHandler(MapActionHandler handler) { mapActionHandler=handler; }
+void setCheckBindings(int keyboard,int controller) { checkKeyboard=keyboard; checkController=controller; }
+bool checkBindingUses(int binding,bool controller) {
+ if(!binding) return false;
+ if(!controller) return checkKeyboard && scan(binding)==scan(checkKeyboard);
+ if(!checkKeyboard && !checkController) return binding==1 || binding==16 || binding==100;
+ auto button=[](int b) { return b>0 && b<15 ? buttons[b]+100 : b; };
+ return checkController && button(binding)==button(checkController);
+}
 void resetInput() { keys.fill(false); pads.clear(); mouseValid=mouseHeld=false; mouseActive=true; }
 bool readMousePosition(float& x,float& y) { x=mouseX; y=mouseY; return focused && mouseValid && mouseActive; }
 bool processInput(const SDL_Event& e) {
@@ -59,9 +75,13 @@ bool processInput(const SDL_Event& e) {
  }
  else if(focused) {
   if(e.type==SDL_EVENT_KEY_DOWN || e.type==SDL_EVENT_KEY_UP) {
+   const bool edge=e.type==SDL_EVENT_KEY_DOWN && !e.key.repeat &&
+       e.key.scancode>0 && e.key.scancode<SDL_SCANCODE_COUNT && !keys[e.key.scancode];
    if(e.key.scancode>0 && e.key.scancode<SDL_SCANCODE_COUNT) keys[e.key.scancode]=e.type==SDL_EVENT_KEY_DOWN;
-   if(e.type==SDL_EVENT_KEY_DOWN && !e.key.repeat && e.key.scancode==SDL_SCANCODE_ESCAPE && mapActionHandler)
-    return mapActionHandler(MapAction::Dismiss,0,0);
+   if(edge && mapActionHandler) {
+    if(e.key.scancode==SDL_SCANCODE_ESCAPE && mapActionHandler(MapAction::Dismiss,0,0)) return true;
+    if(checkKeyboard && e.key.scancode==scan(checkKeyboard)) return mapActionHandler(MapAction::KeyboardConfirm,0,0);
+   }
   } else if(e.type==SDL_EVENT_GAMEPAD_BUTTON_DOWN || e.type==SDL_EVENT_GAMEPAD_BUTTON_UP) {
    if(e.gbutton.button<SDL_GAMEPAD_BUTTON_COUNT) {
     auto& pad=pads[e.gbutton.which];
@@ -114,10 +134,7 @@ bool shortcutDown(int keyboard,int controller) {
  const int s=scan(keyboard);
  if(s>0 && s<SDL_SCANCODE_COUNT && keys[s]) return true;
  for(const auto& [id,p]:pads) {
-  if(controller>0 && controller<15 && p.buttons[buttons[controller]]) return true;
-  if(controller==15 && p.axes[SDL_GAMEPAD_AXIS_LEFT_TRIGGER]>3855) return true;
-  if(controller==16 && p.axes[SDL_GAMEPAD_AXIS_RIGHT_TRIGGER]>3855) return true;
-  if(controller>=100 && controller<100+SDL_GAMEPAD_BUTTON_COUNT && p.buttons[controller-100]) return true;
+  if(padBindingDown(p,controller)) return true;
  }
  return false;
 }

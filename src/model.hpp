@@ -52,12 +52,14 @@ struct Model {
     std::map<std::string, std::set<std::string>> areaStages;
     std::map<std::string, std::set<std::string>> exteriorCheckStages;
     bool seedLoaded = false;
+    bool vanilla = false;
     bool shuffled = false;
     bool entrancesComplete = false;
 
     void load(const Json& data);
     void loadExteriorChecks(const Json& positions);
     void loadSeed(const std::string& text);
+    void loadVanilla();
     void applySeedData(const std::string& text);
     void loadNativeEntrances(const std::string& text);
     void resetSave();

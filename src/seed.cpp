@@ -3,29 +3,11 @@
 #include "m_Do/m_Do_MemCard.h"
 #include <aurora/card.h>
 #include <dolphin/dvd.h>
-#include <fstream>
 #include <chrono>
 namespace tracker {
-namespace {
-std::string read(const std::filesystem::path& path) {
-    std::ifstream in(path, std::ios::binary | std::ios::ate);
-    if (!in || in.tellg() < 0 || in.tellg() > 2 * 1024 * 1024) throw std::runtime_error("Seed metadata unavailable: " + path.generic_string());
-    std::string text(static_cast<size_t>(in.tellg()), '\0');
-    in.seekg(0); if (!in.read(text.data(), text.size())) throw std::runtime_error("Incomplete seed metadata: " + path.generic_string());
-    return text;
-}
-std::string decode(const std::string& value) {
-    constexpr std::string_view alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    std::string out; unsigned bits = 0; int count = 0;
-    for (char c : value) {
-        if (c == '=') break;
-        auto pos = alphabet.find(c);
-        if (pos == std::string_view::npos) throw std::runtime_error("Invalid saved seed hash");
-        bits = (bits << 6) | static_cast<unsigned>(pos); count += 6;
-        if (count >= 8) { count -= 8; out += static_cast<char>((bits >> count) & 255); }
-    }
-    return out;
-}
+bool normalPlayActive() {
+    const char* name=mDoMemCd_GetFileName();
+    return name && std::string_view(name)=="gczelda2";
 }
 bool backupSelectedCard(const std::filesystem::path& destination, std::string& error) {
     try {
@@ -44,7 +26,7 @@ bool backupSelectedCard(const std::filesystem::path& destination, std::string& e
         const auto key = maker + "-" + game + "-" + filename;
         auto card = std::filesystem::u8path(path) / (key + ".gci");
         if (!std::filesystem::exists(card)) return false;
-        auto content = read(card);
+        auto content = readSeedMetadata(card);
         if (content.size() != 0x8040) throw std::runtime_error("Unexpected card size; backup skipped");
         static std::string previous;
         if (previous == content) return true;
@@ -60,53 +42,23 @@ bool backupSelectedCard(const std::filesystem::path& destination, std::string& e
         return true;
     } catch (const std::exception& e) { error = e.what(); return false; }
 }
-bool loadSiblingEntrances(Model& model, const std::filesystem::path& logPath, std::string& error) {
-    error.clear();
-    if(!model.shuffled || logPath.parent_path().filename()!=std::filesystem::u8path(model.seed)) return false;
-    try {
-        const auto native=logPath.parent_path()/"seed.dat";
-        if(!std::filesystem::exists(native)) return false;
-        model.loadNativeEntrances(read(native)); return true;
-    } catch(const std::exception& e) { error=e.what(); return false; }
-}
-bool loadSelectedSeed(Model& model, const std::filesystem::path& dataRoot, std::string& error) {
-    try {
-        const int slot = dComIfGs_getDataNum();
-        if (slot < 0 || slot >= 3) return false;
-        const auto type = aurora_card_get_type(0);
-        if (type == AURORA_CARD_UNAVAILABLE) return false;
-        const auto* disk = DVDGetCurrentDiskID();
-        if (!disk) return false;
-        const std::string game(disk->gameName, 4), maker(disk->company, 2);
-        const char* filename = mDoMemCd_GetFileName();
-        if (!filename || !*filename) return false;
-        auto safe = [](const std::string& s) { return !s.empty() && s != "." && s != ".." && s.find_first_of("/\\:") == std::string::npos; };
-        if (!safe(filename)) return false;
-        size_t size = aurora_card_get_path(game.c_str(), type, 0, nullptr, 0);
-        if (!size || size > 32768) return false;
-        std::string path(size, '\0');
-        if (aurora_card_get_path(game.c_str(), type, 0, path.data(), size) != size) return false;
-        path.resize(size - 1);
-        const std::string key = maker + "-" + game + "-" + filename;
-        auto sidecar = type == AURORA_CARD_GCI_DIRECTORY
-            ? std::filesystem::u8path(path) / (key + ".mods")
-            : std::filesystem::u8path(path + ".mods") / key;
-        auto data = Json::parse(read(sidecar / "dev.twilitrealm.randomizer.json"));
-        const auto hash = decode(data.at("slots").at(slot).at("blobs").at("seed_hash").get<std::string>());
-        if (!safe(hash)) throw std::runtime_error("Invalid seed folder name");
-        auto folder = dataRoot / "dev.twilitrealm.randomizer" / "seeds" / hash;
-        auto seedData = read(folder / "seed.dat");
-        if (!seedData.starts_with("formatVersion: 3")) throw std::runtime_error("Unsupported seed.dat version");
-        Model candidate = model;
-        // Full logs supply routes and retrospective item history. Inventory and
-        // completion always come from the live save, never from placements.
-        auto log = folder / (hash + " Spoiler Log.txt");
-        if (!std::filesystem::exists(log)) log = folder / (hash + " Anti-Spoiler Log.txt");
-        candidate.loadSeed(read(log));
-        if (candidate.seed != hash) throw std::runtime_error("Seed log does not match selected save");
-        if(candidate.shuffled) candidate.loadNativeEntrances(seedData);
-        model = std::move(candidate);
-        return true;
-    } catch (const std::exception& e) { error = e.what(); return false; }
+std::filesystem::path selectedSeedFolder(const std::filesystem::path& dataRoot, int slot) {
+    if (slot < 0 || slot >= 3) return {};
+    const auto type = aurora_card_get_type(0);
+    const auto* disk = DVDGetCurrentDiskID();
+    const char* filename = mDoMemCd_GetFileName();
+    if (type == AURORA_CARD_UNAVAILABLE || !disk || !filename || !*filename ||
+        std::string_view(filename).find_first_of("/\\:") != std::string_view::npos) return {};
+    const std::string game(disk->gameName, 4), maker(disk->company, 2);
+    size_t size = aurora_card_get_path(game.c_str(), type, 0, nullptr, 0);
+    if (!size || size > 32768) return {};
+    std::string path(size, '\0');
+    if (aurora_card_get_path(game.c_str(), type, 0, path.data(), size) != size) return {};
+    path.resize(size - 1);
+    const std::string key = maker + "-" + game + "-" + filename;
+    auto sidecar = type == AURORA_CARD_GCI_DIRECTORY
+        ? std::filesystem::u8path(path) / (key + ".mods")
+        : std::filesystem::u8path(path + ".mods") / key;
+    return seedFolderForSlot(dataRoot, sidecar / "dev.twilitrealm.randomizer.json", slot);
 }
 }
