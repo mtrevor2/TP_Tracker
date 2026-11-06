@@ -32,6 +32,7 @@ extern "C" ModContext* mod_ctx;
 DEFINE_HOOK_SYMBOL("src/dusk/mouse.cpp#dusk::mouse::should_capture_mouse", bool(SDL_Window*), TrackerMapMouseCapture);
 DEFINE_HOOK_SYMBOL("src/dusk/mouse.cpp#dusk::mouse::should_show_cursor", bool(bool), TrackerMapMouseCursor);
 DEFINE_HOOK_SYMBOL("dMenu_Fmap2DBack_c::draw", void(dMenu_Fmap2DBack_c*), TrackerMapBackDraw);
+DEFINE_HOOK_SYMBOL("dMenu_Fmap2DTop_c::draw", void(dMenu_Fmap2DTop_c*), TrackerMapTopDraw);
 
 DEFINE_HOOK_SYMBOL("dMenuMapCommon_c::drawIcon", void(dMenuMapCommon_c*,f32,f32,f32,f32), TrackerDungeonIcons);
 DEFINE_HOOK_SYMBOL("dMeterMap_c::draw", void(dMeterMap_c*), TrackerMiniDraw);
@@ -50,6 +51,37 @@ Model* state = nullptr;
 MapCheckHandler checkHandler=nullptr;
 bool (*closeCheckHandler)()=nullptr;
 MapInspectionFrame inspection;
+struct FieldMapDescription {
+    dMenu_Fmap_c* owner;
+    MapHitRect map;
+    std::string text;
+    JUtility::TColor color;
+    bool hint;
+};
+std::optional<FieldMapDescription> fieldDescription;
+
+MapHitRect paneBounds(J2DPane* pane) {
+    // getGlbBounds omits parent/HUD scaling. Use the rendered matrix.
+    const auto& b=pane->getBounds();
+    auto m=pane->getGlbMtx();
+    MapHitRect result{INFINITY,INFINITY,-INFINITY,-INFINITY};
+    for(float x:{b.i.x,b.f.x}) for(float y:{b.i.y,b.f.y}) {
+        const float sx=m[0][0]*x+m[0][1]*y+m[0][3];
+        const float sy=m[1][0]*x+m[1][1]*y+m[1][3];
+        result.left=std::min(result.left,sx); result.right=std::max(result.right,sx);
+        result.top=std::min(result.top,sy); result.bottom=std::max(result.bottom,sy);
+    }
+    return result;
+}
+
+void collectPaneObstacles(J2DPane* pane,std::vector<MapHitRect>& obstacles) {
+    if(!pane || !pane->isVisible() || !pane->getAlpha()) return;
+    // Null grouping panes can cover most of the screen; reserve their visible
+    // pictures/text instead, including button labels and their shadow layers.
+    if(pane->getTypeID()!=16) obstacles.push_back(paneBounds(pane));
+    for(auto* child=pane->getFirstChildPane();child;child=child->getNextChildPane())
+        collectPaneObstacles(child,obstacles);
+}
 using WindowSizeFn=AuroraWindowSize (*)();
 WindowSizeFn windowSize=nullptr;
 bool inspectionContext() {
@@ -187,6 +219,7 @@ std::map<std::pair<int,int>, std::vector<size_t>> flagIndex;
 void draw(ModContext*, void* args, void*, void*) {
     auto* back = mods::arg<dMenu_Fmap2DBack_c*>(args, 0);
     drawingFieldMap=nullptr;
+    fieldDescription.reset();
     // The game sets this in the constructor and clears it in the destructor.
     // _delete() is empty and cannot safely be used as a lifetime hook.
     auto* active = dMenu_Fmap_c::MyClass;
@@ -437,23 +470,51 @@ void draw(ModContext*, void* args, void*, void*) {
     }
 
     if (!hovered.empty()) {
-        const MapHitRect box{left+12,bottom-66,right-12,bottom-8};
-        fill(box.left,box.top,box.right-box.left,box.bottom-box.top,JUtility::TColor(20,18,12,235));
         const bool hint=showCheckInfoHint && process==dMenu_Fmap_c::PROC_SPOT_MAP && !hoverDone;
-        const float hintWidth=hint ? 165.f : 0.f;
-        const float nameWidth=box.right-box.left-16-hintWidth;
-        // Reserve a right-hand column for the hint and wrap the check label inside its own column.
-        J2DPrint text(mDoExt_getMesgFont(),hoverColor,hoverColor);
-        const float fontSize=std::min(13.f,std::max(7.f,2*nameWidth/std::max<size_t>(1,hovered.size())));
-        text.setFontSize(fontSize,16);
-        text.printReturn(hovered.c_str(),nameWidth,48,HBIND_LEFT,VBIND_TOP,box.left+8,box.top+8,255);
-        if(hint) {
-            const JUtility::TColor ink(235,225,190,255);
-            J2DPrint help(mDoExt_getMesgFont(),ink,ink); help.setFontSize(8,11);
-            help.print(box.right-157,box.top+23,255,"Click icon to open Check Info");
-        }
-        if(process==dMenu_Fmap_c::PROC_SPOT_MAP) inspection.targets.setHint(box);
+        fieldDescription=FieldMapDescription{active,{left,top,right,bottom},std::move(hovered),hoverColor,hint};
     }
+}
+
+void drawFieldDescription(ModContext*,void* args,void*,void*) {
+    auto* top=mods::arg<dMenu_Fmap2DTop_c*>(args,0);
+    auto* active=dMenu_Fmap_c::MyClass;
+    if(!active || active->mpDraw2DTop!=top) return;
+    const auto description=std::move(fieldDescription);
+    fieldDescription.reset();
+    if(!mapEnabled || !state || !description || description->owner!=active || !top->mpTitleScreen || top->mpScrnExplain) return;
+    const auto process=active->mProcess;
+    if(process!=dMenu_Fmap_c::PROC_REGION_MAP && process!=dMenu_Fmap_c::PROC_SPOT_MAP) return;
+    auto* graf=dComIfGp_getCurrentGrafPort();
+    auto* font=mDoExt_getMesgFont();
+    if(!graf || !font) return;
+    // The foreground draw has now applied fMapTopWide and parent transforms
+    // for this frame. Measuring here also handles an immediate window resize.
+    std::vector<MapHitRect> obstacles;
+    collectPaneObstacles(top->mpTitleScreen->search(MULTI_CHAR('btn_i_n')),obstacles);
+    collectPaneObstacles(top->mpTitleScreen->search(MULTI_CHAR('cont_n')),obstacles);
+    // The enhanced-map Poe counter is drawn separately from the pane tree.
+    // Reserve its native column even before that counter becomes visible.
+    const float poeX=top->mTransX+mDoGph_gInf_c::ScaleHUDXRight(485.f);
+    obstacles.push_back({poeX-35,355,poeX+65,395});
+    const auto layout=fieldMapDescriptionLayout(description->map,obstacles);
+    if(!layout) return;
+    const auto box=*layout;
+    graf->setup2D();
+    J2DFillBox(box.left,box.top,box.right-box.left,box.bottom-box.top,JUtility::TColor(20,18,12,235));
+    const float hintWidth=description->hint ? 128.f : 0.f;
+    const float nameWidth=box.right-box.left-16-hintWidth;
+    // Two readable lines for longer names; the hint keeps its own right column.
+    J2DPrint text(font,0,18,description->color,description->color,0,0xffffffff);
+    const float fontSize=std::min(13.f,std::max(9.f,4*nameWidth/std::max<size_t>(1,description->text.size())));
+    text.setFontSize(fontSize,16);
+    text.printReturn(description->text.c_str(),nameWidth,42,HBIND_LEFT,VBIND_TOP,box.left+8,box.top+8,255);
+    if(description->hint) {
+        const JUtility::TColor ink(235,225,190,255);
+        J2DPrint help(font,0,14,ink,ink,0,0xffffffff); help.setFontSize(8,11);
+        help.printReturn("Click icon to open Check Info",120,42,HBIND_LEFT,VBIND_TOP,box.right-128,box.top+10,255);
+    }
+    graf->setup2D();
+    if(process==dMenu_Fmap_c::PROC_SPOT_MAP) inspection.targets.setHint(box);
 }
 void drawDungeonSummary(J2DGrafContext* graf,MapHitRect map,float opacity) {
     if(!showDungeonSummary || opacity<0.99f) return;
@@ -474,20 +535,6 @@ void drawDungeonSummary(J2DGrafContext* graf,MapHitRect map,float opacity) {
     auto* itemPane=base ? base->search(MULTI_CHAR('map_n')) : nullptr;
     MapHitRect compactSlot{};
     if(titlePane && itemPane) {
-        // getGlbBounds omits parent/HUD scaling. Use the matrix actually used
-        // to draw each pane, including widescreen placement and translation.
-        auto paneBounds=[](J2DPane* pane) {
-            const auto& b=pane->getBounds();
-            auto m=pane->getGlbMtx();
-            MapHitRect result{INFINITY,INFINITY,-INFINITY,-INFINITY};
-            for(float x:{b.i.x,b.f.x}) for(float y:{b.i.y,b.f.y}) {
-                const float sx=m[0][0]*x+m[0][1]*y+m[0][3];
-                const float sy=m[1][0]*x+m[1][1]*y+m[1][3];
-                result.left=std::min(result.left,sx); result.right=std::max(result.right,sx);
-                result.top=std::min(result.top,sy); result.bottom=std::max(result.bottom,sy);
-            }
-            return result;
-        };
         const auto title=paneBounds(titlePane);
         const auto item=paneBounds(itemPane);
         const float center=(item.left+item.right)/2;
@@ -836,10 +883,11 @@ ModResult initializeMap(Model* model) {
     if(dungeonResult!=MOD_OK) return dungeonResult;
     const auto mapBefore=mods::hook::add_pre<TrackerMapBackDraw>(beforeFieldMap);
     const auto mapAfter=mods::hook::add_post<TrackerMapBackDraw>(draw);
-    mapAvailable = mapBefore==MOD_OK && mapAfter==MOD_OK && mapPicture==MOD_OK;
+    const auto mapTop=mods::hook::add_post<TrackerMapTopDraw>(drawFieldDescription);
+    mapAvailable = mapBefore==MOD_OK && mapAfter==MOD_OK && mapPicture==MOD_OK && mapTop==MOD_OK;
     if (!mapAvailable) shutdownMap();
-    return mapBefore!=MOD_OK ? mapBefore : mapAfter!=MOD_OK ? mapAfter : mapPicture;
+    return mapBefore!=MOD_OK ? mapBefore : mapAfter!=MOD_OK ? mapAfter : mapPicture!=MOD_OK ? mapPicture : mapTop;
 }
-void shutdownMap() { inspection.clear(); checkHandler=nullptr; closeCheckHandler=nullptr; windowSize=nullptr; setMapActionHandler(nullptr); state = nullptr; mapAvailable = false; flagIndex.clear(); chestTexture.clear(); doneTexture.clear(); iconTextures.clear(); localPositions.clear(); worldPositions.clear(); temples.clear(); arenaEntrances.clear(); exteriorStages.clear(); drawingMeter=nullptr; drawingFieldMap=nullptr; fieldMapMirrored=false; minimapAvailable=false; }
+void shutdownMap() { fieldDescription.reset(); inspection.clear(); checkHandler=nullptr; closeCheckHandler=nullptr; windowSize=nullptr; setMapActionHandler(nullptr); state = nullptr; mapAvailable = false; flagIndex.clear(); chestTexture.clear(); doneTexture.clear(); iconTextures.clear(); localPositions.clear(); worldPositions.clear(); temples.clear(); arenaEntrances.clear(); exteriorStages.clear(); drawingMeter=nullptr; drawingFieldMap=nullptr; fieldMapMirrored=false; minimapAvailable=false; }
 }
 

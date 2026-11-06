@@ -1,4 +1,12 @@
-# TPTracker 0.4.50
+# TPTracker 0.4.51
+
+## 0.4.51 Map description spacing
+
+- Check descriptions use the free space between the game's Move/Back prompts and collectible counters. When that space is too narrow, the description moves above the controls.
+- Placement follows the native panes after their current-frame layout, including HUD scaling and window resizing. Longer check names wrap, and **Click icon to open Check Info** retains its separate right-hand column at the closest map zoom.
+- Automated geometry checks cover the reported overlap, narrow and wide aspect ratios, larger control labels, HUD scaling and resizing. Live validation on the affected player's display is still needed.
+
+Release package: **TPTracker-0.4.51-multiplatform.dusk**, staged in **dist**.
 
 ## 0.4.50 Settings section headers
 

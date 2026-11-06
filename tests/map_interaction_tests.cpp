@@ -54,6 +54,47 @@ int main() {
  auto overlaps=[](MapHitRect a,MapHitRect b) {
   return a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
  };
+ // Reproduce the reported Move/Back collision, plus counters on the right.
+ // Wider displays keep the description in the bottom row; narrower layouts
+ // move it above the controls instead of squeezing the name underneath them.
+ const MapHitRect field{0,40,608,420};
+ const std::vector<MapHitRect> prompts{{20,350,150,400},{450,240,580,400}};
+ auto description=fieldMapDescriptionLayout(field,prompts);
+ require(description && near(description->bottom,342) && description->right<=442);
+ require(description->left>=12 && description->right-description->left>=360);
+ for(const auto& r:prompts) require(!overlaps(*description,r));
+ const auto wide=fieldMapDescriptionLayout({-120,40,728,420},{{-100,350,30,400},{570,240,700,400}});
+ require(wide && near(wide->bottom,412) && wide->left>=38 && wide->right<=562);
+ for(float ratio:{9.f/16,1.f,4.f/3,16.f/10,16.f/9,21.f/9,32.f/9}) {
+  const float w=std::max(608.f,448*ratio),h=std::max(448.f,608/ratio);
+  const MapHitRect map{(608-w)/2+16,(448-h)/2+40,(608+w)/2-16,(448+h)/2-28};
+  for(float scale:{0.75f,1.f,1.5f,2.f}) for(float labelWidth:{100.f,180.f}) {
+   const std::vector<MapHitRect> native{
+    {map.left-5,map.bottom-55*scale,map.left+labelWidth*scale,map.bottom-25*scale},
+    {map.left-5,map.bottom-27*scale,map.left+labelWidth*scale,map.bottom},
+    {map.right-80*scale,map.bottom-185*scale,map.right+8,map.bottom-105*scale},
+    {map.right-80*scale,map.bottom-102*scale,map.right+8,map.bottom-55*scale},
+    {map.right-80*scale,map.bottom-50*scale,map.right+8,map.bottom-8}
+   };
+   const auto panel=fieldMapDescriptionLayout(map,native);
+   // Very large HUDs can fill the viewport; any panel we draw must be safe.
+   if(scale<=1.5f) require(panel.has_value());
+   if(!panel) continue;
+   require(panel->left>=map.left+12 && panel->right<=map.right-12 && panel->top>=map.top+8 && panel->bottom<=map.bottom-8);
+   require(panel->right-panel->left>=360 && near(panel->bottom-panel->top,58));
+   for(const auto& r:native) require(!overlaps(*panel,{r.left-7,r.top-7,r.right+7,r.bottom+7}));
+  }
+ }
+ // Recalculate both the box and click blocker when crossing the width limit.
+ for(float right:{679.f,680.f,681.f,679.f}) {
+  const auto box=fieldMapDescriptionLayout({0,40,right,420},{{20,350,150,400},{right-154,240,right-28,400}});
+  require(box && near(box->bottom,right>=680 ? 412.f : 342.f));
+  t.clear({0,40,right,420}); t.add(300,380,8,8,"Behind description");
+  t.setHint(*box); require(t.hit({300,380}).empty()==(right>=680));
+ }
+ require(!fieldMapDescriptionLayout({0,0,100,100},{}));
+ require(!fieldMapDescriptionLayout(field,{{0,0,608,420}}));
+ require(!fieldMapDescriptionLayout({0,0,std::numeric_limits<float>::quiet_NaN(),420},{}));
  // Native 608x448 layout: the title ends at 67, the item starts at 99,
  // and the highest floor row starts at 65. The compact panel must fit the
  // gap over the item column, not cover either the floor rows or the map.
@@ -97,5 +138,5 @@ int main() {
  require(!mapMousePoint(20,20,800,600,1600,1200,1920,1080,game)); // letterbox
  require(!mapMousePoint(0,0,0,600,1600,1200,1920,1080,game));
  require(!mapMousePoint(std::numeric_limits<float>::quiet_NaN(),0,800,600,1600,1200,1920,1080,game));
- std::cout << "Map icon geometry, mirrored hit tests and DPI/letterbox mapping passed\n";
+ std::cout << "Map layouts, icon geometry, mirrored hit tests and DPI/letterbox mapping passed\n";
 }

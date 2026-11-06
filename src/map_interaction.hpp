@@ -78,6 +78,44 @@ struct DungeonSummaryLayout {
     MapHitRect bounds;
     bool compact;
 };
+
+// Keep the description near the bottom, in the widest clear horizontal gap.
+// If the controls leave too little reading space, try immediately above them.
+// Obstacles are the native panes after this frame's HUD layout, in J2D units.
+inline std::optional<MapHitRect> fieldMapDescriptionLayout(MapHitRect map,const std::vector<MapHitRect>& obstacles) {
+    auto valid=[](MapHitRect r) {
+        return std::isfinite(r.left) && std::isfinite(r.top) && std::isfinite(r.right) && std::isfinite(r.bottom)
+            && r.right>r.left && r.bottom>r.top;
+    };
+    if(!valid(map)) return {};
+    constexpr float height=58,gap=8;
+    const MapHitRect safe{map.left+12,map.top+8,map.right-12,map.bottom-8};
+    constexpr float minWidth=360;
+    if(!valid(safe) || safe.bottom-safe.top<height || safe.right-safe.left<minWidth) return {};
+    std::vector<float> bottoms{safe.bottom};
+    for(const auto& r:obstacles)
+        if(valid(r) && r.right+gap>safe.left && r.left-gap<safe.right && r.top-gap<safe.bottom)
+            bottoms.push_back(r.top-gap);
+    std::sort(bottoms.begin(),bottoms.end(),[](float a,float b) { return a>b; });
+    for(float bottom:bottoms) {
+        const float top=bottom-height;
+        if(top<safe.top) continue;
+        std::vector<MapHitRect> blocked;
+        for(const auto& r:obstacles)
+            if(valid(r) && r.top-gap<bottom && r.bottom+gap>top && r.right+gap>safe.left && r.left-gap<safe.right)
+                blocked.push_back({std::max(safe.left,r.left-gap),top,std::min(safe.right,r.right+gap),bottom});
+        std::sort(blocked.begin(),blocked.end(),[](auto a,auto b) { return a.left<b.left; });
+        MapHitRect best{safe.left,top,safe.left,bottom};
+        float left=safe.left;
+        for(const auto& r:blocked) {
+            if(r.left-left>best.right-best.left) best={left,top,r.left,bottom};
+            left=std::max(left,r.right);
+        }
+        if(safe.right-left>best.right-best.left) best={left,top,safe.right,bottom};
+        if(best.right-best.left>=minWidth) return best;
+    }
+    return {};
+}
 // The narrow layout uses the native space below the title and above the item
 // column. Never move the panel into the map when the right gutter disappears.
 inline std::optional<DungeonSummaryLayout> dungeonSummaryLayout(MapHitRect map,MapHitRect screen,MapHitRect compactSlot) {
