@@ -24,6 +24,7 @@
 #include <cmath>
 #include <algorithm>
 #include <optional>
+#include <cstring>
 #include <mods/svc/resource.h>
 extern const ResourceService* svc_resource;
 extern const UiService* svc_ui;
@@ -62,7 +63,22 @@ std::optional<FieldMapDescription> fieldDescription;
 
 MapHitRect paneBounds(J2DPane* pane) {
     // getGlbBounds omits parent/HUD scaling. Use the rendered matrix.
-    const auto& b=pane->getBounds();
+    auto b=pane->getBounds();
+    if(pane->getTypeID()==19) {
+        auto* label=static_cast<J2DTextBox*>(pane);
+        if(!label->mStringPtr || !*label->mStringPtr || !label->getFont()) return {};
+        J2DPrint measure(label->getFont(),label->getCharSpace(),label->getLineSpace(),
+            label->getCharColor(),label->getGradColor(),0,0xffffffff);
+        measure.setFontSize(label->mFontSizeX,label->mFontSizeY);
+        measure.initchar(); measure.locate(0,0);
+        J2DPrint::TSize size{};
+        measure.parse(reinterpret_cast<const u8*>(label->mStringPtr),
+            static_cast<int>(std::strlen(label->mStringPtr)),static_cast<int>(b.getWidth()),nullptr,size,255,false);
+        const float width=std::min(b.getWidth(),std::max(0.f,size.field_0x0)+2.f);
+        if(label->getHBinding()==HBIND_RIGHT) b.i.x=b.f.x-width;
+        else if(label->getHBinding()==HBIND_CENTER) b.i.x+=(b.getWidth()-width)/2;
+        b.i.x+=label->field_0x10c; b.f.x=b.i.x+width;
+    }
     auto m=pane->getGlbMtx();
     MapHitRect result{INFINITY,INFINITY,-INFINITY,-INFINITY};
     for(float x:{b.i.x,b.f.x}) for(float y:{b.i.y,b.f.y}) {
@@ -75,10 +91,11 @@ MapHitRect paneBounds(J2DPane* pane) {
 }
 
 void collectPaneObstacles(J2DPane* pane,std::vector<MapHitRect>& obstacles) {
-    if(!pane || !pane->isVisible() || !pane->getAlpha()) return;
+    if(!pane || !pane->isVisible()) return;
     // Null grouping panes can cover most of the screen; reserve their visible
     // pictures/text instead, including button labels and their shadow layers.
-    if(pane->getTypeID()!=16) obstacles.push_back(paneBounds(pane));
+    // Children may opt out of their parent's alpha; don't prune their subtree.
+    if(pane->getTypeID()!=16 && pane->mColorAlpha) obstacles.push_back(paneBounds(pane));
     for(auto* child=pane->getFirstChildPane();child;child=child->getNextChildPane())
         collectPaneObstacles(child,obstacles);
 }
@@ -489,19 +506,19 @@ void drawFieldDescription(ModContext*,void* args,void*,void*) {
     if(!graf || !font) return;
     // The foreground draw has now applied fMapTopWide and parent transforms
     // for this frame. Measuring here also handles an immediate window resize.
-    std::vector<MapHitRect> obstacles;
-    collectPaneObstacles(top->mpTitleScreen->search(MULTI_CHAR('btn_i_n')),obstacles);
-    collectPaneObstacles(top->mpTitleScreen->search(MULTI_CHAR('cont_n')),obstacles);
+    std::vector<MapHitRect> controls,counters;
+    collectPaneObstacles(top->mpTitleScreen->search(MULTI_CHAR('btn_i_n')),controls);
+    collectPaneObstacles(top->mpTitleScreen->search(MULTI_CHAR('cont_n')),counters);
     // The enhanced-map Poe counter is drawn separately from the pane tree.
     // Reserve its native column even before that counter becomes visible.
     const float poeX=top->mTransX+mDoGph_gInf_c::ScaleHUDXRight(485.f);
-    obstacles.push_back({poeX-35,355,poeX+65,395});
-    const auto layout=fieldMapDescriptionLayout(description->map,obstacles);
+    counters.push_back({poeX-35,355,poeX+65,395});
+    const auto layout=fieldMapDescriptionLayout(description->map,controls,counters);
     if(!layout) return;
     const auto box=*layout;
     graf->setup2D();
     J2DFillBox(box.left,box.top,box.right-box.left,box.bottom-box.top,JUtility::TColor(20,18,12,235));
-    const float hintWidth=description->hint ? 128.f : 0.f;
+    const float hintWidth=description->hint ? std::min(128.f,(box.right-box.left-16)*0.4f) : 0.f;
     const float nameWidth=box.right-box.left-16-hintWidth;
     // Two readable lines for longer names; the hint keeps its own right column.
     J2DPrint text(font,0,18,description->color,description->color,0,0xffffffff);
@@ -511,7 +528,7 @@ void drawFieldDescription(ModContext*,void* args,void*,void*) {
     if(description->hint) {
         const JUtility::TColor ink(235,225,190,255);
         J2DPrint help(font,0,14,ink,ink,0,0xffffffff); help.setFontSize(8,11);
-        help.printReturn("Click icon to open Check Info",120,42,HBIND_LEFT,VBIND_TOP,box.right-128,box.top+10,255);
+        help.printReturn("Click icon to open Check Info",hintWidth-8,42,HBIND_LEFT,VBIND_TOP,box.right-hintWidth,box.top+10,255);
     }
     graf->setup2D();
     if(process==dMenu_Fmap_c::PROC_SPOT_MAP) inspection.targets.setHint(box);

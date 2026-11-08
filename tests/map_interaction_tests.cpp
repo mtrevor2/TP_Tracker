@@ -54,53 +54,59 @@ int main() {
  auto overlaps=[](MapHitRect a,MapHitRect b) {
   return a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
  };
- // Reproduce the reported Move/Back collision, plus counters on the right.
- // Both wide and narrow displays keep the description left-aligned above
- // controls instead of pushing the name toward the collectible counters.
+ // The description stays in the bottom row between Move/Back and the full
+ // collectible column, including counters above the description's own height.
  const MapHitRect field{0,40,608,420};
- const std::vector<MapHitRect> prompts{{20,350,150,400},{450,240,580,400}};
- auto description=fieldMapDescriptionLayout(field,prompts);
- require(description && near(description->bottom,342) && description->right<=442);
- require(description->left>=12 && description->right-description->left>=360);
- for(const auto& r:prompts) require(!overlaps(*description,r));
- const auto wide=fieldMapDescriptionLayout({-120,40,728,420},{{-100,350,30,400},{570,240,700,400}});
- require(wide && near(wide->bottom,342) && near(wide->left,-108) && wide->right<=562);
- // Reproduce oversized native label bounds from the reported right-shifted box.
- const auto oversized=fieldMapDescriptionLayout({-120,40,728,420},{{-100,350,240,400},{570,240,700,400}});
- require(oversized && near(oversized->left,-108) && near(oversized->bottom,342) && oversized->right<=562);
- const auto clearBottom=fieldMapDescriptionLayout(field,{{450,240,580,400}});
+ const std::vector<MapHitRect> controls{{20,350,100,400}},counters{{450,240,580,400}};
+ auto description=fieldMapDescriptionLayout(field,controls,counters);
+ require(description && near(description->bottom,412) && near(description->left,108) && near(description->right,442));
+ for(const auto& r:controls) require(!overlaps(*description,r));
+ for(const auto& r:counters) require(!overlaps(*description,r));
+ const auto wide=fieldMapDescriptionLayout({-120,40,728,420},{{-100,350,30,400}},{{570,240,700,400}});
+ require(wide && near(wide->bottom,412) && near(wide->left,38) && near(wide->right,562));
+ // Wider labels narrow the box; they never cause it to jump above the controls.
+ const auto wideLabels=fieldMapDescriptionLayout({-120,40,728,420},{{-100,350,240,400}},{{570,240,700,400}});
+ require(wideLabels && near(wideLabels->left,248) && near(wideLabels->bottom,412));
+ const auto highCounter=fieldMapDescriptionLayout(field,controls,{{450,240,580,300}});
+ require(highCounter && near(highCounter->right,442) && near(highCounter->bottom,412));
+ const auto clearBottom=fieldMapDescriptionLayout(field,{},counters);
  require(clearBottom && near(clearBottom->left,12) && near(clearBottom->bottom,412));
  for(float ratio:{9.f/16,1.f,4.f/3,16.f/10,16.f/9,21.f/9,32.f/9}) {
   const float w=std::max(608.f,448*ratio),h=std::max(448.f,608/ratio);
   const MapHitRect map{(608-w)/2+16,(448-h)/2+40,(608+w)/2-16,(448+h)/2-28};
   for(float scale:{0.75f,1.f,1.5f,2.f}) for(float labelWidth:{100.f,180.f}) {
-   const std::vector<MapHitRect> native{
+   const std::vector<MapHitRect> nativeControls{
     {map.left-5,map.bottom-55*scale,map.left+labelWidth*scale,map.bottom-25*scale},
-    {map.left-5,map.bottom-27*scale,map.left+labelWidth*scale,map.bottom},
+    {map.left-5,map.bottom-27*scale,map.left+labelWidth*scale,map.bottom}
+   };
+   const std::vector<MapHitRect> nativeCounters{
     {map.right-80*scale,map.bottom-185*scale,map.right+8,map.bottom-105*scale},
     {map.right-80*scale,map.bottom-102*scale,map.right+8,map.bottom-55*scale},
     {map.right-80*scale,map.bottom-50*scale,map.right+8,map.bottom-8}
    };
-   const auto panel=fieldMapDescriptionLayout(map,native);
-   // Very large HUDs can fill the viewport; any panel we draw must be safe.
-   if(scale<=1.5f) require(panel.has_value());
+   const auto panel=fieldMapDescriptionLayout(map,nativeControls,nativeCounters);
+   // If giant HUD elements leave no reading room, omit rather than overlap
+   // or move the description upward into the map.
+   const float gapWidth=map.right-map.left-(labelWidth+80)*scale-16;
+   require(panel.has_value()==(gapWidth>=180));
    if(!panel) continue;
-   require(near(panel->left,map.left+12) && panel->right<=map.right-12 && panel->top>=map.top+8 && panel->bottom<=map.bottom-8);
-   require(panel->right-panel->left>=360 && near(panel->bottom-panel->top,58));
-   for(const auto& r:native) require(!overlaps(*panel,{r.left-7,r.top-7,r.right+7,r.bottom+7}));
+   require(panel->left>=map.left+12 && panel->right<=map.right-12 && panel->top>=map.top+8 && near(panel->bottom,map.bottom-8));
+   require(panel->right-panel->left>=180 && near(panel->bottom-panel->top,58));
+   for(const auto& r:nativeControls) require(!overlaps(*panel,{r.left-7,r.top-7,r.right+7,r.bottom+7}));
+   for(const auto& r:nativeCounters) require(!overlaps(*panel,{r.left-7,r.top-7,r.right+7,r.bottom+7}));
   }
  }
- // Resizing must not move the left-aligned box back beside the control hints.
+ // Resizing across the old width threshold keeps the bottom row and blocker.
  for(float right:{679.f,680.f,681.f,679.f}) {
-  const auto box=fieldMapDescriptionLayout({0,40,right,420},{{20,350,150,400},{right-154,240,right-28,400}});
-  require(box && near(box->left,12) && near(box->bottom,342));
+  const auto box=fieldMapDescriptionLayout({0,40,right,420},{{20,350,150,400}},{{right-154,240,right-28,400}});
+  require(box && near(box->left,158) && near(box->bottom,412));
   t.clear({0,40,right,420}); t.add(300,380,8,8,"Behind description");
-  t.setHint(*box); require(!t.hit({300,380}).empty());
-  t.add(300,320,8,8,"Behind relocated description"); require(t.hit({300,320}).empty());
+  t.setHint(*box); require(t.hit({300,380}).empty());
+  t.add(300,320,8,8,"Above description"); require(!t.hit({300,320}).empty());
  }
- require(!fieldMapDescriptionLayout({0,0,100,100},{}));
- require(!fieldMapDescriptionLayout(field,{{0,0,608,420}}));
- require(!fieldMapDescriptionLayout({0,0,std::numeric_limits<float>::quiet_NaN(),420},{}));
+ require(!fieldMapDescriptionLayout({0,0,100,100},{},{}));
+ require(!fieldMapDescriptionLayout(field,{{0,0,608,420}},{}));
+ require(!fieldMapDescriptionLayout({0,0,std::numeric_limits<float>::quiet_NaN(),420},{},{}));
  // Native 608x448 layout: the title ends at 67, the item starts at 99,
  // and the highest floor row starts at 65. The compact panel must fit the
  // gap over the item column, not cover either the floor rows or the map.

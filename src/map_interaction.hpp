@@ -79,10 +79,10 @@ struct DungeonSummaryLayout {
     bool compact;
 };
 
-// Keep the description aligned with the map's left edge, near the bottom.
-// Move above controls rather than pushing the check name toward the right.
-// Obstacles are the native panes after this frame's HUD layout, in J2D units.
-inline std::optional<MapHitRect> fieldMapDescriptionLayout(MapHitRect map,const std::vector<MapHitRect>& obstacles) {
+// Stay in the bottom row between the visible controls and the counter column.
+// Bounds use rendered text, not the empty space in native label containers.
+inline std::optional<MapHitRect> fieldMapDescriptionLayout(MapHitRect map,
+    const std::vector<MapHitRect>& controls,const std::vector<MapHitRect>& counters) {
     auto valid=[](MapHitRect r) {
         return std::isfinite(r.left) && std::isfinite(r.top) && std::isfinite(r.right) && std::isfinite(r.bottom)
             && r.right>r.left && r.bottom>r.top;
@@ -90,23 +90,17 @@ inline std::optional<MapHitRect> fieldMapDescriptionLayout(MapHitRect map,const 
     if(!valid(map)) return {};
     constexpr float height=58,gap=8;
     const MapHitRect safe{map.left+12,map.top+8,map.right-12,map.bottom-8};
-    constexpr float minWidth=360;
+    constexpr float minWidth=180;
     if(!valid(safe) || safe.bottom-safe.top<height || safe.right-safe.left<minWidth) return {};
-    std::vector<float> bottoms{safe.bottom};
-    for(const auto& r:obstacles)
-        if(valid(r) && r.right+gap>safe.left && r.left-gap<safe.right && r.top-gap<safe.bottom)
-            bottoms.push_back(r.top-gap);
-    std::sort(bottoms.begin(),bottoms.end(),[](float a,float b) { return a>b; });
-    for(float bottom:bottoms) {
-        const float top=bottom-height;
-        if(top<safe.top) continue;
-        float right=safe.right;
-        for(const auto& r:obstacles)
-            if(valid(r) && r.top-gap<bottom && r.bottom+gap>top && r.right+gap>safe.left && r.left-gap<safe.right)
-                right=std::min(right,r.left-gap);
-        if(right-safe.left>=minWidth) return MapHitRect{safe.left,top,right,bottom};
-    }
-    return {};
+    MapHitRect box{safe.left,safe.bottom-height,safe.right,safe.bottom};
+    for(const auto& r:controls)
+        if(valid(r) && r.top-gap<box.bottom && r.bottom+gap>box.top)
+            box.left=std::max(box.left,r.right+gap);
+    // Reserve the whole counter column, even if a particular icon is higher.
+    for(const auto& r:counters)
+        if(valid(r)) box.right=std::min(box.right,r.left-gap);
+    if(box.right-box.left<minWidth) return {};
+    return box;
 }
 // The narrow layout uses the native space below the title and above the item
 // column. Never move the panel into the map when the right gutter disappears.
