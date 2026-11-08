@@ -1305,7 +1305,7 @@ void pollShortcut() {
     if (key!=previousKeyboard || pad!=previousController) {
         previousKeyboard=key; previousController=pad; shortcutHeld=true;
     }
-    // Reserve the map chord's buttons while inspecting a map; a custom RT or
+    // Reserve the Check Info binding while inspecting a map; a custom RT or
     // A tracker shortcut must not open a parent window underneath the details.
     const bool reservedMapButton=tracker::checkBindingUses(static_cast<int>(pad),true) && tracker::shortcutDown(0,static_cast<int>(pad));
     const bool reservedMapKey=tracker::checkBindingUses(static_cast<int>(key),false) && tracker::shortcutDown(static_cast<int>(key),0);
@@ -1384,7 +1384,7 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
         const bool controller=device%2!=0;
         control.label=device>=2 ? (controller ? "Check Info controller button" : "Check Info keyboard key")
                                 : (controller ? "Open tracker controller button" : "Open tracker keyboard key");
-        control.help_rml=device>=2 ? "A custom Check Info binding replaces RT/R2 + A/Cross. Left click stays available. Clear both Check Info bindings to restore the default combo." : nullptr;
+        control.help_rml=device>=2 ? "Default: A (Xbox) / Cross (PlayStation) while fully zoomed in over a check. A custom Check Info binding replaces this default. Left click stays available. Clear both Check Info bindings to restore A / Cross." : nullptr;
         control.on_pressed=assignBinding; control.user_data=reinterpret_cast<void*>(static_cast<uintptr_t>(device));
         result=svc_ui->pane_add_control(mod_ctx,pane,&control,&bindingButtons[device]);
         if (result!=MOD_OK) return result;
@@ -1462,9 +1462,11 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
         "Native RmlUi tracker. The current SDK window captures game input and cannot detach onto another monitor. Filters are remembered across restarts. Seed settings are stored per save slot.", nullptr);
 }
 ModResult updateSettings(ModContext*, void*, ModError*) {
+    int64_t checkKeyboard=0; svc_config->get_int(mod_ctx,shortcutBindings[2],&checkKeyboard);
     for (int device=0;device<4;++device) {
         int64_t value=0; svc_config->get_int(mod_ctx,shortcutBindings[device],&value);
-        const auto label=std::string(device>=2 ? "Check Info " : "Open tracker ")+(device%2 ? "controller button - " : "keyboard key - ")+tracker::bindingName(static_cast<int>(value),device%2!=0);
+        const auto name=device==3 && !value && !checkKeyboard ? std::string("Default: A / Cross") : tracker::bindingName(static_cast<int>(value),device%2!=0);
+        const auto label=std::string(device>=2 ? "Check Info " : "Open tracker ")+(device%2 ? "controller button - " : "keyboard key - ")+name;
         if (bindingButtons[device]) svc_ui->control_set_label(mod_ctx,bindingButtons[device],label.c_str());
     }
     return settingsStatus ? svc_ui->elem_set_text(mod_ctx, settingsStatus, status.c_str()) : MOD_OK;

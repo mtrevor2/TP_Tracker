@@ -102,11 +102,9 @@ void run(bool trackerOwnsHook,bool trackerFirst) {
     event.type=SDL_EVENT_KEY_UP; emit(event);
     require(!tracker::shortcutDown(5,0),"keyboard release not tracked");
     tracker::setMapActionHandler(mapAction);
-    event={}; event.type=SDL_EVENT_GAMEPAD_AXIS_MOTION; event.gaxis.which=7;
-    event.gaxis.axis=SDL_GAMEPAD_AXIS_RIGHT_TRIGGER; event.gaxis.value=25000; emit(event);
     event={}; event.type=SDL_EVENT_GAMEPAD_BUTTON_DOWN; event.gbutton.which=7;
     event.gbutton.button=SDL_GAMEPAD_BUTTON_SOUTH; emit(event,true);
-    require(details && opens==1,"map combo did not reach check info");
+    require(details && opens==1,"default A did not reach check info");
     event.type=SDL_EVENT_GAMEPAD_BUTTON_UP; emit(event);
     event.type=SDL_EVENT_GAMEPAD_BUTTON_DOWN; event.gbutton.button=SDL_GAMEPAD_BUTTON_EAST; emit(event,true);
     require(!details,"B did not close check info");

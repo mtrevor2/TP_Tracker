@@ -79,8 +79,8 @@ struct DungeonSummaryLayout {
     bool compact;
 };
 
-// Keep the description near the bottom, in the widest clear horizontal gap.
-// If the controls leave too little reading space, try immediately above them.
+// Keep the description aligned with the map's left edge, near the bottom.
+// Move above controls rather than pushing the check name toward the right.
 // Obstacles are the native panes after this frame's HUD layout, in J2D units.
 inline std::optional<MapHitRect> fieldMapDescriptionLayout(MapHitRect map,const std::vector<MapHitRect>& obstacles) {
     auto valid=[](MapHitRect r) {
@@ -100,19 +100,11 @@ inline std::optional<MapHitRect> fieldMapDescriptionLayout(MapHitRect map,const 
     for(float bottom:bottoms) {
         const float top=bottom-height;
         if(top<safe.top) continue;
-        std::vector<MapHitRect> blocked;
+        float right=safe.right;
         for(const auto& r:obstacles)
             if(valid(r) && r.top-gap<bottom && r.bottom+gap>top && r.right+gap>safe.left && r.left-gap<safe.right)
-                blocked.push_back({std::max(safe.left,r.left-gap),top,std::min(safe.right,r.right+gap),bottom});
-        std::sort(blocked.begin(),blocked.end(),[](auto a,auto b) { return a.left<b.left; });
-        MapHitRect best{safe.left,top,safe.left,bottom};
-        float left=safe.left;
-        for(const auto& r:blocked) {
-            if(r.left-left>best.right-best.left) best={left,top,r.left,bottom};
-            left=std::max(left,r.right);
-        }
-        if(safe.right-left>best.right-best.left) best={left,top,safe.right,bottom};
-        if(best.right-best.left>=minWidth) return best;
+                right=std::min(right,r.left-gap);
+        if(right-safe.left>=minWidth) return MapHitRect{safe.left,top,right,bottom};
     }
     return {};
 }

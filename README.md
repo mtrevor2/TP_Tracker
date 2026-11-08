@@ -1,4 +1,11 @@
-# TPTracker 0.4.52
+# TPTracker 0.4.53
+
+## 0.4.53 Left-aligned check names and A to inspect
+
+- Keeps the check description near the map's left edge, moving above Move/Back when needed instead of shifting toward the right. Native control hints and collectible counters stay clear, including at different HUD scales and window sizes.
+- The default Check Info controller button is now **A (Xbox) / Cross (PlayStation)** at the closest map zoom while hovering over an individual or stacked check. Pressing it elsewhere keeps the normal game action.
+- Custom keyboard/controller Check Info bindings still override the default, and mouse clicks remain available. Clear both custom bindings to restore A / Cross; settings now identify the active default.
+- Includes the 0.4.52 controller-assignment and Twilit Essentials compatibility fixes. Release packages are staged in `dist/TPTracker-0.4.53-multiplatform.dusk`.
 
 ## 0.4.52 Twilit Essentials startup compatibility
 

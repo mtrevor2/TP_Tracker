@@ -65,9 +65,9 @@ bool padBindingDown(const Pad& pad,int binding) {
  if(binding==16) return pad.axes[SDL_GAMEPAD_AXIS_RIGHT_TRIGGER]>3855;
  return binding>=100 && binding<100+SDL_GAMEPAD_BUTTON_COUNT && pad.buttons[binding-100];
 }
-bool mapChordDown(const Pad& pad) {
+bool checkButtonDown(const Pad& pad) {
  if(checkController) return padBindingDown(pad,checkController);
- return !checkKeyboard && pad.buttons[SDL_GAMEPAD_BUTTON_SOUTH] && pad.axes[SDL_GAMEPAD_AXIS_RIGHT_TRIGGER]>12000;
+ return !checkKeyboard && pad.buttons[SDL_GAMEPAD_BUTTON_SOUTH];
 }
 }
 void setMapActionHandler(MapActionHandler handler) { mapActionHandler=handler; }
@@ -75,7 +75,7 @@ void setCheckBindings(int keyboard,int controller) { checkKeyboard=keyboard; che
 bool checkBindingUses(int binding,bool controller) {
  if(!binding) return false;
  if(!controller) return checkKeyboard && scan(binding)==scan(checkKeyboard);
- if(!checkKeyboard && !checkController) return binding==1 || binding==16 || binding==100;
+ if(!checkKeyboard && !checkController) return binding==1 || binding==100;
  auto button=[](int b) { return b>0 && b<15 ? buttons[b]+100 : b; };
  return checkController && button(binding)==button(checkController);
 }
@@ -116,7 +116,7 @@ bool processInput(const SDL_Event& e) {
     const bool pressed=e.type==SDL_EVENT_GAMEPAD_BUTTON_DOWN;
     const bool edge=pressed && !pad.buttons[e.gbutton.button];
     if(edge) mouseActive=false;
-    const bool chordWasDown=mapChordDown(pad);
+    const bool checkWasDown=checkButtonDown(pad);
     pad.buttons[e.gbutton.button]=pressed;
     if(capturingController) {
      captureControllerPress(buttonBinding(e.gbutton.button),edge);
@@ -126,15 +126,14 @@ bool processInput(const SDL_Event& e) {
     }
     if(edge) pad.buttonPresses[e.gbutton.button]=true;
     if(edge && e.gbutton.button==SDL_GAMEPAD_BUTTON_EAST && mapActionHandler && mapActionHandler(MapAction::Dismiss,0,0)) return true;
-    // Trigger and confirm may arrive in either order. Activate only on the
-    // chord's rising edge, from one controller, never just by moving a held
-    // chord over a marker. This input path does not depend on hint rendering.
-    if(!chordWasDown && mapChordDown(pad) && mapActionHandler)
+    // Activate once per press, never just by moving a held button over a
+    // marker. The map handler consumes it only at close zoom over a check.
+    if(!checkWasDown && checkButtonDown(pad) && mapActionHandler)
      return mapActionHandler(MapAction::ControllerConfirm,0,0);
    }
   } else if(e.type==SDL_EVENT_GAMEPAD_AXIS_MOTION && e.gaxis.axis<SDL_GAMEPAD_AXIS_COUNT) {
    auto& pad=pads[e.gaxis.which];
-   const bool chordWasDown=mapChordDown(pad);
+   const bool checkWasDown=checkButtonDown(pad);
    const bool triggerEdge=e.gaxis.axis>=SDL_GAMEPAD_AXIS_LEFT_TRIGGER && pad.axes[e.gaxis.axis]<=3855 && e.gaxis.value>3855;
    pad.axes[e.gaxis.axis]=e.gaxis.value;
    if(capturingController) {
@@ -143,7 +142,7 @@ bool processInput(const SDL_Event& e) {
    }
    if(triggerEdge) pad.axisPresses[e.gaxis.axis]=true;
    if(std::abs(e.gaxis.value)>12000) mouseActive=false;
-   if(!chordWasDown && mapChordDown(pad) && mapActionHandler)
+   if(!checkWasDown && checkButtonDown(pad) && mapActionHandler)
     return mapActionHandler(MapAction::ControllerConfirm,0,0);
   } else if(e.type==SDL_EVENT_MOUSE_MOTION) {
    mouseX=e.motion.x; mouseY=e.motion.y; mouseValid=true;

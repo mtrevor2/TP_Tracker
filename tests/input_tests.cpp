@@ -43,10 +43,7 @@ int main() {
  targets.clear({0,0,100,100}); targets.add(50,50,12,12,"Chest");
  auto button=[&](unsigned id,unsigned b,bool down) { e={}; e.type=down ? SDL_EVENT_GAMEPAD_BUTTON_DOWN : SDL_EVENT_GAMEPAD_BUTTON_UP; e.gbutton.which=id; e.gbutton.button=b; return processInput(e); };
  auto trigger=[&](unsigned id,int value) { e={}; e.type=SDL_EVENT_GAMEPAD_AXIS_MOTION; e.gaxis.which=id; e.gaxis.axis=SDL_GAMEPAD_AXIS_RIGHT_TRIGGER; e.gaxis.value=value; return processInput(e); };
- require(!button(1,SDL_GAMEPAD_BUTTON_SOUTH,true)); // confirm alone is untouched
- button(1,SDL_GAMEPAD_BUTTON_SOUTH,false); trigger(2,25000);
- require(!button(1,SDL_GAMEPAD_BUTTON_SOUTH,true)); // cannot combine controllers
- button(1,SDL_GAMEPAD_BUTTON_SOUTH,false); trigger(1,25000);
+ require(checkBindingUses(1,true) && checkBindingUses(100,true) && !checkBindingUses(16,true));
  require(button(1,SDL_GAMEPAD_BUTTON_SOUTH,true) && opened==1);
  require(!button(1,SDL_GAMEPAD_BUTTON_SOUTH,true) && opened==1); // held: no repeats
  require(button(1,SDL_GAMEPAD_BUTTON_EAST,true) && closed==1 && !details);
@@ -57,8 +54,14 @@ int main() {
  button(1,SDL_GAMEPAD_BUTTON_SOUTH,false); require(button(1,SDL_GAMEPAD_BUTTON_SOUTH,true));
  e={}; e.type=SDL_EVENT_KEY_DOWN; e.key.scancode=SDL_SCANCODE_ESCAPE;
  require(processInput(e) && closed==2); e.key.repeat=true; require(!processInput(e));
- resetInput(); require(!button(1,SDL_GAMEPAD_BUTTON_SOUTH,true)); // reset loses trigger
+ resetInput(); zoomed=false;
+ require(!button(1,SDL_GAMEPAD_BUTTON_SOUTH,true)); // A still zooms the native map
+ zoomed=true; require(!button(1,SDL_GAMEPAD_BUTTON_SOUTH,true)); // zooming in while held cannot open details
  button(1,SDL_GAMEPAD_BUTTON_SOUTH,false);
+ frame.clear(); require(!button(1,SDL_GAMEPAD_BUTTON_SOUTH,true)); // normal gameplay/menu A passes through
+ button(1,SDL_GAMEPAD_BUTTON_SOUTH,false);
+ frame.begin(&owner,&owner,dungeon,zoomed,"stage",{0,0,100,100},controllerCursor);
+ targets.add(50,50,12,12,"Chest");
  auto click=[&](float x,float y,unsigned b,bool down) { e={}; e.type=down ? SDL_EVENT_MOUSE_BUTTON_DOWN : SDL_EVENT_MOUSE_BUTTON_UP; e.button.x=x;e.button.y=y;e.button.button=b;return processInput(e); };
  require(!click(50,50,SDL_BUTTON_RIGHT,true));
  require(!click(90,90,SDL_BUTTON_LEFT,true)); click(90,90,SDL_BUTTON_LEFT,false);
@@ -67,7 +70,7 @@ int main() {
  require(button(1,SDL_GAMEPAD_BUTTON_EAST,true)); require(!readMousePosition(mx,my));
  click(50,50,SDL_BUTTON_LEFT,false);
  // Overworld and temple renderers share these hit targets and the same
- // optional hint. Both controller event orders and mouse remain available
+ // optional hint. A alone and mouse remain available
  // across visibility changes, including restoring a hidden hint at startup.
  for(bool temple:{false,true}) for(bool showHint:{false,true,false}) {
   dungeon=temple; zoomed=true;
@@ -77,15 +80,15 @@ int main() {
   require(!frame.begin(&unrelated,&owner,!dungeon,false,"other",{},{}));
   targets.setHint(showHint ? std::optional<MapHitRect>{{0,0,100,20}} : std::nullopt);
   require(targets.hit(controllerCursor)==std::vector<std::string>{"Chest"});
-  require(!button(3,SDL_GAMEPAD_BUTTON_SOUTH,true));
-  require(!trigger(4,25000)); // trigger on another controller cannot complete it
   const int before=opened;
-  require(trigger(3,25000) && opened==before+1); // A/Cross then RT/R2
+  require(button(3,SDL_GAMEPAD_BUTTON_SOUTH,true) && opened==before+1); // no trigger needed
+  require(!trigger(4,25000)); // another controller cannot repeat the action
+  require(!trigger(3,25000)); // adding the old modifier cannot repeat it
   require(!trigger(3,26000) && opened==before+1); // held trigger motion cannot repeat
   require(button(3,SDL_GAMEPAD_BUTTON_EAST,true) && !details);
-  require(!trigger(3,27000) && opened==before+1); // B dismiss does not rearm a held chord
+  require(!trigger(3,27000) && opened==before+1); // B dismiss does not rearm held A
   button(3,SDL_GAMEPAD_BUTTON_EAST,false); button(3,SDL_GAMEPAD_BUTTON_SOUTH,false);
-  require(button(3,SDL_GAMEPAD_BUTTON_SOUTH,true)); // RT/R2 then A/Cross
+  require(button(3,SDL_GAMEPAD_BUTTON_SOUTH,true)); // A still works with a trigger held
   require(button(3,SDL_GAMEPAD_BUTTON_EAST,true) && !details);
   button(3,SDL_GAMEPAD_BUTTON_EAST,false); button(3,SDL_GAMEPAD_BUTTON_SOUTH,false); trigger(3,0);
   require(click(50,50,SDL_BUTTON_LEFT,true));
@@ -93,8 +96,8 @@ int main() {
   require(processInput(e) && !details);
   click(50,50,SDL_BUTTON_LEFT,false);
   controllerCursor={90,90}; button(3,SDL_GAMEPAD_BUTTON_SOUTH,true);
-  require(!trigger(3,25000)); // no check under cursor when completing chord
-  controllerCursor={50,50}; require(!trigger(3,26000)); // moving a held chord onto a check is not a press
+  require(!trigger(3,25000)); // no check under cursor
+  controllerCursor={50,50}; require(!trigger(3,26000)); // moving held A onto a check is not a press
  }
  zoomed=false; resetInput();
  require(!click(50,50,SDL_BUTTON_LEFT,true));
@@ -150,7 +153,7 @@ int main() {
  e={}; e.type=SDL_EVENT_WINDOW_FOCUS_GAINED; processInput(e);
  motion(40,40); require(readMousePosition(mx,my)); // reset cannot strand mouse users
  setMapActionHandler(nullptr);
- // Rebinding replaces the default chord and preserves mouse inspection.
+ // Rebinding replaces default A and preserves mouse inspection, including stacks.
  setMapActionHandler(handle); zoomed=true; dungeon=false; controllerCursor={50,50};
  frame.begin(&owner,&owner,false,true,"stage",{0,0,100,100},{50,50});
  targets.addGroup(50,50,12,12,{"First check","Second check"});
@@ -173,7 +176,7 @@ int main() {
  require(!trigger(12,25000) && !button(12,SDL_GAMEPAD_BUTTON_SOUTH,true) && !details);
  require(button(12,SDL_GAMEPAD_BUTTON_NORTH,true) && details);
  resetInput(); details=false; setCheckBindings(0,0);
- require(!trigger(12,25000) && button(12,SDL_GAMEPAD_BUTTON_SOUTH,true) && details);
+ require(button(12,SDL_GAMEPAD_BUTTON_SOUTH,true) && details); // clearing restores A alone
  setMapActionHandler(nullptr);
  // Binding capture runs from UI presentation, with no game-simulation tick.
  // Capture a complete press/release between frames, including A and Back,

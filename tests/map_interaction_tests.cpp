@@ -55,8 +55,8 @@ int main() {
   return a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
  };
  // Reproduce the reported Move/Back collision, plus counters on the right.
- // Wider displays keep the description in the bottom row; narrower layouts
- // move it above the controls instead of squeezing the name underneath them.
+ // Both wide and narrow displays keep the description left-aligned above
+ // controls instead of pushing the name toward the collectible counters.
  const MapHitRect field{0,40,608,420};
  const std::vector<MapHitRect> prompts{{20,350,150,400},{450,240,580,400}};
  auto description=fieldMapDescriptionLayout(field,prompts);
@@ -64,7 +64,12 @@ int main() {
  require(description->left>=12 && description->right-description->left>=360);
  for(const auto& r:prompts) require(!overlaps(*description,r));
  const auto wide=fieldMapDescriptionLayout({-120,40,728,420},{{-100,350,30,400},{570,240,700,400}});
- require(wide && near(wide->bottom,412) && wide->left>=38 && wide->right<=562);
+ require(wide && near(wide->bottom,342) && near(wide->left,-108) && wide->right<=562);
+ // Reproduce oversized native label bounds from the reported right-shifted box.
+ const auto oversized=fieldMapDescriptionLayout({-120,40,728,420},{{-100,350,240,400},{570,240,700,400}});
+ require(oversized && near(oversized->left,-108) && near(oversized->bottom,342) && oversized->right<=562);
+ const auto clearBottom=fieldMapDescriptionLayout(field,{{450,240,580,400}});
+ require(clearBottom && near(clearBottom->left,12) && near(clearBottom->bottom,412));
  for(float ratio:{9.f/16,1.f,4.f/3,16.f/10,16.f/9,21.f/9,32.f/9}) {
   const float w=std::max(608.f,448*ratio),h=std::max(448.f,608/ratio);
   const MapHitRect map{(608-w)/2+16,(448-h)/2+40,(608+w)/2-16,(448+h)/2-28};
@@ -80,17 +85,18 @@ int main() {
    // Very large HUDs can fill the viewport; any panel we draw must be safe.
    if(scale<=1.5f) require(panel.has_value());
    if(!panel) continue;
-   require(panel->left>=map.left+12 && panel->right<=map.right-12 && panel->top>=map.top+8 && panel->bottom<=map.bottom-8);
+   require(near(panel->left,map.left+12) && panel->right<=map.right-12 && panel->top>=map.top+8 && panel->bottom<=map.bottom-8);
    require(panel->right-panel->left>=360 && near(panel->bottom-panel->top,58));
    for(const auto& r:native) require(!overlaps(*panel,{r.left-7,r.top-7,r.right+7,r.bottom+7}));
   }
  }
- // Recalculate both the box and click blocker when crossing the width limit.
+ // Resizing must not move the left-aligned box back beside the control hints.
  for(float right:{679.f,680.f,681.f,679.f}) {
   const auto box=fieldMapDescriptionLayout({0,40,right,420},{{20,350,150,400},{right-154,240,right-28,400}});
-  require(box && near(box->bottom,right>=680 ? 412.f : 342.f));
+  require(box && near(box->left,12) && near(box->bottom,342));
   t.clear({0,40,right,420}); t.add(300,380,8,8,"Behind description");
-  t.setHint(*box); require(t.hit({300,380}).empty()==(right>=680));
+  t.setHint(*box); require(!t.hit({300,380}).empty());
+  t.add(300,320,8,8,"Behind relocated description"); require(t.hit({300,320}).empty());
  }
  require(!fieldMapDescriptionLayout({0,0,100,100},{}));
  require(!fieldMapDescriptionLayout(field,{{0,0,608,420}}));
