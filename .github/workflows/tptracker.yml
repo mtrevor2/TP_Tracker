@@ -93,6 +93,7 @@ jobs:
         run: |
           version=$(python3 -c 'import json; print(json.load(open("mod.json"))["version"])')
           python3 .deps/dusklight/mods/randomizer/tools/merge_mod.py --symgen ./symgen -o "dist/TPTracker-${version}-multiplatform.dusk" packages/*/*.dusk
+          python3 tools/stage_package.py "dist/TPTracker-${version}-multiplatform.dusk" --require-all
       - uses: actions/upload-artifact@v7
         with:
           name: TPTracker-multiplatform

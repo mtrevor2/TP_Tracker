@@ -14,9 +14,9 @@ struct MapHitRect {
     }
 };
 // Hit regions come from the actual rendered icons, after all visibility filters
-// and mirroring. Empty names occlude individual checks under aggregate markers.
+// and mirroring. A marker can represent an interior, dungeon or coincident checks.
 struct MapHitTargets {
-    struct Target { MapHitRect bounds; std::string name; };
+    struct Target { MapHitRect bounds; std::vector<std::string> names; };
     MapHitRect clip{};
     std::vector<Target> targets;
     // The optional hint can occlude clicks, but never owns the check targets.
@@ -24,21 +24,33 @@ struct MapHitTargets {
     void clear(MapHitRect bounds={}) { clip=bounds; targets.clear(); hint.reset(); panel.reset(); }
     void setHint(std::optional<MapHitRect> bounds) { hint=bounds; }
     void add(float x,float y,float halfWidth,float halfHeight,const std::string& name) {
-        targets.push_back({{x-halfWidth,y-halfHeight,x+halfWidth,y+halfHeight},name});
+        addGroup(x,y,halfWidth,halfHeight,name.empty() ? std::vector<std::string>{} : std::vector<std::string>{name});
     }
-    std::string hit(MapScreenPoint p) const {
+    void addGroup(float x,float y,float halfWidth,float halfHeight,std::vector<std::string> names) {
+        targets.push_back({{x-halfWidth,y-halfHeight,x+halfWidth,y+halfHeight},std::move(names)});
+    }
+    std::vector<std::string> hit(MapScreenPoint p) const {
         if(!clip.contains(p) || (hint && hint->contains(p)) || (panel && panel->contains(p))) return {};
         float closest=1e30f;
         const Target* best=nullptr;
         for(const auto& target:targets) {
             if(!target.bounds.contains(p)) continue;
-            if(target.name.empty()) return {}; // summary drawn over a check
+            if(target.names.empty()) return {};
             float dx=p.x-(target.bounds.left+target.bounds.right)*0.5f;
             float dy=p.y-(target.bounds.top+target.bounds.bottom)*0.5f;
             const float distance=dx*dx+dy*dy;
             if(distance<=closest) { closest=distance; best=&target; }
         }
-        return best ? best->name : std::string{};
+        if(!best) return {};
+        auto names=best->names;
+        for(const auto& target:targets) {
+            if(std::abs(target.bounds.left+target.bounds.right-best->bounds.left-best->bounds.right)>1 ||
+               std::abs(target.bounds.top+target.bounds.bottom-best->bounds.top-best->bounds.bottom)>1) continue;
+            names.insert(names.end(),target.names.begin(),target.names.end());
+        }
+        std::sort(names.begin(),names.end());
+        names.erase(std::unique(names.begin(),names.end()),names.end());
+        return names;
     }
 };
 // Selection belongs to the active map, not the optional hint or a short draw
@@ -62,13 +74,56 @@ struct MapInspectionFrame {
     }
 };
 
-// Prefer the screen's right margin; on narrower displays stay inside the map.
-inline MapHitRect dungeonSummaryBounds(MapHitRect map,MapHitRect screen) {
-    constexpr float width=112,height=80,margin=8;
+struct DungeonSummaryLayout {
+    MapHitRect bounds;
+    bool compact;
+};
+
+// Stay in the bottom row between the visible controls and the counter column.
+// Bounds use rendered text, not the empty space in native label containers.
+inline std::optional<MapHitRect> fieldMapDescriptionLayout(MapHitRect map,
+    const std::vector<MapHitRect>& controls,const std::vector<MapHitRect>& counters) {
+    auto valid=[](MapHitRect r) {
+        return std::isfinite(r.left) && std::isfinite(r.top) && std::isfinite(r.right) && std::isfinite(r.bottom)
+            && r.right>r.left && r.bottom>r.top;
+    };
+    if(!valid(map)) return {};
+    constexpr float height=58,gap=8,controlGap=4;
+    const MapHitRect safe{map.left+12,map.top+8,map.right-12,map.bottom-8};
+    constexpr float minWidth=180;
+    if(!valid(safe) || safe.bottom-safe.top<height || safe.right-safe.left<minWidth) return {};
+    MapHitRect box{safe.left,safe.bottom-height,safe.right,safe.bottom};
+    for(const auto& r:controls)
+        if(valid(r) && r.top-gap<box.bottom && r.bottom+gap>box.top)
+            box.left=std::max(box.left,r.right+controlGap);
+    // Reserve the whole counter column, even if a particular icon is higher.
+    for(const auto& r:counters)
+        if(valid(r)) box.right=std::min(box.right,r.left-gap);
+    if(box.right-box.left<minWidth) return {};
+    return box;
+}
+// The narrow layout uses the native space below the title and above the item
+// column. Never move the panel into the map when the right gutter disappears.
+inline std::optional<DungeonSummaryLayout> dungeonSummaryLayout(MapHitRect map,MapHitRect screen,MapHitRect compactSlot) {
+    constexpr float width=112,height=80,margin=8,frame=24;
+    auto valid=[](MapHitRect r) {
+        return std::isfinite(r.left) && std::isfinite(r.top) && std::isfinite(r.right) && std::isfinite(r.bottom)
+            && r.right>r.left && r.bottom>r.top;
+    };
+    if(!valid(map) || !valid(screen)) return {};
     const float right=screen.right-margin;
-    const float left=right-map.right>=width+margin ? right-width : map.right-width-margin;
-    const float top=std::clamp(map.top+44,screen.top+104,screen.bottom-height-margin);
-    return {left,top,left+width,top+height};
+    const float minTop=std::max(map.top+44,screen.top+104);
+    const float maxTop=screen.bottom-height-margin;
+    if(right-width>=map.right+frame && minTop<=maxTop)
+        return DungeonSummaryLayout{{right-width,minTop,right,minTop+height},false};
+    compactSlot.left=std::max(compactSlot.left,screen.left+margin);
+    compactSlot.right=std::min({compactSlot.right,screen.right-margin,map.left-frame});
+    compactSlot.top=std::max(compactSlot.top,screen.top+margin);
+    compactSlot.bottom=std::min(compactSlot.bottom,screen.bottom-margin);
+    constexpr float compactHeight=24;
+    if(!valid(compactSlot) || compactSlot.right-compactSlot.left<width || compactSlot.bottom-compactSlot.top<compactHeight) return {};
+    const float left=(compactSlot.left+compactSlot.right-width)/2;
+    return DungeonSummaryLayout{{left,compactSlot.top,left+width,compactSlot.top+compactHeight},true};
 }
 
 // SDL mouse positions use logical window units. Match Aurora's letterboxed

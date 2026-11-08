@@ -1,5 +1,6 @@
 #include "inventory_adapters.hpp"
 #include "model.hpp"
+#include "vanilla.hpp"
 #include "entrance_journal.hpp"
 #include "notebook.hpp"
 #include "check_guides.hpp"
@@ -54,6 +55,7 @@ UiElementHandle detailToggle=0;
 bool mapDetail=false, mapDetailClosing=false;
 UiElementHandle detailText = 0, detailButton = 0;
 std::string selectedCheck;
+std::vector<std::string> detailChecks;
 std::string detailMarkup;
 uint64_t detailRevision=0;
 std::vector<UiElementHandle> detailSections, detailAnchors, detailBlocks;
@@ -73,18 +75,18 @@ void navigateDetail() {
     svc_ui->elem_focus(mod_ctx,detailScrollRow==static_cast<int>(detailSectionCount) ? detailButton : detailAnchors[detailScrollRow]);
 }
 UiMenuTabHandle menuTab = 0;
-ConfigVarHandle keyboardBinding = 0, controllerBinding = 0;
+ConfigVarHandle shortcutBindings[4]{};
 int areaSort = 1;
 UiDialogHandle bindingDialog=0;
-int capturingDevice=-1;
+int capturingBinding=-1;
 bool captureReady=false;
-UiElementHandle bindingButtons[2]{};
+UiElementHandle bindingButtons[4]{};
 bool shortcutHeld = true;
 int64_t previousKeyboard = -1, previousController = -1;
 UiElementHandle inventoryElement = 0, checksElement = 0;
 std::vector<UiElementHandle> inventorySections, inventoryBlocks;
 std::vector<std::string> inventoryNames;
-UiElementHandle inventoryHeader=0;
+UiElementHandle inventoryHeader=0, chooseLogButton=0;
 UiElementHandle settingsStatus = 0, countElement = 0;
 constexpr size_t pageSize = 10;
 size_t checkPage = 0, totalPages = 1, visibleRows = 0;
@@ -113,6 +115,13 @@ SaveObserverHandle saveObserver = 0;
 bool dirty = true, allChecks = false, hideCompleted = false;
 bool engineDirty = false;
 bool seedRefreshPending = false;
+int seedSlot = -1;
+bool savedSlot = false, needsSeedLog = false;
+bool waitingForNativeSeed = false;
+std::chrono::steady_clock::time_point nextSeedProbe{};
+uintptr_t saveGeneration = 0;
+std::filesystem::path activeSeedFolder;
+void openLogPicker(bool guestSetup);
 int statusFilters[2]{};
 bool showHintSigns[2]{true,true};
 tracker::PreferenceStore preferences;
@@ -180,6 +189,7 @@ window content pane .tp-item-action:hover, window content pane .tp-item-action:f
 std::string journalText() {
     Json value = {{"version", 1}, {"seed", model.seed}, {"settings", model.settings},
                   {"checks", journal}};
+    value["mode"]=model.vanilla ? "vanilla" : "randomizer";
     value["entrance_visits"]=Json::array();
     for(const auto& id:model.visitedEntrances) value["entrance_visits"].push_back(tracker::entranceKey(id));
     value["skipped"]=model.skipped;
@@ -255,7 +265,13 @@ ModResult updateDetail(ModContext*,void*,ModError*) {
     }
     return MOD_OK;
 }
-ModResult buildDetail(ModContext*,UiWindowHandle,UiElementHandle left,UiElementHandle right,void*,ModError*) {
+ModResult buildDetail(ModContext*,UiWindowHandle,UiElementHandle left,UiElementHandle right,void* data,ModError*) {
+    const auto index=reinterpret_cast<uintptr_t>(data);
+    if(index>=detailChecks.size()) return MOD_INVALID_ARGUMENT;
+    selectedCheck=detailChecks[index];
+    detailText=detailButton=detailToggle=0; detailAdvanced=false; detailMarkup.clear(); detailRevision=0;
+    detailSections.clear(); detailAnchors.clear(); detailBlocks.clear(); detailSectionCount=0;
+    detailScrollRow=0; detailNavigation={};
     UiRowDesc sections=UI_ROW_DESC_INIT;
     auto result=svc_ui->pane_add_row(mod_ctx,left,&sections,&detailText);
     if(result!=MOD_OK) return result;
@@ -292,12 +308,18 @@ ModResult buildDetail(ModContext*,UiWindowHandle,UiElementHandle left,UiElementH
     detailRevision=0;
     return updateDetail(nullptr,nullptr,nullptr);
 }
-void detailClosed(ModContext*,UiWindowHandle,void*) { mapDetail=mapDetailClosing=false; detailWindow=0; detailText=detailButton=detailToggle=0; detailAdvanced=false; selectedCheck.clear(); detailMarkup.clear(); detailRevision=0; detailSections.clear(); detailAnchors.clear(); detailBlocks.clear(); detailSectionCount=0; detailScrollRow=0; detailNavigation={}; stickNavigation={}; }
-bool openCheckDetails(const std::string& name) {
-    if(detailWindow || !model.aliases.contains(name)) return false;
-    selectedCheck=name;
-    UiTabDesc tab=UI_TAB_DESC_INIT; tab.title="Check details"; tab.build=buildDetail; tab.update=updateDetail;
-    UiWindowDesc desc=UI_WINDOW_DESC_INIT; desc.tabs=&tab; desc.tab_count=1; desc.on_closed=detailClosed;
+void detailClosed(ModContext*,UiWindowHandle,void*) { mapDetail=mapDetailClosing=false; detailWindow=0; detailText=detailButton=detailToggle=0; detailAdvanced=false; selectedCheck.clear(); detailChecks.clear(); detailMarkup.clear(); detailRevision=0; detailSections.clear(); detailAnchors.clear(); detailBlocks.clear(); detailSectionCount=0; detailScrollRow=0; detailNavigation={}; stickNavigation={}; }
+bool openCheckDetails(const std::vector<std::string>& names) {
+    if(detailWindow || names.empty()) return false;
+    detailChecks=names;
+    std::erase_if(detailChecks,[](const auto& name) { return !model.aliases.contains(name); });
+    if(detailChecks.empty()) return false;
+    std::vector<UiTabDesc> tabs(detailChecks.size(),UI_TAB_DESC_INIT);
+    for(size_t i=0;i<tabs.size();++i) {
+        tabs[i].title=tabs.size()==1 ? "Check details" : detailChecks[i].c_str();
+        tabs[i].build=buildDetail; tabs[i].update=updateDetail; tabs[i].user_data=reinterpret_cast<void*>(i);
+    }
+    UiWindowDesc desc=UI_WINDOW_DESC_INIT; desc.tabs=tabs.data(); desc.tab_count=tabs.size(); desc.on_closed=detailClosed;
     desc.rcss=R"(
 window { max-width: 1060dp; max-height: 800dp; }
 .tp-state { padding: 8dp; background-color: #302d20; border-radius: 5dp; }
@@ -327,16 +349,16 @@ window content pane div { display: block; margin-bottom: 4dp; }
 }
 void inspectCheck(ModContext*, void* data) {
     stickRow=static_cast<int>(reinterpret_cast<uintptr_t>(data));
-    if(stickRow>=0 && static_cast<size_t>(stickRow)<visibleNames.size()) openCheckDetails(visibleNames[stickRow]);
+    if(stickRow>=0 && static_cast<size_t>(stickRow)<visibleNames.size()) openCheckDetails({visibleNames[stickRow]});
 }
-bool inspectMapCheck(const std::string& name) {
+bool inspectMapCheck(const std::vector<std::string>& names) {
     // Push only Check Details. With no tracker window underneath, the host's
     // normal B/Esc close returns directly to the in-game map in one press.
     bool visible=true;
-    if(window || detailWindow || capturingDevice>=0 ||
+    if(window || detailWindow || capturingBinding>=0 ||
        svc_ui->is_any_document_visible(mod_ctx,&visible)!=MOD_OK || visible) return false;
     shortcutHeld=true;
-    mapDetail=openCheckDetails(name);
+    mapDetail=openCheckDetails(names);
     return mapDetail;
 }
 bool closeMapCheck() {
@@ -355,11 +377,60 @@ void backupCard() {
         !tracker::backupSelectedCard(std::filesystem::u8path(path),error) && !error.empty())
         mods::log::warn("TPTracker: card backup failed: {}",error);
 }
-void restore(bool autoSeed = true) {
+void refreshSelectedSeed() {
+    const char* dataPath = nullptr;
+    ++revision;
+    if(tracker::normalPlayActive()) {
+        if(!model.vanilla) { model.loadVanilla(); ++logicGeneration; dirty=true; }
+        needsSeedLog=waitingForNativeSeed=false; activeSeedFolder.clear();
+        status="Normal Play: tracking inventory, collected checks and story progress.";
+        return;
+    }
+    status = model.seedLoaded ? "Seed: " + model.seed :
+        "Save the randomizer game once to identify its seed, or load a seed log in Mods > TPTracker.";
+    if (!savedSlot || svc_host->data_dir(mod_ctx, &dataPath) != MOD_OK || !dataPath) return;
+    try {
+        if (seedSlot < 0 && dComIfGp_getPlayer(0)) seedSlot = dComIfGs_getDataNum();
+        auto folder = tracker::selectedSeedFolder(std::filesystem::u8path(dataPath).parent_path(), seedSlot);
+        if (folder.empty()) return;
+        if (folder != activeSeedFolder) {
+            activeSeedFolder = folder;
+            needsSeedLog = false;
+            ++saveGeneration;
+        }
+        const auto hash = folder.filename().string();
+        if (model.seedLoaded && model.seed != hash) {
+            // The journal belongs to another seed. Let the next scan rebuild progress
+            // from this save instead of solving the host's world with old settings.
+            model.resetSave(); journal.clear(); entranceJourney.reset();
+            hintNotes = Json::object(); manualNotes.clear(); personalNotes.clear(); notebookDirty = false;
+            ++logicGeneration; dirty = true;
+        }
+        waitingForNativeSeed = !std::filesystem::exists(folder / "seed.dat");
+        if (waitingForNativeSeed) {
+            needsSeedLog = false;
+            status = "Waiting for seed.dat for the active seed, " + hash + ".";
+            nextSeedProbe = std::chrono::steady_clock::now() + std::chrono::seconds(2);
+            return;
+        }
+        needsSeedLog = true;
+        needsSeedLog = !tracker::loadSeedFolder(model, folder);
+        status = needsSeedLog ? "Seed data found for " + hash + ". Choose the host's matching Anti-Spoiler Log to show reachable checks."
+                              : "Seed: " + hash + " (selected save)";
+        dirty = true;
+    } catch (const std::exception& e) {
+        if (!activeSeedFolder.empty()) status = e.what();
+        mods::log::warn("TPTracker: selected save seed metadata unavailable: {}", e.what());
+    }
+}
+
+void restore(int slot, bool autoSeed = true) {
     if(itemWindow) svc_ui->window_close(mod_ctx,itemWindow);
     if(detailWindow) svc_ui->window_close(mod_ctx,detailWindow);
     backupCard();
     model.resetSave(); entranceJourney.reset();
+    seedSlot = slot; savedSlot = autoSeed; seedRefreshPending = false;
+    activeSeedFolder.clear(); needsSeedLog = waitingForNativeSeed = false; ++saveGeneration;
     ++logicGeneration;
     ++revision;
     journal.clear();
@@ -371,7 +442,9 @@ void restore(bool autoSeed = true) {
             try {
                 auto value = Json::parse(text);
                 if (value.at("version") != 1) throw std::runtime_error("Unsupported journal version");
-                if (!value.value("seed", std::string{}).empty()) model.loadSeed(text);
+                if(value.contains("mode") && value.at("mode")!=(tracker::normalPlayActive() ? "vanilla" : "randomizer"))
+                    throw std::runtime_error("Tracker journal belongs to another play mode");
+                if (!tracker::normalPlayActive() && !value.value("seed", std::string{}).empty()) model.loadSeed(text);
                 for (const auto& name : value.at("checks"))
                     if (model.aliases.contains(name.get<std::string>())) journal.insert(name.get<std::string>());
                 model.obtained = journal;
@@ -396,22 +469,19 @@ void restore(bool autoSeed = true) {
             }
         }
     }
-    const char* dataPath = nullptr;
-    std::string seedError;
-    if (autoSeed && svc_host->data_dir(mod_ctx, &dataPath) == MOD_OK && dataPath &&
-        tracker::loadSelectedSeed(model, std::filesystem::u8path(dataPath).parent_path(), seedError)) {
-        status = "Seed: " + model.seed + " (selected save)";
-    } else {
-        if (!seedError.empty()) mods::log::warn("TPTracker: selected save seed metadata unavailable: {}. Preserve the card, its .mods folder and the matching randomizer seed folder together.",seedError);
-        status = model.seedLoaded ? "Seed: " + model.seed : "Load this save's spoiler log in F1. Automatic seed lookup needs a saved randomizer slot.";
-    }
+    refreshSelectedSeed();
     dirty = true;
     nextScan = {};
     lastChecks.clear();
 }
-void onSaveLoaded(ModContext*, uint32_t, void*) { restore(); }
-void onNewSave(ModContext*, uint32_t, void*) { restore(false); }
-void onSaveWritten(ModContext*, uint32_t, void*) { seedRefreshPending = true; }
+void onSaveLoaded(ModContext*, uint32_t slot, void*) { restore(static_cast<int>(slot)); }
+void onNewSave(ModContext*, uint32_t slot, void*) { restore(static_cast<int>(slot), false); }
+void onSaveWritten(ModContext*, uint32_t slot, void*) {
+    if (!savedSlot || seedSlot != static_cast<int>(slot)) {
+        ++saveGeneration; activeSeedFolder.clear(); needsSeedLog = waitingForNativeSeed = false;
+    }
+    seedSlot = static_cast<int>(slot); savedSlot = true; seedRefreshPending = true;
+}
 
 bool savedEvent(unsigned flag) {
     const auto* bytes=static_cast<const u8*>(dComIfGs_getPEventBit());
@@ -497,6 +567,22 @@ void scan() {
         dComIfGs_isDungeonItemBossKey(0x11) != 0);
     tiers("Progressive Wallet", {0x35, 0x36});
     tiers("Progressive Hidden Skill", {0xe1, 0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7});
+    if(model.vanilla) {
+        tracker::vanillaInventory(inventory, savedEvent,
+            [](int id) { return dComIfGs_isItemFirstBit(static_cast<u8>(id))!=0; },
+            [](int slot) { return dComIfGs_getItem(slot,true); },
+            [](int save,int flag) { return dComIfGs_isStageSwitch(save,flag)!=0; },dComIfGs_getWalletSize());
+        inventory["North Faron Woods Gate Key"]=dComIfGs_isStageTbox(2,24) || dComIfGs_isStageSwitch(2,0x14);
+        if(!dComIfGs_isDungeonItemBossKey(0x11))
+            inventory["Goron Mines Key Shard"]=int(savedEvent(0x3008))+int(savedEvent(0x3702))+int(savedEvent(0x3701));
+        for(int i=0;i<3;++i) {
+            const char* provinces[]={"Faron","Eldin","Lanayru"};
+            inventory[std::string("Story Can Complete ")+provinces[i]+" Twilight"]=dComIfGs_isDarkClearLV(i)!=0;
+        }
+        const bool forcedWolf=(inventory["Story Can Complete Prologue"] && !dComIfGs_isDarkClearLV(0)) ||
+                              (inventory["Story Midna Injured"] && !inventory["Shadow Crystal"]);
+        model.settings["Starting Form"]=forcedWolf ? "Wolf" : "Human";
+    }
     inventory["Poe Soul"] = dComIfGs_getPohSpiritNum();
     inventory["Faron Twilight Tear"] = dComIfGs_getLightDropNum(0);
     inventory["Eldin Twilight Tear"] = dComIfGs_getLightDropNum(1);
@@ -533,9 +619,14 @@ void scan() {
     std::set<std::string> hiddenMarkers;
     auto completed = journal;
     for (const auto& check : model.catalogue.at("checks")) {
+        if(model.vanilla && !model.enabled(check)) continue;
         if (check.contains("map_hide_event") && savedEvent(check.at("map_hide_event").get<unsigned>()))
             hiddenMarkers.insert(check.at("name").get<std::string>());
-        for (const auto& flag : check.at("flags"))
+        const auto native=model.vanilla ? tracker::vanillaCompletion(check.at("name").get<std::string>(),savedEvent,
+            [](int id) { return dComIfGs_isItemFirstBit(static_cast<u8>(id))!=0; },
+            [](int save,int flag) { return dComIfGs_isStageSwitch(save,flag)!=0; }) : std::optional<bool>{};
+        if(native) { if(*native) completed.insert(check.at("name").get<std::string>()); }
+        else for (const auto& flag : check.at("flags"))
             if (flagObtained(flag)) { completed.insert(check.at("name").get<std::string>()); break; }
         // Only vanilla bugs can be correlated with inventory; a shuffled bug item
         // proves nothing about the original bug's location.
@@ -687,6 +778,11 @@ ModResult renderInventory() {
         inventoryNames.clear();
         auto result=svc_ui->pane_add_rml(mod_ctx,inventoryElement,header.c_str(),&inventoryHeader);
         if(result!=MOD_OK) return result;
+        UiControlDesc choose = UI_CONTROL_DESC_INIT;
+        choose.kind = UI_CONTROL_BUTTON; choose.label = "Choose log";
+        choose.on_pressed = [](ModContext*, void*) { openLogPicker(true); };
+        result = svc_ui->pane_add_control(mod_ctx, inventoryElement, &choose, &chooseLogButton);
+        if (result != MOD_OK) return result;
         for(const char* section:{"Progression","Collectibles","Keys","Quest items"}) {
             auto title="<div class='tp-group'>"+std::string(section)+"</div>";
             result=svc_ui->pane_add_rml(mod_ctx,inventoryElement,title.c_str(),nullptr); if(result!=MOD_OK) return result;
@@ -718,6 +814,7 @@ ModResult renderInventory() {
         if(result!=MOD_OK) return result;
     }
     svc_ui->elem_set_rml(mod_ctx,inventoryHeader,header.c_str());
+    svc_ui->elem_set_visible(mod_ctx, chooseLogButton, needsSeedLog);
     for(size_t i=0;i<inventoryNames.size();++i) {
         const auto& name=inventoryNames[i]; auto found=model.inventory.find(name);
         const int count=found==model.inventory.end() ? -1 : found->second;
@@ -1136,6 +1233,7 @@ void toggleGet(ModContext*, void*, UiControlValue* value) { value->bool_value = 
 void toggleSet(ModContext*, void*, const UiControlValue* value) {
     if (!value->bool_value && window) { if(itemWindow) svc_ui->window_close(mod_ctx,itemWindow); if(detailWindow) svc_ui->window_close(mod_ctx,detailWindow); svc_ui->window_close(mod_ctx, window); return; }
     if (!value->bool_value || window) return;
+    if (!model.seedLoaded || waitingForNativeSeed) refreshSelectedSeed();
     UiTabDesc tabs[4] = {UI_TAB_DESC_INIT, UI_TAB_DESC_INIT, UI_TAB_DESC_INIT, UI_TAB_DESC_INIT};
     tabs[0].title = "Current Area";
     tabs[1].title = "All Checks";
@@ -1153,37 +1251,46 @@ void openTracker(ModContext*, void*) {
     UiControlValue value{}; value.bool_value=true; toggleSet(mod_ctx,nullptr,&value);
 }
 void cancelBinding(ModContext*, UiDialogHandle, void*) {
-    capturingDevice=-1; bindingDialog=0; shortcutHeld=true;
+    tracker::cancelControllerBindingCapture();
+    capturingBinding=-1; bindingDialog=0; shortcutHeld=true;
 }
 void dismissBinding(ModContext*, UiDialogHandle, void*) {
     // The host treats B as Back. Capture it here before the prompt is dismissed.
-    if (capturingDevice==1 && captureReady) {
-        const int pressed=tracker::pressedBinding(true);
-        if (pressed) svc_config->set_int(mod_ctx,controllerBinding,pressed);
+    if (capturingBinding>=0 && captureReady) {
+        const int pressed=tracker::pressedBinding(capturingBinding%2!=0);
+        if (pressed && (capturingBinding>=2 || capturingBinding%2 || !tracker::escapeBinding(pressed)))
+            svc_config->set_int(mod_ctx,shortcutBindings[capturingBinding],pressed);
     }
     cancelBinding(mod_ctx,0,nullptr);
 }
 void assignBinding(ModContext*,void* data) {
-    capturingDevice=static_cast<int>(reinterpret_cast<uintptr_t>(data)); captureReady=false;
+    capturingBinding=static_cast<int>(reinterpret_cast<uintptr_t>(data)); captureReady=false;
+    tracker::cancelControllerBindingCapture();
+    if(capturingBinding%2) tracker::beginControllerBindingCapture();
     UiDialogAction action=UI_DIALOG_ACTION_INIT;
     action.label="Cancel"; action.on_pressed=cancelBinding;
     UiDialogDesc dialog=UI_DIALOG_DESC_INIT;
-    dialog.title="Assign TPTracker shortcut";
-    dialog.body_rml=capturingDevice ? "Release the current button, then press any controller button or trigger." : "Release the current key, then press any keyboard key. Escape cancels.";
+    dialog.title=capturingBinding>=2 ? "Assign Check Info button" : "Assign TPTracker shortcut";
+    dialog.body_rml=capturingBinding%2 ? "Release the current button, then press any controller button or trigger." : capturingBinding>=2 ? "Release the current key, then press any keyboard key. Use Cancel to keep your binding." : "Release the current key, then press any keyboard key. Escape cancels.";
     dialog.actions=&action; dialog.action_count=1; dialog.on_dismiss=dismissBinding;
     if (svc_ui->dialog_push(mod_ctx,&dialog,&bindingDialog)!=MOD_OK) cancelBinding(mod_ctx,0,nullptr);
 }
 void clearBinding(ModContext*,void* data) {
-    svc_config->set_int(mod_ctx,reinterpret_cast<uintptr_t>(data) ? controllerBinding : keyboardBinding,0);
+    svc_config->set_int(mod_ctx,shortcutBindings[reinterpret_cast<uintptr_t>(data)],0);
     shortcutHeld=true;
 }
 void pollShortcut() {
-    if (capturingDevice>=0) {
-        const int pressed=tracker::pressedBinding(capturingDevice!=0);
-        if (!pressed) captureReady=true;
-        if (pressed && captureReady) {
-            if (capturingDevice!=0 || !tracker::escapeBinding(pressed))
-                svc_config->set_int(mod_ctx,capturingDevice ? controllerBinding : keyboardBinding,pressed);
+    int64_t checkKey=0,checkPad=0;
+    svc_config->get_int(mod_ctx,shortcutBindings[2],&checkKey);
+    svc_config->get_int(mod_ctx,shortcutBindings[3],&checkPad);
+    tracker::setCheckBindings(static_cast<int>(checkKey),static_cast<int>(checkPad));
+    if (capturingBinding>=0) {
+        const bool controller=capturingBinding%2!=0;
+        const int pressed=controller ? tracker::pollControllerBindingCapture() : tracker::pressedBinding(false);
+        if (!controller && !pressed) captureReady=true;
+        if (pressed && (controller || captureReady)) {
+            if (capturingBinding>=2 || capturingBinding%2 || !tracker::escapeBinding(pressed))
+                svc_config->set_int(mod_ctx,shortcutBindings[capturingBinding],pressed);
             const auto dialog=bindingDialog;
             cancelBinding(mod_ctx,0,nullptr);
             if (dialog) svc_ui->dialog_close(mod_ctx,dialog);
@@ -1191,24 +1298,29 @@ void pollShortcut() {
         return;
     }
     int64_t key=0,pad=0;
-    svc_config->get_int(mod_ctx,keyboardBinding,&key);
-    svc_config->get_int(mod_ctx,controllerBinding,&pad);
+    svc_config->get_int(mod_ctx,shortcutBindings[0],&key);
+    svc_config->get_int(mod_ctx,shortcutBindings[1],&pad);
     const bool down=tracker::shortcutDown(notesTab && window ? 0 : static_cast<int>(key),static_cast<int>(pad));
     // A newly selected binding must be released before it can toggle the window.
     if (key!=previousKeyboard || pad!=previousController) {
         previousKeyboard=key; previousController=pad; shortcutHeld=true;
     }
-    // Reserve the map chord's buttons while inspecting a map; a custom RT or
+    // Reserve the Check Info binding while inspecting a map; a custom RT or
     // A tracker shortcut must not open a parent window underneath the details.
-    const bool reservedMapButton=(pad==1 || pad==16 || pad==100);
-    if(mapDetail || (tracker::mapInspectionActive() && reservedMapButton && !tracker::shortcutDown(static_cast<int>(key),0))) { shortcutHeld=down; return; }
-    if (down && !shortcutHeld) {
+    const bool reservedMapButton=tracker::checkBindingUses(static_cast<int>(pad),true) && tracker::shortcutDown(0,static_cast<int>(pad));
+    const bool reservedMapKey=tracker::checkBindingUses(static_cast<int>(key),false) && tracker::shortcutDown(static_cast<int>(key),0);
+    if(mapDetail || (tracker::mapInspectionActive() && (reservedMapButton || reservedMapKey))) { shortcutHeld=down; return; }
+    const bool pressed=tracker::shortcutPressed(notesTab && window ? 0 : static_cast<int>(key),static_cast<int>(pad));
+    if ((down || pressed) && !shortcutHeld) {
         UiControlValue value{}; value.bool_value=!window; toggleSet(mod_ctx,nullptr,&value);
     }
     shortcutHeld=down;
 }
-void filePicked(ModContext*, ModResult result, const char* const* locations, uint32_t count, const char*, void*) {
+void filePicked(ModContext*, ModResult result, const char* const* locations, uint32_t count, const char*, void* generation) {
     if (result != MOD_OK || count != 1) return;
+    if (seedRefreshPending) refreshSelectedSeed();
+    if(tracker::normalPlayActive()) return;
+    if (reinterpret_cast<uintptr_t>(generation) != saveGeneration) return;
     ++revision;
     FileStreamHandle stream = 0;
     uint64_t size = 0, read = 0;
@@ -1220,23 +1332,30 @@ void filePicked(ModContext*, ModResult result, const char* const* locations, uin
     auto closed = svc_file->close(mod_ctx, stream);
     try {
         if (result != MOD_OK || closed != MOD_OK || read != size) throw std::runtime_error("Incomplete seed read");
-        tracker::Model candidate=model;
-        candidate.loadSeed(content);
-        if(!model.seed.empty() && candidate.seed!=model.seed) throw std::runtime_error("Choose the spoiler log for the active save's seed.");
+        tracker::importSelectedLog(model, content, activeSeedFolder);
         std::string nativeError;
-        if(!tracker::loadSiblingEntrances(candidate,std::filesystem::u8path(locations[0]),nativeError) && !nativeError.empty())
+        if((activeSeedFolder.empty() || waitingForNativeSeed) &&
+           !tracker::loadSiblingEntrances(model,std::filesystem::u8path(locations[0]),nativeError) && !nativeError.empty())
             mods::log::warn("TPTracker: {}",nativeError);
-        model=std::move(candidate); entranceJourney.reset();
+        needsSeedLog = false; entranceJourney.reset(); ++logicGeneration;
         status = "Seed: " + model.seed;
         persist(); dirty = true;
     } catch (const std::exception& e) { status = e.what(); mods::log::warn("TPTracker: {}", e.what()); }
 }
-void pickSeed(ModContext*, void*) {
+void openLogPicker(bool guestSetup) {
     ++revision;
-    static const FileFilter filters[] = {{"Dusklight spoiler log / TPTracker JSON", "txt;json"}};
+    if(tracker::normalPlayActive()) { status="Normal Play uses your save's story progress; no seed log is needed."; return; }
+    if (savedSlot && activeSeedFolder.empty()) refreshSelectedSeed();
+    static const FileFilter logs[] = {{"Dusklight seed log", "txt"}};
+    static const FileFilter filters[] = {{"Dusklight seed logs / TPTracker JSON", "txt;json"}};
     FilePickOptions options = FILE_PICK_OPTIONS_INIT;
-    options.filters = filters; options.filter_count = 1;
-    if (svc_file->pick_file(mod_ctx, &options, filePicked, nullptr) != MOD_OK) status = "Could not open the file picker.";
+    options.filters = guestSetup ? logs : filters; options.filter_count = 1;
+    const auto folder = (activeSeedFolder / "").u8string();
+    if (needsSeedLog) {
+        options.default_location = reinterpret_cast<const char*>(folder.c_str());
+    }
+    if (svc_file->pick_file(mod_ctx, &options, filePicked, reinterpret_cast<void*>(saveGeneration)) != MOD_OK)
+        status = "Could not open the file picker.";
 }
 void searchGet(ModContext*, void*, UiControlValue* value) { value->string_value = search.c_str(); }
 void searchSet(ModContext*, void*, const UiControlValue* value) { savePreference(search,std::string(value->string_value ? value->string_value : "")); ++revision; }
@@ -1250,25 +1369,41 @@ void typeGet(ModContext*,void* ptr,UiControlValue* v) { v->bool_value=*static_ca
 void typeSet(ModContext*,void* ptr,const UiControlValue* v) { savePreference(*static_cast<bool*>(ptr),v->bool_value); }
 ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     settingsStatus = 0;
+    auto result=svc_ui->pane_add_section(mod_ctx,pane,"Tracker");
+    if(result!=MOD_OK) return result;
     UiControlDesc control = UI_CONTROL_DESC_INIT;
     control.kind = UI_CONTROL_TOGGLE; control.label = "TPTracker"; control.get = toggleGet; control.set = toggleSet;
-    auto result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
+    result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
     if (result != MOD_OK) return result;
-    for (int device=0;device<2;++device) {
+    for (int device=0;device<4;++device) {
+        if(device%2==0) {
+            result=svc_ui->pane_add_section(mod_ctx,pane,device>=2 ? "Check Info bindings" : "Open tracker bindings");
+            if(result!=MOD_OK) return result;
+        }
         control=UI_CONTROL_DESC_INIT; control.kind=UI_CONTROL_BUTTON;
-        control.label=device ? "Click any button on controller to assign" : "Click any key on keyboard to assign";
+        const bool controller=device%2!=0;
+        control.label=device>=2 ? (controller ? "Check Info controller button" : "Check Info keyboard key")
+                                : (controller ? "Open tracker controller button" : "Open tracker keyboard key");
+        control.help_rml=device>=2 ? "Default: A (Xbox) / Cross (PlayStation) while fully zoomed in over a check. A custom Check Info binding replaces this default. Left click stays available. Clear both Check Info bindings to restore A / Cross." : nullptr;
         control.on_pressed=assignBinding; control.user_data=reinterpret_cast<void*>(static_cast<uintptr_t>(device));
         result=svc_ui->pane_add_control(mod_ctx,pane,&control,&bindingButtons[device]);
         if (result!=MOD_OK) return result;
-        control.label=device ? "Clear controller binding" : "Clear keyboard binding";
+        control.label=device>=2 ? (controller ? "Clear Check Info controller binding" : "Clear Check Info keyboard binding") : (controller ? "Clear tracker controller binding" : "Clear tracker keyboard binding");
         control.on_pressed=clearBinding;
         result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
         if (result!=MOD_OK) return result;
     }
+    result=svc_ui->pane_add_section(mod_ctx,pane,"Seed setup");
+    if(result!=MOD_OK) return result;
     control = UI_CONTROL_DESC_INIT;
-    control.kind = UI_CONTROL_BUTTON; control.label = "Load this save's seed log / JSON"; control.on_pressed = pickSeed;
+    control.kind = UI_CONTROL_BUTTON; control.label = "Load this save's seed log / JSON";
+    control.on_pressed = [](ModContext*, void*) { openLogPicker(false); };
+    control.is_disabled=[](ModContext*,void*) { return tracker::normalPlayActive(); };
+    control.help_rml="Randomizer saves use a matching seed log. Normal Play tracks your save's story progress automatically.";
     result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
     if (result != MOD_OK) return result;
+    result=svc_ui->pane_add_section(mod_ctx,pane,"Check filters");
+    if(result!=MOD_OK) return result;
     control = UI_CONTROL_DESC_INIT;
     control.kind = UI_CONTROL_STRING; control.label = "Filter checks"; control.get = searchGet; control.set = searchSet; control.max_length = 128;
     result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
@@ -1277,6 +1412,8 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     control.kind = UI_CONTROL_TOGGLE; control.label = "Hide completed checks"; control.get = hideGet; control.set = hideSet;
     result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
     if (result != MOD_OK) return result;
+    result=svc_ui->pane_add_section(mod_ctx,pane,"Map display");
+    if(result!=MOD_OK) return result;
     control = UI_CONTROL_DESC_INIT;
     control.kind = UI_CONTROL_TOGGLE; control.label = tracker::mapAvailable ? "Native map check markers" : "Map markers unavailable on this build"; control.get = mapGet; control.set = mapSet;
     result = svc_ui->pane_add_control(mod_ctx, pane, &control, nullptr);
@@ -1295,7 +1432,7 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     }
     control=UI_CONTROL_DESC_INIT; control.kind=UI_CONTROL_TOGGLE;
     control.label="Map: Show Check Info hint (visual only)";
-    control.help_rml="Show only the control hint. Map check information still opens with left click or RT/R2 + A/Cross when this is off.";
+    control.help_rml="Show the hint beside the check name at the closest map zoom. Mouse click and your Check Info binding still work when this is off.";
     control.get=typeGet; control.set=typeSet; control.user_data=&tracker::showCheckInfoHint;
     result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
     if(result!=MOD_OK) return result;
@@ -1307,21 +1444,29 @@ ModResult buildSettings(ModContext*, UiElementHandle pane, void*, ModError*) {
     if(result!=MOD_OK) return result;
     static const char* types[]={"Treasure chests","NPC / event rewards","Golden bugs","Poe souls","Golden wolves","Shop items","Owl statues","Grotto checks","Freestanding Rupees","Hidden Rupees"};
     for (int surface=0;surface<2;++surface) for (int i=0;i<tracker::checkTypeCount;++i) {
+        if(i==0) {
+            result=svc_ui->pane_add_section(mod_ctx,pane,surface ? "Minimap check types" : "Map check types");
+            if(result!=MOD_OK) return result;
+        }
         std::string label=std::string(surface ? "Minimap: " : "Map: ")+types[i];
         control=UI_CONTROL_DESC_INIT; control.kind=UI_CONTROL_TOGGLE; control.label=label.c_str();
         control.get=typeGet; control.set=typeSet; control.user_data=surface ? &tracker::minimapTypes[i] : &tracker::mapTypes[i];
         result=svc_ui->pane_add_control(mod_ctx,pane,&control,nullptr);
         if (result!=MOD_OK) return result;
     }
+    result=svc_ui->pane_add_section(mod_ctx,pane,"Status and information");
+    if(result!=MOD_OK) return result;
     result = svc_ui->pane_add_text(mod_ctx, pane, status.c_str(), &settingsStatus);
     if (result != MOD_OK) return result;
     return svc_ui->pane_add_text(mod_ctx, pane,
         "Native RmlUi tracker. The current SDK window captures game input and cannot detach onto another monitor. Filters are remembered across restarts. Seed settings are stored per save slot.", nullptr);
 }
 ModResult updateSettings(ModContext*, void*, ModError*) {
-    for (int device=0;device<2;++device) {
-        int64_t value=0; svc_config->get_int(mod_ctx,device ? controllerBinding : keyboardBinding,&value);
-        const auto label=std::string(device ? "Click any button on controller to assign: " : "Click any key on keyboard to assign: ")+tracker::bindingName(static_cast<int>(value),device!=0);
+    int64_t checkKeyboard=0; svc_config->get_int(mod_ctx,shortcutBindings[2],&checkKeyboard);
+    for (int device=0;device<4;++device) {
+        int64_t value=0; svc_config->get_int(mod_ctx,shortcutBindings[device],&value);
+        const auto name=device==3 && !value && !checkKeyboard ? std::string("Default: A / Cross") : tracker::bindingName(static_cast<int>(value),device%2!=0);
+        const auto label=std::string(device>=2 ? "Check Info " : "Open tracker ")+(device%2 ? "controller button - " : "keyboard key - ")+name;
         if (bindingButtons[device]) svc_ui->control_set_label(mod_ctx,bindingButtons[device],label.c_str());
     }
     return settingsStatus ? svc_ui->elem_set_text(mod_ctx, settingsStatus, status.c_str()) : MOD_OK;
@@ -1392,10 +1537,12 @@ MOD_EXPORT ModResult mod_initialize(ModError* error) {
     else mods::log::info("TPTracker: native map draw hook installed");
     mods::log::info("TPTracker: minimap hooks {}", tracker::minimapAvailable ? "installed" : "unavailable");
     result = tracker::initializeInput();
+    tracker::setInputFrameHandler(pollShortcut);
     tracker::setMapCheckHandler(inspectMapCheck,closeMapCheck);
     if (result != MOD_OK) return mods::set_error(error, result, "TPTracker input event hook failed");
-    restore();
-    for (auto entry : {std::pair{"tracker-keyboard", &keyboardBinding}, std::pair{"tracker-controller", &controllerBinding}}) {
+    // At the title screen the engine's default data number is not an active slot.
+    restore(dComIfGp_getPlayer(0) ? dComIfGs_getDataNum() : -1);
+    for (auto entry : {std::pair{"tracker-keyboard", &shortcutBindings[0]}, std::pair{"tracker-controller", &shortcutBindings[1]}, std::pair{"check-keyboard", &shortcutBindings[2]}, std::pair{"check-controller", &shortcutBindings[3]}}) {
         ConfigVarDesc config=CONFIG_VAR_DESC_INIT;
         config.name=entry.first; config.type=CONFIG_VAR_INT; config.default_int=0;
         result=svc_config->register_var(mod_ctx,&config,entry.second);
@@ -1410,21 +1557,19 @@ MOD_EXPORT ModResult mod_initialize(ModError* error) {
     return svc_ui->register_mods_panel(mod_ctx, &panel);
 }
 MOD_EXPORT ModResult mod_update(ModError*) {
-    pollShortcut();
     if (seedRefreshPending) {
         // The sidecar is flushed after save observers return. Read it here, and
         // retain the live completion journal rather than restoring an older one.
         seedRefreshPending = false;
         backupCard();
-        const char* dataPath = nullptr;
-        std::string error;
-        if (svc_host->data_dir(mod_ctx, &dataPath) == MOD_OK && dataPath &&
-            tracker::loadSelectedSeed(model, std::filesystem::u8path(dataPath).parent_path(), error)) {
-            status = "Seed: " + model.seed + " (selected save)";
-            dirty = true; ++revision;
-        }
+        refreshSelectedSeed();
     }
     auto now = std::chrono::steady_clock::now();
+    if (window && waitingForNativeSeed && now >= nextSeedProbe) {
+        nextSeedProbe = now + std::chrono::seconds(2);
+        std::error_code error;
+        if (std::filesystem::is_regular_file(activeSeedFolder / "seed.dat", error)) refreshSelectedSeed();
+    }
     if (now >= nextScan) {
         if (notebookDirty) { persist(); notebookDirty=false; }
         nextScan = now + std::chrono::milliseconds(engineDirty ? 250 : 500);
@@ -1435,6 +1580,8 @@ MOD_EXPORT ModResult mod_update(ModError*) {
     return MOD_OK;
 }
 MOD_EXPORT ModResult mod_shutdown(ModError*) {
+    tracker::setInputFrameHandler(nullptr);
+    tracker::cancelControllerBindingCapture();
     if(itemWindow) svc_ui->window_close(mod_ctx,itemWindow);
     if(detailWindow) svc_ui->window_close(mod_ctx,detailWindow);
     if (menuTab) svc_ui->unregister_menu_tab(mod_ctx,menuTab);

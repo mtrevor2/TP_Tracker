@@ -132,11 +132,12 @@ for area in world:
         'Temple of Time Poe Behind Gate': ('Temple Poe Gate Opened', 'Dominion_Rod'),
         'Sacred Grove Temple of Time Owl Statue Poe': ('Sacred Grove Poe Statue Moved', 'Dominion_Rod'),
         'Isle of Riches Poe': ('Isle of Riches Flight Purchased', "Can_Talk_to_Humans and 'Can_Farm_Rupees'"),
+        'Hidden Village Poe': ('Hidden Village Poe Rooftop Reached', "Bow and Clawshot and 'Can_Show_Ilia_Ilias_Charm'"),
     }
     for name, (event, obstacle) in poe_obstacles.items():
         if name in (area.get('Locations') or {}):
             events[event] = obstacle
-            night = 'Night and ' if name == 'Isle of Riches Poe' else ''
+            night = 'Night and ' if name in ('Isle of Riches Poe', 'Hidden Village Poe') else ''
             area['Locations'][name] = night + "'" + event.replace(' ', '_') + "' and Can_Use_Senses"
     for name, requirement in (area.get('Locations') or {}).items():
         access.setdefault(name, []).append({'area': area['Name'], 'requirement': str(requirement)})
