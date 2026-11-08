@@ -59,14 +59,14 @@ int main() {
  const MapHitRect field{0,40,608,420};
  const std::vector<MapHitRect> controls{{20,350,100,400}},counters{{450,240,580,400}};
  auto description=fieldMapDescriptionLayout(field,controls,counters);
- require(description && near(description->bottom,412) && near(description->left,108) && near(description->right,442));
+ require(description && near(description->bottom,412) && near(description->left,104) && near(description->right,442));
  for(const auto& r:controls) require(!overlaps(*description,r));
  for(const auto& r:counters) require(!overlaps(*description,r));
  const auto wide=fieldMapDescriptionLayout({-120,40,728,420},{{-100,350,30,400}},{{570,240,700,400}});
- require(wide && near(wide->bottom,412) && near(wide->left,38) && near(wide->right,562));
+ require(wide && near(wide->bottom,412) && near(wide->left,34) && near(wide->right,562));
  // Wider labels narrow the box; they never cause it to jump above the controls.
  const auto wideLabels=fieldMapDescriptionLayout({-120,40,728,420},{{-100,350,240,400}},{{570,240,700,400}});
- require(wideLabels && near(wideLabels->left,248) && near(wideLabels->bottom,412));
+ require(wideLabels && near(wideLabels->left,244) && near(wideLabels->bottom,412));
  const auto highCounter=fieldMapDescriptionLayout(field,controls,{{450,240,580,300}});
  require(highCounter && near(highCounter->right,442) && near(highCounter->bottom,412));
  const auto clearBottom=fieldMapDescriptionLayout(field,{},counters);
@@ -87,19 +87,19 @@ int main() {
    const auto panel=fieldMapDescriptionLayout(map,nativeControls,nativeCounters);
    // If giant HUD elements leave no reading room, omit rather than overlap
    // or move the description upward into the map.
-   const float gapWidth=map.right-map.left-(labelWidth+80)*scale-16;
+   const float gapWidth=map.right-map.left-(labelWidth+80)*scale-12;
    require(panel.has_value()==(gapWidth>=180));
    if(!panel) continue;
    require(panel->left>=map.left+12 && panel->right<=map.right-12 && panel->top>=map.top+8 && near(panel->bottom,map.bottom-8));
    require(panel->right-panel->left>=180 && near(panel->bottom-panel->top,58));
-   for(const auto& r:nativeControls) require(!overlaps(*panel,{r.left-7,r.top-7,r.right+7,r.bottom+7}));
+   for(const auto& r:nativeControls) require(!overlaps(*panel,{r.left-3,r.top-3,r.right+3,r.bottom+3}));
    for(const auto& r:nativeCounters) require(!overlaps(*panel,{r.left-7,r.top-7,r.right+7,r.bottom+7}));
   }
  }
  // Resizing across the old width threshold keeps the bottom row and blocker.
  for(float right:{679.f,680.f,681.f,679.f}) {
   const auto box=fieldMapDescriptionLayout({0,40,right,420},{{20,350,150,400}},{{right-154,240,right-28,400}});
-  require(box && near(box->left,158) && near(box->bottom,412));
+  require(box && near(box->left,154) && near(box->bottom,412));
   t.clear({0,40,right,420}); t.add(300,380,8,8,"Behind description");
   t.setHint(*box); require(t.hit({300,380}).empty());
   t.add(300,320,8,8,"Above description"); require(!t.hit({300,320}).empty());

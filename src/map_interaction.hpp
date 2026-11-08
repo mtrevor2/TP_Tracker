@@ -88,14 +88,14 @@ inline std::optional<MapHitRect> fieldMapDescriptionLayout(MapHitRect map,
             && r.right>r.left && r.bottom>r.top;
     };
     if(!valid(map)) return {};
-    constexpr float height=58,gap=8;
+    constexpr float height=58,gap=8,controlGap=4;
     const MapHitRect safe{map.left+12,map.top+8,map.right-12,map.bottom-8};
     constexpr float minWidth=180;
     if(!valid(safe) || safe.bottom-safe.top<height || safe.right-safe.left<minWidth) return {};
     MapHitRect box{safe.left,safe.bottom-height,safe.right,safe.bottom};
     for(const auto& r:controls)
         if(valid(r) && r.top-gap<box.bottom && r.bottom+gap>box.top)
-            box.left=std::max(box.left,r.right+gap);
+            box.left=std::max(box.left,r.right+controlGap);
     // Reserve the whole counter column, even if a particular icon is higher.
     for(const auto& r:counters)
         if(valid(r)) box.right=std::min(box.right,r.left-gap);
