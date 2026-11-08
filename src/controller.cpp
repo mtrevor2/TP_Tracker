@@ -119,7 +119,7 @@ bool processInput(const SDL_Event& e) {
  return false;
 }
 #ifndef TPTRACKER_INPUT_TESTS
-ModResult initializeInput() { resetInput(); focused=true; return mods::hook::add_pre<detail::InputEventHook>(detail::inputEventHook); }
+ModResult initializeInput() { resetInput(); focused=true; return mods::hook::add_post<detail::InputEventHook>(detail::inputEventHook); }
 #endif
 bool readRightStick(int& x,int& y) {
  x=y=0;

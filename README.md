@@ -1,4 +1,13 @@
-# TPTracker 0.4.51
+# TPTracker 0.4.52
+
+## 0.4.52 Twilit Essentials startup compatibility
+
+- Moves tracker input handling from the shared UI hook to the host's window-event router. This avoids the incompatible pointer/reference event envelopes that caused Twilit Essentials 3.0.2 to crash at startup with TPTracker enabled (access violation at `0x305`).
+- Auxiliary windows and events consumed by other router hooks remain isolated. Unhandled events continue to the game's UI and other mods. Check Info shortcuts, mouse clicks, controller navigation and dismissal are preserved.
+- Regression coverage exercises the reported startup event with a separate legacy UI hook, both router owners/callback orders, auxiliary input, consumed events and enable/re-enable. The 0.4.51 map-description spacing fix is retained.
+- Verified startup on Dusklight 2.0.3 with Twilit Essentials 3.0.2 and the reported installed mod set: the game reaches the title scene and Essentials' Quick Start dialog without the startup exception. Gameplay/controller validation remains separate.
+
+Release package: **TPTracker-0.4.52-multiplatform.dusk**, staged in **dist**.
 
 ## 0.4.51 Map description spacing
 
