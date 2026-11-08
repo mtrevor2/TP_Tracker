@@ -1251,6 +1251,7 @@ void openTracker(ModContext*, void*) {
     UiControlValue value{}; value.bool_value=true; toggleSet(mod_ctx,nullptr,&value);
 }
 void cancelBinding(ModContext*, UiDialogHandle, void*) {
+    tracker::cancelControllerBindingCapture();
     capturingBinding=-1; bindingDialog=0; shortcutHeld=true;
 }
 void dismissBinding(ModContext*, UiDialogHandle, void*) {
@@ -1264,6 +1265,8 @@ void dismissBinding(ModContext*, UiDialogHandle, void*) {
 }
 void assignBinding(ModContext*,void* data) {
     capturingBinding=static_cast<int>(reinterpret_cast<uintptr_t>(data)); captureReady=false;
+    tracker::cancelControllerBindingCapture();
+    if(capturingBinding%2) tracker::beginControllerBindingCapture();
     UiDialogAction action=UI_DIALOG_ACTION_INIT;
     action.label="Cancel"; action.on_pressed=cancelBinding;
     UiDialogDesc dialog=UI_DIALOG_DESC_INIT;
@@ -1282,9 +1285,10 @@ void pollShortcut() {
     svc_config->get_int(mod_ctx,shortcutBindings[3],&checkPad);
     tracker::setCheckBindings(static_cast<int>(checkKey),static_cast<int>(checkPad));
     if (capturingBinding>=0) {
-        const int pressed=tracker::pressedBinding(capturingBinding%2!=0);
-        if (!pressed) captureReady=true;
-        if (pressed && captureReady) {
+        const bool controller=capturingBinding%2!=0;
+        const int pressed=controller ? tracker::pollControllerBindingCapture() : tracker::pressedBinding(false);
+        if (!controller && !pressed) captureReady=true;
+        if (pressed && (controller || captureReady)) {
             if (capturingBinding>=2 || capturingBinding%2 || !tracker::escapeBinding(pressed))
                 svc_config->set_int(mod_ctx,shortcutBindings[capturingBinding],pressed);
             const auto dialog=bindingDialog;
@@ -1306,7 +1310,8 @@ void pollShortcut() {
     const bool reservedMapButton=tracker::checkBindingUses(static_cast<int>(pad),true) && tracker::shortcutDown(0,static_cast<int>(pad));
     const bool reservedMapKey=tracker::checkBindingUses(static_cast<int>(key),false) && tracker::shortcutDown(static_cast<int>(key),0);
     if(mapDetail || (tracker::mapInspectionActive() && (reservedMapButton || reservedMapKey))) { shortcutHeld=down; return; }
-    if (down && !shortcutHeld) {
+    const bool pressed=tracker::shortcutPressed(notesTab && window ? 0 : static_cast<int>(key),static_cast<int>(pad));
+    if ((down || pressed) && !shortcutHeld) {
         UiControlValue value{}; value.bool_value=!window; toggleSet(mod_ctx,nullptr,&value);
     }
     shortcutHeld=down;
@@ -1530,6 +1535,7 @@ MOD_EXPORT ModResult mod_initialize(ModError* error) {
     else mods::log::info("TPTracker: native map draw hook installed");
     mods::log::info("TPTracker: minimap hooks {}", tracker::minimapAvailable ? "installed" : "unavailable");
     result = tracker::initializeInput();
+    tracker::setInputFrameHandler(pollShortcut);
     tracker::setMapCheckHandler(inspectMapCheck,closeMapCheck);
     if (result != MOD_OK) return mods::set_error(error, result, "TPTracker input event hook failed");
     // At the title screen the engine's default data number is not an active slot.
@@ -1549,7 +1555,6 @@ MOD_EXPORT ModResult mod_initialize(ModError* error) {
     return svc_ui->register_mods_panel(mod_ctx, &panel);
 }
 MOD_EXPORT ModResult mod_update(ModError*) {
-    pollShortcut();
     if (seedRefreshPending) {
         // The sidecar is flushed after save observers return. Read it here, and
         // retain the live completion journal rather than restoring an older one.
@@ -1573,6 +1578,8 @@ MOD_EXPORT ModResult mod_update(ModError*) {
     return MOD_OK;
 }
 MOD_EXPORT ModResult mod_shutdown(ModError*) {
+    tracker::setInputFrameHandler(nullptr);
+    tracker::cancelControllerBindingCapture();
     if(itemWindow) svc_ui->window_close(mod_ctx,itemWindow);
     if(detailWindow) svc_ui->window_close(mod_ctx,detailWindow);
     if (menuTab) svc_ui->unregister_menu_tab(mod_ctx,menuTab);

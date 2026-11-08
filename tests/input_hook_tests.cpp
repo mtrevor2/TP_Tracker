@@ -124,6 +124,49 @@ void run(bool trackerOwnsHook,bool trackerFirst) {
     require(others>0 && legacyEvents>0,"other mod callbacks were not called");
     tracker::setMapActionHandler(nullptr);
 }
+int presented=0,savedBinding=0,shortcutToggles=0;
+void presentationOriginal() { ++presented; }
+ModResult presentationPre(ModContext*,void*,void* args,void* result,int* skip) {
+    require(!args && !result,"UI update hook has unexpected arguments");
+    *skip=0; return MOD_OK;
+}
+ModResult presentationPost(ModContext*,void*,void* args,void* result) {
+    tracker::detail::inputFrameHook(nullptr,args,result,nullptr); return MOD_OK;
+}
+void pausedInputFrame() {
+    if(const int binding=tracker::pollControllerBindingCapture()) {
+        savedBinding=binding; tracker::cancelControllerBindingCapture(); return;
+    }
+    if(savedBinding && tracker::shortcutPressed(0,savedBinding)) ++shortcutToggles;
+}
+void pausedMenu() {
+    // Drive the actual two SDK trampolines. No mod_update / game tick occurs.
+    tracker::resetInput(); tracker::setMapActionHandler(nullptr);
+    auxiliary=preConsumed=false; callbacks={tracker::detail::inputEventHook};
+    HookService presentation{};
+    presentation.dispatch_pre=presentationPre; presentation.dispatch_post=presentationPost;
+    using Frame=tracker::detail::InputFrameHook;
+    Frame::hooks=&presentation; Frame::g_orig=presentationOriginal;
+    tracker::setInputFrameHandler(pausedInputFrame);
+    tracker::beginControllerBindingCapture(); Frame::trampoline();
+    SDL_Event event{}; event.gbutton.which=42; event.gbutton.button=SDL_GAMEPAD_BUTTON_WEST;
+    expected=&event;
+    event.type=SDL_EVENT_GAMEPAD_BUTTON_DOWN;
+    require(TrackerHook::trampoline(event),"assignment reached native Cancel/navigation");
+    event.type=SDL_EVENT_GAMEPAD_BUTTON_UP;
+    require(!TrackerHook::trampoline(event),"activation-button release was swallowed");
+    Frame::trampoline();
+    require(savedBinding==3 && shortcutToggles==0,"paused-menu capture lost a quick tap");
+    for(int press=1;press<=2;++press) {
+        event.type=SDL_EVENT_GAMEPAD_BUTTON_DOWN; TrackerHook::trampoline(event);
+        event.type=SDL_EVENT_GAMEPAD_BUTTON_UP; TrackerHook::trampoline(event);
+        Frame::trampoline();
+        require(shortcutToggles==press,"shortcut failed while game simulation was paused");
+        Frame::trampoline(); require(shortcutToggles==press,"shortcut repeated without another press");
+    }
+    require(presented==6,"UI presentation original was not forwarded");
+    tracker::setInputFrameHandler(nullptr); Frame::hooks=nullptr;
+}
 }
 int main() {
     try {
@@ -140,6 +183,7 @@ int main() {
         require(!handled,"empty envelope was not ignored");
         tracker::detail::inputEventHook(nullptr,empty,nullptr,nullptr);
         for(bool trackerOwnsHook:{false,true}) for(bool trackerFirst:{false,true}) run(trackerOwnsHook,trackerFirst);
+        pausedMenu();
         std::cout << "Input router verified: legacy UI hooks, 0x305 startup, both owners and callback orders, auxiliary/consumed events, reload, keyboard/mouse/controller.\n";
     } catch(const std::exception& error) { std::cerr << error.what() << '\n'; return 1; }
 }

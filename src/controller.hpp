@@ -17,5 +17,11 @@ int pressedBinding(bool controller);
 std::string bindingName(int binding,bool controller);
 bool escapeBinding(int binding);
 bool shortcutDown(int keyboard,int controller);
+bool shortcutPressed(int keyboard,int controller);
+void setInputFrameHandler(void (*handler)());
+void pollInputFrame();
+void beginControllerBindingCapture();
+int pollControllerBindingCapture();
+void cancelControllerBindingCapture();
 }
 

@@ -28,4 +28,8 @@ inline void inputEventHook(ModContext*,void* args,void* result,void*) {
     // continue to mouse, UI and other mods normally; event bytes stay intact.
     if(processInput(mods::arg<const SDL_Event&>(args,0))) *static_cast<bool*>(result)=true;
 }
+// Game simulation (and mod_update) can stop while a menu pauses gameplay.
+// UI presentation continues, so bindings must be serviced here instead.
+DEFINE_HOOK_SYMBOL("dusk::ui::update", void(), InputFrameHook);
+inline void inputFrameHook(ModContext*,void*,void*,void*) { pollInputFrame(); }
 }

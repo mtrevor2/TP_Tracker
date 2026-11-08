@@ -2,6 +2,8 @@
 
 ## 0.4.52 Twilit Essentials startup compatibility
 
+**Controller-binding rebuild (version remains 0.4.52):** Binding capture and tracker shortcuts now run on UI presentation updates, so the Assign dialog and open/close shortcuts keep working when a menu pauses game simulation. Controller presses are captured as events, including short taps, triggers, extra buttons and A/B, without activating the prompt's Cancel action. Assignment waits for the opening button to be released. Shortcut presses are retained until the next UI update. Regression tests exercise capture and repeated shortcut use without any game-simulation updates.
+
 - Moves tracker input handling from the shared UI hook to the host's window-event router. This avoids the incompatible pointer/reference event envelopes that caused Twilit Essentials 3.0.2 to crash at startup with TPTracker enabled (access violation at `0x305`).
 - Auxiliary windows and events consumed by other router hooks remain isolated. Unhandled events continue to the game's UI and other mods. Check Info shortcuts, mouse clicks, controller navigation and dismissal are preserved.
 - Regression coverage exercises the reported startup event with a separate legacy UI hook, both router owners/callback orders, auxiliary input, consumed events and enable/re-enable. The 0.4.51 map-description spacing fix is retained.

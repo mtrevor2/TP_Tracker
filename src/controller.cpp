@@ -8,8 +8,15 @@
 #include <cstdlib>
 namespace tracker {
 namespace {
-std::array<bool,SDL_SCANCODE_COUNT> keys{};
-struct Pad { std::array<bool,SDL_GAMEPAD_BUTTON_COUNT> buttons{}; std::array<int,SDL_GAMEPAD_AXIS_COUNT> axes{}; };
+std::array<bool,SDL_SCANCODE_COUNT> keys{},keyPresses{};
+struct Pad {
+ std::array<bool,SDL_GAMEPAD_BUTTON_COUNT> buttons{},buttonPresses{};
+ std::array<int,SDL_GAMEPAD_AXIS_COUNT> axes{};
+ std::array<bool,SDL_GAMEPAD_AXIS_COUNT> axisPresses{};
+};
+void (*inputFrameHandler)()=nullptr;
+bool capturingController=false,captureReady=false;
+int capturedController=0;
 int checkKeyboard=0, checkController=0;
 std::map<SDL_JoystickID,Pad> pads;
 bool focused=true;
@@ -20,6 +27,14 @@ bool mouseValid=false, mouseActive=true, mouseHeld=false;
 float mouseX=0,mouseY=0;
 MapActionHandler mapActionHandler=nullptr;
 constexpr int buttons[]={-1,0,1,2,3,9,10,4,6,7,8,11,12,13,14};
+int buttonBinding(int button) {
+ for(int binding=1;binding<15;++binding) if(buttons[binding]==button) return binding;
+ return 100+button;
+}
+void captureControllerPress(int binding,bool edge) {
+ if(!captureReady) { if(!pressedBinding(true)) captureReady=true; }
+ else if(edge && !capturedController) capturedController=binding;
+}
 int scan(int b) {
  if(b>=512) return b-512;
  if(b>=1 && b<=12) return SDL_SCANCODE_F1+b-1;
@@ -64,7 +79,19 @@ bool checkBindingUses(int binding,bool controller) {
  auto button=[](int b) { return b>0 && b<15 ? buttons[b]+100 : b; };
  return checkController && button(binding)==button(checkController);
 }
-void resetInput() { keys.fill(false); pads.clear(); mouseValid=mouseHeld=false; mouseActive=true; }
+void resetInput() { keys.fill(false); keyPresses.fill(false); pads.clear(); mouseValid=mouseHeld=false; mouseActive=true; captureReady=false; capturedController=0; }
+void setInputFrameHandler(void (*handler)()) { inputFrameHandler=handler; }
+void pollInputFrame() {
+ if(inputFrameHandler) inputFrameHandler();
+ keyPresses.fill(false);
+ for(auto& [id,pad]:pads) { pad.buttonPresses.fill(false); pad.axisPresses.fill(false); }
+}
+void beginControllerBindingCapture() { capturingController=true; captureReady=false; capturedController=0; }
+int pollControllerBindingCapture() {
+ if(capturingController && !captureReady && !pressedBinding(true)) captureReady=true;
+ return capturedController;
+}
+void cancelControllerBindingCapture() { capturingController=false; captureReady=false; capturedController=0; }
 bool readMousePosition(float& x,float& y) { x=mouseX; y=mouseY; return focused && mouseValid && mouseActive; }
 bool processInput(const SDL_Event& e) {
  if(e.type==SDL_EVENT_WINDOW_FOCUS_LOST) { focused=false; resetInput(); }
@@ -78,6 +105,7 @@ bool processInput(const SDL_Event& e) {
    const bool edge=e.type==SDL_EVENT_KEY_DOWN && !e.key.repeat &&
        e.key.scancode>0 && e.key.scancode<SDL_SCANCODE_COUNT && !keys[e.key.scancode];
    if(e.key.scancode>0 && e.key.scancode<SDL_SCANCODE_COUNT) keys[e.key.scancode]=e.type==SDL_EVENT_KEY_DOWN;
+   if(edge) keyPresses[e.key.scancode]=true;
    if(edge && mapActionHandler) {
     if(e.key.scancode==SDL_SCANCODE_ESCAPE && mapActionHandler(MapAction::Dismiss,0,0)) return true;
     if(checkKeyboard && e.key.scancode==scan(checkKeyboard)) return mapActionHandler(MapAction::KeyboardConfirm,0,0);
@@ -90,6 +118,13 @@ bool processInput(const SDL_Event& e) {
     if(edge) mouseActive=false;
     const bool chordWasDown=mapChordDown(pad);
     pad.buttons[e.gbutton.button]=pressed;
+    if(capturingController) {
+     captureControllerPress(buttonBinding(e.gbutton.button),edge);
+     // Swallow assignment presses before A/Back can operate the Cancel action.
+     // Forward releases so the native UI clears the button that opened the prompt.
+     return pressed;
+    }
+    if(edge) pad.buttonPresses[e.gbutton.button]=true;
     if(edge && e.gbutton.button==SDL_GAMEPAD_BUTTON_EAST && mapActionHandler && mapActionHandler(MapAction::Dismiss,0,0)) return true;
     // Trigger and confirm may arrive in either order. Activate only on the
     // chord's rising edge, from one controller, never just by moving a held
@@ -100,7 +135,13 @@ bool processInput(const SDL_Event& e) {
   } else if(e.type==SDL_EVENT_GAMEPAD_AXIS_MOTION && e.gaxis.axis<SDL_GAMEPAD_AXIS_COUNT) {
    auto& pad=pads[e.gaxis.which];
    const bool chordWasDown=mapChordDown(pad);
+   const bool triggerEdge=e.gaxis.axis>=SDL_GAMEPAD_AXIS_LEFT_TRIGGER && pad.axes[e.gaxis.axis]<=3855 && e.gaxis.value>3855;
    pad.axes[e.gaxis.axis]=e.gaxis.value;
+   if(capturingController) {
+    captureControllerPress(e.gaxis.axis==SDL_GAMEPAD_AXIS_LEFT_TRIGGER ? 15 : 16,triggerEdge);
+    return std::abs(e.gaxis.value)>3855;
+   }
+   if(triggerEdge) pad.axisPresses[e.gaxis.axis]=true;
    if(std::abs(e.gaxis.value)>12000) mouseActive=false;
    if(!chordWasDown && mapChordDown(pad) && mapActionHandler)
     return mapActionHandler(MapAction::ControllerConfirm,0,0);
@@ -119,7 +160,12 @@ bool processInput(const SDL_Event& e) {
  return false;
 }
 #ifndef TPTRACKER_INPUT_TESTS
-ModResult initializeInput() { resetInput(); focused=true; return mods::hook::add_post<detail::InputEventHook>(detail::inputEventHook); }
+ModResult initializeInput() {
+ resetInput(); cancelControllerBindingCapture(); focused=true;
+ auto result=mods::hook::add_post<detail::InputEventHook>(detail::inputEventHook);
+ if(result!=MOD_OK) return result;
+ return mods::hook::add_post<detail::InputFrameHook>(detail::inputFrameHook);
+}
 #endif
 bool readRightStick(int& x,int& y) {
  x=y=0;
@@ -135,6 +181,18 @@ bool shortcutDown(int keyboard,int controller) {
  if(s>0 && s<SDL_SCANCODE_COUNT && keys[s]) return true;
  for(const auto& [id,p]:pads) {
   if(padBindingDown(p,controller)) return true;
+ }
+ return false;
+}
+bool shortcutPressed(int keyboard,int controller) {
+ if(!focused) return false;
+ const int s=scan(keyboard);
+ if(s>0 && s<SDL_SCANCODE_COUNT && keyPresses[s]) return true;
+ for(const auto& [id,pad]:pads) {
+  if(controller>0 && controller<15 && pad.buttonPresses[buttons[controller]]) return true;
+  if(controller==15 && pad.axisPresses[SDL_GAMEPAD_AXIS_LEFT_TRIGGER]) return true;
+  if(controller==16 && pad.axisPresses[SDL_GAMEPAD_AXIS_RIGHT_TRIGGER]) return true;
+  if(controller>=100 && controller<100+SDL_GAMEPAD_BUTTON_COUNT && pad.buttonPresses[controller-100]) return true;
  }
  return false;
 }

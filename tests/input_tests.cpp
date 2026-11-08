@@ -175,5 +175,52 @@ int main() {
  resetInput(); details=false; setCheckBindings(0,0);
  require(!trigger(12,25000) && button(12,SDL_GAMEPAD_BUTTON_SOUTH,true) && details);
  setMapActionHandler(nullptr);
+ // Binding capture runs from UI presentation, with no game-simulation tick.
+ // Capture a complete press/release between frames, including A and Back,
+ // without letting those presses activate the prompt's Cancel button.
+ constexpr int captureButtons[]={-1,0,1,2,3,9,10,4,6,7,8,11,12,13,14};
+ for(int binding=1;binding<=16;++binding) {
+  resetInput(); beginControllerBindingCapture();
+  require(pollControllerBindingCapture()==0); // one UI frame arms idle input
+  if(binding<15) {
+   require(button(20,captureButtons[binding],true));
+   require(!button(20,captureButtons[binding],false));
+  } else {
+   const auto which=binding==15 ? SDL_GAMEPAD_AXIS_LEFT_TRIGGER : SDL_GAMEPAD_AXIS_RIGHT_TRIGGER;
+   require(axis(20,which,24000)); require(!axis(20,which,0));
+  }
+  require(!pressedBinding(true));
+  require(pollControllerBindingCapture()==binding); // released taps remain captured
+  require(!shortcutPressed(0,binding)); // assignment cannot also open the tracker
+  cancelControllerBindingCapture();
+ }
+ resetInput(); button(20,SDL_GAMEPAD_BUTTON_SOUTH,true);
+ beginControllerBindingCapture(); require(pollControllerBindingCapture()==0);
+ require(button(20,SDL_GAMEPAD_BUTTON_SOUTH,true));
+ require(pollControllerBindingCapture()==0); // opening A must first be released
+ require(!button(20,SDL_GAMEPAD_BUTTON_SOUTH,false));
+ require(axis(20,SDL_GAMEPAD_AXIS_LEFTX,24000));
+ require(pollControllerBindingCapture()==0); // moving a stick is not a binding
+ require(button(20,SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1,true));
+ require(pollControllerBindingCapture()==100+SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1);
+ cancelControllerBindingCapture(); resetInput();
+ beginControllerBindingCapture(); pollControllerBindingCapture();
+ e={};e.type=SDL_EVENT_WINDOW_FOCUS_LOST;processInput(e);
+ require(!button(20,SDL_GAMEPAD_BUTTON_NORTH,true) && pollControllerBindingCapture()==0);
+ e={};e.type=SDL_EVENT_WINDOW_FOCUS_GAINED;processInput(e);
+ pollControllerBindingCapture();
+ require(button(20,SDL_GAMEPAD_BUTTON_NORTH,true) && pollControllerBindingCapture()==4);
+ cancelControllerBindingCapture(); resetInput();
+ // Shortcut edges survive a tap between UI frames and clear after presentation.
+ button(20,SDL_GAMEPAD_BUTTON_WEST,true); button(20,SDL_GAMEPAD_BUTTON_WEST,false);
+ require(!shortcutDown(0,3) && shortcutPressed(0,3));
+ pollInputFrame(); require(!shortcutPressed(0,3));
+ axis(20,SDL_GAMEPAD_AXIS_RIGHT_TRIGGER,24000); axis(20,SDL_GAMEPAD_AXIS_RIGHT_TRIGGER,0);
+ require(!shortcutDown(0,16) && shortcutPressed(0,16));
+ pollInputFrame(); require(!shortcutPressed(0,16));
+ e={};e.type=SDL_EVENT_KEY_DOWN;e.key.scancode=SDL_SCANCODE_F5;processInput(e);
+ e.type=SDL_EVENT_KEY_UP;processInput(e);
+ require(!shortcutDown(5,0) && shortcutPressed(5,0));
+ pollInputFrame(); require(!shortcutPressed(5,0));
  std::cout << "Input and map interaction regression scenarios passed\n";
 }
