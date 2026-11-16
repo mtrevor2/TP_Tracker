@@ -31,11 +31,7 @@ extern const UiService* svc_ui;
 extern "C" ModContext* mod_ctx;
 
 DEFINE_HOOK_SYMBOL("src/dusk/mouse.cpp#dusk::mouse::should_capture_mouse", bool(SDL_Window*), TrackerMapMouseCapture);
-#ifndef TPTRACKER_IOS_2_0_1
-// The official 2.0.1 iOS binary has no hookable should_show_cursor symbol.
-// Let the host control cursor visibility there; map input remains available.
 DEFINE_HOOK_SYMBOL("src/dusk/mouse.cpp#dusk::mouse::should_show_cursor", bool(bool), TrackerMapMouseCursor);
-#endif
 DEFINE_HOOK_SYMBOL("dMenu_Fmap2DBack_c::draw", void(dMenu_Fmap2DBack_c*), TrackerMapBackDraw);
 DEFINE_HOOK_SYMBOL("dMenu_Fmap2DTop_c::draw", void(dMenu_Fmap2DTop_c*), TrackerMapTopDraw);
 
@@ -119,14 +115,12 @@ HookAction mapMouseCapture(ModContext*,void*,void* result,void*) {
     *static_cast<bool*>(result)=false;
     return HOOK_SKIP_ORIGINAL;
 }
-#ifndef TPTRACKER_IOS_2_0_1
 HookAction mapMouseCursor(ModContext*,void*,void* result,void*) {
     float x=0,y=0;
     if(!inspectionContext() || !readMousePosition(x,y)) return HOOK_CONTINUE;
     *static_cast<bool*>(result)=true;
     return HOOK_SKIP_ORIGINAL;
 }
-#endif
 std::optional<MapScreenPoint> mousePoint(float x,float y) {
     if(!windowSize) return {};
     const auto size=windowSize();
@@ -811,9 +805,7 @@ ModResult initializeMap(Model* model) {
     setMapActionHandler(inspectFromMap);
     // Keep a usable pointer even when the player's mouse-camera option is on.
     mods::hook::add_pre<TrackerMapMouseCapture>(mapMouseCapture);
-#ifndef TPTRACKER_IOS_2_0_1
     mods::hook::add_pre<TrackerMapMouseCursor>(mapMouseCursor);
-#endif
     auto loadTexture = [](const char* name, std::vector<unsigned char>& bytes) {
         ResourceBuffer buffer = RESOURCE_BUFFER_INIT;
         if (svc_resource->load(mod_ctx,name,&buffer) == MOD_OK) {

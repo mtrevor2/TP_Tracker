@@ -10,7 +10,7 @@ PLATFORMS = {"windows-amd64", "linux-x86_64", "linux-aarch64", "macos-arm64",
              "macos-x86_64", "android-aarch64", "ios-arm64"}
 
 
-def stage(source, destination, require_all=False, compatibility=None):
+def stage(source, destination, require_all=False):
     source, destination = Path(source).resolve(), Path(destination).resolve()
     with zipfile.ZipFile(source) as package:
         manifest = json.loads(package.read("mod.json"))
@@ -28,10 +28,6 @@ def stage(source, destination, require_all=False, compatibility=None):
         if len(platforms) > 1 and platforms != PLATFORMS:
             raise ValueError("A multiplatform release must contain all seven supported platforms")
         label = "multiplatform" if platforms == PLATFORMS else next(iter(platforms))
-        if compatibility is not None:
-            if compatibility != "ios-dusklight-2.0.1" or platforms != {"ios-arm64"}:
-                raise ValueError("The iOS compatibility label requires an iOS-only package")
-            label = compatibility
         for name in package.namelist():
             if name.startswith('lib/') and not name.endswith('/') and package.getinfo(name).file_size == 0:
                 raise ValueError(f"Empty native library: {name}")
@@ -52,6 +48,5 @@ if __name__ == "__main__":
     parser.add_argument("package", type=Path)
     parser.add_argument("--dist", type=Path, default=Path(__file__).resolve().parents[1] / "dist")
     parser.add_argument("--require-all", action="store_true")
-    parser.add_argument("--compatibility", choices=["ios-dusklight-2.0.1"])
     args = parser.parse_args()
-    print(stage(args.package, args.dist, args.require_all, args.compatibility))
+    print(stage(args.package, args.dist, args.require_all))
