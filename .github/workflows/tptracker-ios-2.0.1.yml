@@ -3,12 +3,12 @@ on:
   workflow_dispatch:
   push:
     branches: [codex/ios-2.0.1]
-    paths: ['src/**', 'res/**', 'mod.json', 'CMakeLists.txt', '.github/workflows/tptracker-ios-2.0.1.yml']
+    paths: ['src/**', 'res/**', 'tools/stage_package.py', 'mod.json', 'CMakeLists.txt', '.github/workflows/tptracker-ios-2.0.1.yml']
 permissions:
   contents: read
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     steps:
       - uses: actions/checkout@v7
       - name: Fetch the exact Dusklight 2.0.1 SDK
@@ -35,5 +35,5 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: TPTracker-ios-dusklight-2.0.1
-          path: tracker-build/mods/*.dusk
+          path: dist/*-ios-dusklight-2.0.1.dusk
           if-no-files-found: error

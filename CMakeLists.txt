@@ -29,9 +29,14 @@ if(NOT TPTRACKER_TESTS_ONLY)
     target_include_directories(TP_Randomizer_Tracker PRIVATE "${DUSKLIGHT_SOURCE_DIR}/extern/aurora/include")
     target_include_directories(TP_Randomizer_Tracker PRIVATE "${tptracker_sdl_SOURCE_DIR}/include")
     find_package(Python3 REQUIRED COMPONENTS Interpreter)
+    set(_tracker_stage_args "")
+    if(TPTRACKER_IOS_2_0_1)
+        list(APPEND _tracker_stage_args --compatibility ios-dusklight-2.0.1)
+    endif()
     add_custom_command(TARGET TP_Randomizer_Tracker_package POST_BUILD
         COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/stage_package.py"
             "${DUSK_MODS_OUTPUT_DIR}/TP_Randomizer_Tracker.dusk"
+            ${_tracker_stage_args}
         COMMENT "Staging versioned TPTracker package in dist"
         VERBATIM)
     if(APPLE AND CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")

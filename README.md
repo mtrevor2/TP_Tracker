@@ -1,5 +1,10 @@
 # TPTracker 0.4.53
 
+The separate [iOS Dusklight 2.0.1 compatibility target](docs/IOS-2.0.1.md)
+is a developer integration candidate for SUMEE. Native mods must be bundled
+and signed with the iOS app; SUMEE's developer must validate and include it
+before players can use it inside SUMEE.
+
 ## 0.4.53 Bottom check descriptions and A to inspect
 
 - Keeps the check description in the bottom row between Move/Back on the left and the chest, heart-piece, bug and Poe counters on the right, with padding on both sides. Native labels are measured by their rendered text so empty space does not push the description away. This layout correction is a rebuild of 0.4.53, with no version change.
